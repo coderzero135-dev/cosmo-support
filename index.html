@@ -1,0 +1,3209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmo Support · Product Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>◎</text></svg>">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --bg: #070b14;
+    --bg-elev: #0f1727;
+    --bg-card: #121d31;
+    --border: #23324d;
+    --border-strong: #35517a;
+    --text: #eef5ff;
+    --text-dim: #a3b5d1;
+    --text-muted: #6f84a8;
+    --accent: #39f4b8;
+    --accent-dim: #1f6f57;
+    --warn: #ffbe72;
+    --danger: #ff6c9f;
+    --info: #67c3ff;
+    --theme-a: 160, 86, 255;
+    --theme-b: 255, 88, 168;
+    --theme-c: 255, 196, 77;
+    --theme-bg-start: #0b0f1d;
+    --theme-bg-mid: #10182c;
+    --theme-bg-end: #090d18;
+    --sidebar-top: 16, 25, 44;
+    --sidebar-bottom: 12, 20, 35;
+    --ios-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', -apple-system, sans-serif;
+    font-weight: 300;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse at top left, rgba(var(--theme-a), 0.2), transparent 45%),
+      radial-gradient(ellipse at 20% 80%, rgba(var(--theme-b), 0.18), transparent 45%),
+      radial-gradient(ellipse at bottom right, rgba(var(--theme-c), 0.15), transparent 55%),
+      linear-gradient(150deg, var(--theme-bg-start) 0%, var(--theme-bg-mid) 38%, var(--theme-bg-end) 100%);
+    background-attachment: fixed;
+    transition: background-image 0.7s var(--ios-ease);
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: 100vh;
+    max-width: 1660px;
+    margin: 0 auto;
+    gap: 10px;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    background: linear-gradient(180deg, rgba(var(--sidebar-top), 0.86), rgba(var(--sidebar-bottom), 0.92));
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 14px 0 40px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(18px) saturate(130%);
+  }
+
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+  .brand {
+    padding: 0 24px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .brand-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .brand-name {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .brand-name .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .search-wrap {
+    padding: 0 16px 16px;
+  }
+
+  .search {
+    width: 100%;
+    background: rgba(9, 15, 27, 0.7);
+    border: 1px solid rgba(53, 81, 122, 0.75);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    transition: border-color 0.28s var(--ios-ease), background 0.28s var(--ios-ease), box-shadow 0.28s var(--ios-ease);
+  }
+
+  .search::placeholder { color: var(--text-muted); }
+  .search:focus {
+    outline: none;
+    border-color: rgba(57, 244, 184, 0.45);
+    background: rgba(14, 24, 40, 0.9);
+    box-shadow: 0 0 0 3px rgba(57, 244, 184, 0.12);
+  }
+
+  .nav-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding: 14px 24px 6px;
+  }
+
+  .nav-list {
+    list-style: none;
+    padding: 0 12px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    transition: background 0.26s var(--ios-ease), color 0.26s var(--ios-ease), transform 0.26s var(--ios-ease), border-color 0.26s var(--ios-ease);
+    border: 1px solid transparent;
+    user-select: none;
+  }
+
+  .nav-item:hover {
+    background: linear-gradient(90deg, rgba(57, 244, 184, 0.08), rgba(103, 195, 255, 0.04));
+    color: var(--text);
+    transform: translateX(3px);
+    border-color: rgba(var(--theme-a), 0.18);
+  }
+
+  .nav-item:focus-visible {
+    outline: 2px solid var(--accent-dim);
+    outline-offset: 1px;
+  }
+
+  .nav-item.active {
+    background: linear-gradient(90deg, rgba(57, 244, 184, 0.14), rgba(103, 195, 255, 0.08));
+    color: var(--accent);
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+
+  .nav-item .marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    width: 18px;
+  }
+
+  .nav-item.active .marker { color: var(--accent); }
+
+  .nav-item.hidden { display: none; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .sidebar-footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--border-strong);
+  }
+
+  .sidebar-footer a:hover { color: var(--accent); }
+
+  .admin-fab {
+    display: none;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 120;
+    background: linear-gradient(145deg, rgba(16, 23, 38, 0.9), rgba(10, 15, 27, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transition: transform 0.26s var(--ios-ease), box-shadow 0.26s var(--ios-ease), border-color 0.26s var(--ios-ease), color 0.26s var(--ios-ease);
+  }
+
+  .admin-fab.unlocked { display: block; }
+
+  .admin-fab:hover {
+    color: var(--accent);
+    border-color: rgba(var(--theme-a), 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+
+  .hidden-access {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(124, 240, 168, 0.18);
+    background: rgba(124, 240, 168, 0.06);
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    z-index: 2200;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.15s, border-color 0.15s, color 0.15s, background 0.15s;
+  }
+
+  .hidden-access:hover,
+  .hidden-access:focus-visible {
+    border-color: rgba(124, 240, 168, 0.45);
+    background: rgba(124, 240, 168, 0.14);
+    color: var(--accent);
+    opacity: 1;
+    outline: none;
+  }
+
+  .product-logo {
+    position: fixed;
+    top: 16px;
+    right: 18px;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+      linear-gradient(140deg, rgba(var(--theme-a), 0.22), rgba(var(--theme-b), 0.12)),
+      rgba(10, 15, 24, 0.6);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  }
+
+  .product-logo-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    background: linear-gradient(160deg, rgba(var(--theme-a), 0.8), rgba(var(--theme-b), 0.65));
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  .product-logo-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  /* ============ MAIN ============ */
+  .main {
+    padding: 52px 62px;
+    max-width: 1100px;
+    animation: pageIntro 0.68s var(--ios-ease);
+  }
+
+  @keyframes pageIntro {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    margin-bottom: 36px;
+  }
+
+  .breadcrumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .breadcrumb .sep { margin: 0 8px; opacity: 0.4; }
+  .breadcrumb .current { color: var(--accent); }
+
+  h1 {
+    font-size: 46px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 16px;
+    max-width: 580px;
+    opacity: 0.92;
+  }
+
+  /* ============ CARDS ============ */
+  .section {
+    margin-top: 42px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .section-title h2 {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .section-title .rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(57, 244, 184, 0.2), rgba(53, 81, 122, 0.2), rgba(53, 81, 122, 0));
+  }
+
+  /* Setup grid */
+  .setup-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 12px;
+    backdrop-filter: blur(8px) saturate(120%);
+  }
+
+  .setup-grid::-webkit-scrollbar { height: 6px; }
+  .setup-grid::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+  .setup-cell {
+    background: linear-gradient(180deg, rgba(19, 32, 54, 0.92), rgba(15, 26, 43, 0.92));
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 150px;
+    flex: 0 0 150px;
+    border: 1px solid rgba(53, 81, 122, 0.75);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 26px rgba(0, 0, 0, 0.14);
+    transition: transform 0.26s var(--ios-ease), border-color 0.26s var(--ios-ease);
+  }
+
+  .setup-cell:hover {
+    transform: translateY(-2px);
+    border-color: rgba(var(--theme-a), 0.4);
+  }
+
+  .setup-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    min-height: 2.3em;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .setup-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 999px;
+    width: fit-content;
+    border: 1px solid transparent;
+  }
+
+  .setup-value.on    { color: var(--accent); background: rgba(124, 240, 168, 0.08); border-color: rgba(124, 240, 168, 0.22); }
+  .setup-value.off   { color: var(--danger); background: rgba(255, 107, 138, 0.08); border-color: rgba(255, 107, 138, 0.25); }
+  .setup-value.na    { color: var(--text-muted); background: rgba(92, 100, 115, 0.15); border-color: rgba(92, 100, 115, 0.28); }
+  .setup-value.warn  { color: var(--warn); background: rgba(255, 184, 107, 0.08); border-color: rgba(255, 184, 107, 0.24); }
+
+  /* Requirements + Windows */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: linear-gradient(160deg, rgba(17, 29, 49, 0.94), rgba(12, 22, 37, 0.94));
+    border: 1px solid rgba(53, 81, 122, 0.6);
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 30px rgba(0, 0, 0, 0.16);
+    transition: transform 0.3s var(--ios-ease), border-color 0.3s var(--ios-ease), box-shadow 0.3s var(--ios-ease);
+  }
+
+  .info-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--theme-a), 0.42);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 18px 38px rgba(0, 0, 0, 0.2);
+  }
+
+  .info-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .info-card ul {
+    list-style: none;
+  }
+
+  .info-card li {
+    padding: 6px 0;
+    color: var(--text);
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .info-card li::before {
+    content: '▸';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Errors */
+  .error-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .error-card {
+    background: linear-gradient(160deg, rgba(18, 30, 50, 0.94), rgba(12, 21, 36, 0.94));
+    border: 1px solid rgba(53, 81, 122, 0.6);
+    border-left: 3px solid var(--warn);
+    border-radius: 14px;
+    padding: 16px 20px;
+    transition: border-color 0.3s var(--ios-ease), transform 0.3s var(--ios-ease), box-shadow 0.3s var(--ios-ease);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 28px rgba(0, 0, 0, 0.16);
+  }
+
+  .error-card:hover {
+    border-left-color: var(--accent);
+    border-color: rgba(103, 195, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.2);
+  }
+
+  .error-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .error-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 15px;
+    flex: 1;
+  }
+
+  /* Copy buttons */
+  .copy-btn {
+    background: rgba(8, 13, 22, 0.5);
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.26s var(--ios-ease);
+    flex-shrink: 0;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+
+  .copy-btn:hover {
+    background: linear-gradient(135deg, rgba(var(--theme-a), 0.12), rgba(var(--theme-c), 0.08));
+    color: var(--accent);
+    border-color: rgba(var(--theme-a), 0.48);
+  }
+
+  .copy-btn.copied {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(124, 240, 168, 0.08);
+  }
+
+  .copy-btn svg {
+    width: 11px;
+    height: 11px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Inline code copy on click */
+  .error-fix code {
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .error-fix code:hover {
+    background: var(--accent-dim);
+    color: var(--text);
+  }
+
+  .error-fix code.copied {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-card);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    padding: 10px 20px;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Setup cell — copy on click */
+  .setup-cell {
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .setup-cell:hover {
+    background: linear-gradient(180deg, rgba(23, 38, 62, 0.95), rgba(18, 31, 51, 0.95));
+  }
+
+  .setup-cell::after {
+    content: 'copy';
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .setup-cell:hover::after { opacity: 1; }
+  .setup-cell.copied::after { content: 'copied'; color: var(--accent); opacity: 1; }
+
+  /* Info card list items — copy on click */
+  .info-card li {
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 4px;
+    transition: background 0.12s;
+    margin: 0 -8px;
+  }
+
+  .info-card li:hover {
+    background: rgba(9, 16, 28, 0.75);
+  }
+
+  .info-card li.copied {
+    background: rgba(124, 240, 168, 0.08);
+  }
+
+  /* Copy all setup button */
+  .section-title .copy-all {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .section-title .copy-all:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+
+  .section-title .copy-all.copied {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .error-fix {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+  }
+
+  .error-fix code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: var(--bg);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+  }
+
+  .error-fix a {
+    color: var(--info);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--info);
+    word-break: break-all;
+  }
+  .error-fix a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Note callout */
+  .note {
+    background: linear-gradient(180deg, rgba(255, 184, 107, 0.06), rgba(255, 184, 107, 0.02));
+    border: 1px solid rgba(255, 184, 107, 0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .note .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--warn);
+    text-transform: uppercase;
+    margin-right: 8px;
+  }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-muted);
+  }
+
+  /* No-results when content hidden */
+  .no-results {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .no-results.show { display: block; }
+
+  .admin-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 12, 0.58);
+    backdrop-filter: blur(14px) saturate(140%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.28s ease, visibility 0.28s ease;
+  }
+
+  .admin-modal.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .admin-panel {
+    width: min(860px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    background: linear-gradient(160deg, rgba(18, 24, 36, 0.88), rgba(11, 16, 28, 0.93));
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transform: translateY(18px) scale(0.985);
+    opacity: 0;
+    transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+  }
+
+  .admin-modal.show .admin-panel {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .admin-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 10px;
+  }
+
+  .admin-title h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  .admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .admin-field label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .admin-field select,
+  .admin-field input,
+  .admin-field textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 9px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .admin-field textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .admin-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .admin-actions button {
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .admin-actions button:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+
+  .admin-actions button:disabled {
+    cursor: not-allowed;
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+
+  .admin-preview {
+    margin-top: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    background: var(--bg);
+    font-size: 12px;
+    color: var(--text-dim);
+    white-space: pre-wrap;
+  }
+
+  .admin-shell {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .admin-side {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    background: linear-gradient(170deg, rgba(14, 20, 34, 0.8), rgba(9, 14, 26, 0.82));
+    padding: 12px;
+    max-height: 62vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 26px rgba(0, 0, 0, 0.18);
+  }
+
+  .admin-select {
+    width: 100%;
+    background: rgba(10, 16, 28, 0.82);
+    border: 1px solid rgba(53, 81, 122, 0.8);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  .admin-select:focus {
+    outline: none;
+    border-color: rgba(var(--theme-a), 0.9);
+    box-shadow: 0 0 0 3px rgba(var(--theme-a), 0.18);
+    background: rgba(12, 20, 34, 0.9);
+  }
+
+  .mini-row input {
+    width: 100%;
+    background: rgba(10, 16, 28, 0.82);
+    border: 1px solid rgba(53, 81, 122, 0.8);
+    color: var(--text);
+    border-radius: 7px;
+    padding: 8px 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .mini-row input:focus {
+    outline: none;
+    border-color: rgba(var(--theme-b), 0.9);
+    box-shadow: 0 0 0 3px rgba(var(--theme-b), 0.16);
+  }
+
+  .admin-modal ::-webkit-scrollbar,
+  .admin-side ::-webkit-scrollbar,
+  .admin-select::-webkit-scrollbar,
+  .error-list-admin::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+
+  .admin-modal ::-webkit-scrollbar-track,
+  .admin-side ::-webkit-scrollbar-track,
+  .admin-select::-webkit-scrollbar-track,
+  .error-list-admin::-webkit-scrollbar-track {
+    background: rgba(10, 16, 28, 0.6);
+    border-radius: 999px;
+  }
+
+  .admin-modal ::-webkit-scrollbar-thumb,
+  .admin-side ::-webkit-scrollbar-thumb,
+  .admin-select::-webkit-scrollbar-thumb,
+  .error-list-admin::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(var(--theme-a), 0.85), rgba(var(--theme-b), 0.75));
+    border: 2px solid rgba(10, 16, 28, 0.75);
+    border-radius: 999px;
+  }
+
+  .admin-modal,
+  .admin-side,
+  .admin-select,
+  .error-list-admin {
+    scrollbar-color: rgba(120, 180, 255, 0.8) rgba(10, 16, 28, 0.6);
+    scrollbar-width: thin;
+  }
+
+  .admin-main {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    background: linear-gradient(165deg, rgba(13, 19, 32, 0.78), rgba(9, 14, 25, 0.82));
+    padding: 12px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 28px rgba(0, 0, 0, 0.2);
+  }
+
+  .admin-panel {
+    animation: adminPop 0.24s ease-out;
+  }
+
+  .variant-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0 4px;
+  }
+
+  .variant-pill {
+    background: rgba(10, 16, 28, 0.7);
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    padding: 5px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    transition: all 0.24s var(--ios-ease);
+    user-select: none;
+  }
+
+  .variant-pill:hover {
+    border-color: rgba(var(--theme-a), 0.55);
+    color: var(--text);
+    background: linear-gradient(135deg, rgba(var(--theme-a), 0.1), rgba(var(--theme-b), 0.08));
+  }
+
+  .variant-pill.active {
+    border-color: rgba(var(--theme-a), 0.9);
+    color: rgb(var(--theme-a));
+    background: linear-gradient(135deg, rgba(var(--theme-a), 0.22), rgba(var(--theme-c), 0.14));
+    box-shadow: 0 0 0 1px rgba(var(--theme-a), 0.18) inset, 0 8px 18px rgba(0, 0, 0, 0.28);
+  }
+
+  @keyframes adminPop {
+    from { opacity: 0; transform: translateY(8px) scale(0.99); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .admin-section-panel {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .admin-section-panel.active {
+    animation: sectionIn 0.2s ease-out;
+  }
+
+  @keyframes sectionIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .admin-switches {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .admin-section-btn.active {
+    color: var(--accent);
+    border-color: rgba(var(--theme-a), 0.55);
+    background: linear-gradient(135deg, rgba(var(--theme-a), 0.16), rgba(var(--theme-c), 0.08));
+  }
+
+  .admin-section-panel {
+    display: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    background: rgba(12, 18, 30, 0.7);
+  }
+
+  .admin-section-panel.active { display: block; }
+
+  .admin-block { border: 1px solid var(--border); border-radius: 9px; margin-bottom: 10px; overflow: hidden; }
+  .admin-block summary { list-style: none; cursor: pointer; padding: 10px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(14, 22, 36, 0.7); }
+  .admin-block summary::-webkit-details-marker { display: none; }
+  .admin-block-body { padding: 10px; }
+
+  .mini-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 8px; }
+  .mini-list-item { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; margin-bottom: 6px; }
+  .mini-list-item input { width: 100%; }
+  .mini-btn { background: linear-gradient(145deg, rgba(12,18,30,0.78), rgba(8,13,24,0.82)); border: 1px solid rgba(255,255,255,0.14); color: var(--text-dim); border-radius: 10px; padding: 7px 10px; font-size: 11px; cursor: pointer; transition: all 0.24s var(--ios-ease); }
+  .mini-btn:hover { color: var(--accent); border-color: rgba(var(--theme-a), 0.55); transform: translateY(-1px); }
+
+  .setup-state-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .tri-toggle {
+    width: 58px;
+    height: 26px;
+    border-radius: 999px;
+    border: 1px solid rgba(53, 81, 122, 0.85);
+    background: rgba(10, 16, 28, 0.82);
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease, transform 0.2s ease;
+  }
+
+  .tri-toggle::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #d8dfec;
+    transition: transform 0.24s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.24s ease, box-shadow 0.24s ease;
+  }
+
+  .tri-toggle[data-state='OFF'] { border-color: rgba(130, 140, 158, 0.65); }
+  .tri-toggle[data-state='OFF']::before { transform: translateX(0); background: #aeb9cc; }
+
+  .tri-toggle[data-state='N/A'] { border-color: rgba(255, 170, 78, 0.75); background: rgba(255, 170, 78, 0.1); }
+  .tri-toggle[data-state='N/A']::before { transform: translateX(16px); background: #ffbe72; box-shadow: 0 0 10px rgba(255, 190, 114, 0.35); }
+
+  .tri-toggle[data-state='ON'] { border-color: rgba(57, 244, 184, 0.75); background: rgba(57, 244, 184, 0.13); }
+  .tri-toggle[data-state='ON']::before { transform: translateX(32px); background: #39f4b8; box-shadow: 0 0 12px rgba(57, 244, 184, 0.38); }
+
+  .tri-toggle-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    min-width: 34px;
+    text-align: right;
+    transition: color 0.2s ease;
+  }
+
+  .tri-toggle-label.off { color: #b7c3d8; }
+  .tri-toggle-label.na { color: #ffbe72; }
+  .tri-toggle-label.on { color: #39f4b8; }
+
+  .error-grid { display: grid; grid-template-columns: 180px 1fr; gap: 8px; }
+  .error-list-admin { border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow: auto; padding: 6px; }
+  .error-item-admin { width: 100%; text-align: left; margin-bottom: 6px; background: transparent; border: 1px solid transparent; color: var(--text-dim); border-radius: 6px; padding: 7px 8px; cursor: pointer; font-size: 12px; }
+  .error-item-admin.active { color: var(--accent); border-color: var(--accent-dim); background: rgba(57, 244, 184, 0.08); }
+
+  @media (max-width: 980px) {
+    .admin-shell { grid-template-columns: 1fr; }
+    .error-grid { grid-template-columns: 1fr; }
+  }
+
+  .admin-help {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(124, 240, 168, 0.04);
+    color: var(--text-dim);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .setup-toggles {
+    display: none;
+    grid-template-columns: repeat(3, minmax(185px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .setup-toggles.show { display: grid; }
+
+  .setup-toggle {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
+    min-height: 86px;
+  }
+
+  .setup-toggle-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-height: 2.4em;
+    display: flex;
+    align-items: center;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .setup-switch {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .setup-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  .setup-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--border-strong);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .setup-slider::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.15s;
+  }
+
+  .setup-switch input:checked + .setup-slider {
+    background: var(--accent-dim);
+  }
+
+  .setup-switch input:checked + .setup-slider::before {
+    transform: translateX(18px);
+  }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: relative;
+      height: auto;
+      max-height: 50vh;
+    }
+    .main { padding: 28px 20px; }
+    h1 { font-size: 32px; }
+    .setup-grid { padding: 0; gap: 0; }
+    .info-grid { grid-template-columns: 1fr; }
+    .setup-toggles { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 620px) {
+    .setup-toggles { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    .sidebar, .product-logo, .hidden-access, .admin-fab, .copy-btn, .copy-all, .variant-pills, .toast { display: none !important; }
+    .app { grid-template-columns: 1fr; }
+    .main { padding: 0; max-width: 100%; }
+    .info-card, .error-card, .setup-cell { break-inside: avoid; }
+    body { background: #fff; color: #000; }
+    .info-card, .error-card, .setup-cell, .setup-grid { border-color: #ccc; background: #f5f5f5; }
+  }
+
+  /* Fade-in on product change */
+  .product-view {
+    animation: fade 0.25s ease-out;
+  }
+
+  .product-view .section {
+    animation: blockReveal 0.35s ease-out;
+  }
+
+  @keyframes blockReveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<button class="hidden-access" id="hiddenAccess" aria-label="Open secure access">admin</button>
+<button class="admin-fab" id="openAdminFab">Update panel</button>
+<div class="product-logo" id="productLogo" aria-hidden="true">
+  <div class="product-logo-mark" id="productLogoMark">C</div>
+  <div class="product-logo-name" id="productLogoName">Cosmo</div>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-title">Support Reference</div>
+      <div class="brand-name">Cosmo<span class="dot"></span></div>
+    </div>
+
+    <div class="search-wrap">
+      <label for="search" class="sr-only">Search products</label>
+      <input type="text" class="search" id="search" placeholder="search products..." autocomplete="off">
+    </div>
+
+    <div class="nav-section-label">Products</div>
+    <ul class="nav-list" id="navList"></ul>
+
+    <div class="nav-section-label">General</div>
+    <ul class="nav-list">
+      <li class="nav-item" data-key="tos">
+        <span class="marker">§</span>
+        <span>T.O.S. / Refunds / HWID</span>
+      </li>
+      <li class="nav-item" data-key="extra-kane">
+        <span class="marker">§</span>
+        <span>Extra Fixes (Kane)</span>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <a href="https://support.cosmotickets.com/" target="_blank">support.cosmotickets.com</a><br>
+      <a href="https://support.cosmotickets.com/status/" target="_blank">/status</a> · pw: support
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div id="content"></div>
+    <div class="no-results" id="noResults">No products match your search.</div>
+  </main>
+
+</div>
+
+<div class="toast" id="toast">✓ Copied to clipboard</div>
+
+<div class="admin-modal" id="adminModal" aria-hidden="true">
+  <div class="admin-panel" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <div class="admin-title">
+      <h3 id="adminTitle">Manual Update Panel</h3>
+      <button class="copy-btn" id="closeAdmin">Close</button>
+    </div>
+
+    <div class="admin-shell" id="adminShell">
+      <aside class="admin-side">
+        <select id="adminProductSelect" class="admin-select"></select>
+        <div id="adminVariantWrap" style="display:none;">
+          <div class="mini-row" style="margin-top:6px;">
+            <select id="adminVariantSelect" class="admin-select"></select>
+          </div>
+          <div class="mini-row">
+            <input id="adminVariantNameInline" type="text" placeholder="Rename variant">
+            <button class="mini-btn" id="adminSaveVariantInline" type="button">Rename</button>
+          </div>
+          <div class="mini-row" style="margin-bottom:0;">
+            <input id="adminAddVariantInline" type="text" placeholder="Add game name (e.g. PUBG)">
+            <button class="mini-btn" id="adminAddVariantInlineBtn" type="button">Add Game</button>
+          </div>
+          <div class="mini-row" style="margin-top:8px;">
+            <button class="mini-btn" id="adminDeleteVariantInline" type="button">Delete Selected Game</button>
+            <span></span>
+          </div>
+        </div>
+        <div class="mini-row" style="margin-top:6px;">
+          <input id="adminProductNameInline" type="text" placeholder="Edit product name">
+          <button class="mini-btn" id="adminSaveProductInline" type="button">Save</button>
+        </div>
+        <div class="mini-row">
+          <input id="adminNewProductInline" type="text" placeholder="Add new product">
+          <button class="mini-btn" id="adminAddProductInline" type="button">Add</button>
+        </div>
+      </aside>
+
+      <section class="admin-main">
+        <div class="admin-switches">
+          <button class="mini-btn admin-section-btn active" data-admin-panel="setupPanel">System Setup</button>
+          <button class="mini-btn admin-section-btn" data-admin-panel="reqPanel">Requirements</button>
+          <button class="mini-btn admin-section-btn" data-admin-panel="errorPanel">Fixable Errors</button>
+        </div>
+
+        <div class="admin-section-panel active" id="setupPanel">
+          <div class="setup-toggles show" id="setupTogglesVisual"></div>
+        </div>
+
+        <div class="admin-section-panel" id="reqPanel">
+          <div class="admin-field">
+            <label>Supported Windows</label>
+            <div id="adminWindowsList"></div>
+            <div class="mini-row"><input id="adminAddWindowInput" type="text" placeholder="Add supported windows item"><button class="mini-btn" id="adminAddWindowBtn" type="button">Add</button></div>
+          </div>
+          <div class="admin-field">
+            <label>Requirements</label>
+            <div id="adminReqList"></div>
+            <div class="mini-row"><input id="adminAddReqInput" type="text" placeholder="Add requirement"><button class="mini-btn" id="adminAddReqBtn" type="button">Add</button></div>
+          </div>
+        </div>
+
+        <div class="admin-section-panel" id="errorPanel">
+          <div class="error-grid">
+            <div>
+              <button class="mini-btn" id="adminAddErrorBtn" type="button" style="width:100%;margin-bottom:8px;">Add New Error</button>
+              <div class="error-list-admin" id="adminErrorList"></div>
+            </div>
+            <div>
+              <div class="admin-field"><label for="adminErrorTitle">Error Title</label><input id="adminErrorTitle" type="text" placeholder="Error title"></div>
+              <div class="admin-field"><label for="adminErrorFix">Fix Description</label><textarea id="adminErrorFix" placeholder="Fix description"></textarea></div>
+              <div class="admin-field"><label for="adminErrorLink">Optional Link</label><input id="adminErrorLink" type="text" placeholder="https://..."></div>
+              <div class="admin-actions">
+                <button id="adminErrorSave">Save</button>
+                <button id="adminErrorDelete">Delete</button>
+                <button id="adminErrorDuplicate">Duplicate</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <details class="admin-block">
+          <summary>Advanced JSON</summary>
+          <div class="admin-block-body">
+            <div class="admin-actions" style="margin-top:0;">
+              <button id="adminExportVisual">Export JSON</button>
+              <button id="adminImportVisual">Import JSON</button>
+              <button id="adminResetVisual">Reset to default</button>
+            </div>
+            <div class="admin-preview" id="adminPreviewVisual"></div>
+          </div>
+        </details>
+      </section>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   DATA — extracted from the support guide
+   ========================================================= */
+const products = [
+  {
+    key: 'naxo', name: 'Cosmo (Naxo)', category: 'Cosmo',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['Apex, EFT, Rust — ALL versions', 'DayZ — 25h2 & 24h2 NOT supported'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'Fastboot disabled in BIOS & Windows'],
+    errors: [
+      { name: 'Hyper-V error', fix: 'Use the <code>*cosmohyperv</code> command.' },
+      { name: 'Fastboot / Hiberboot', fix: 'Open cmd as admin and run:\n<code>reg add "HKLM\\System\\CurrentControlSet\\Control\\Session Manager\\Power" /v "HiberbootEnabled" /t REG_DWORD /d "1" /f</code>\nThen run <code>powercfg -h on</code>\nThen: Control Panel → Hardware and Sound → Change What Power Buttons Do → Turn Off Fast Start Up.' },
+      { name: 'Mapping driver failed', fix: 'Add the file to <code>C:\\Windows\\System32\\drivers</code> then restart PC.\n<a href="https://mega.nz/file/TB1A0bbZ#oLP83kATOQzucyzfaHrtAE4-JD5-U3OblZ1VnzXVwDY" target="_blank">Download file</a>' },
+      { name: 'Driver does not seem to be running — contact support', fix: 'Open <code>Computer\\HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management</code> and remove <code>LargePageDrivers</code>. Then check <code>C:\\Windows\\System32\\drivers</code> and delete PMAD again.' }
+    ],
+    note: 'Can\'t fix the issue? @Senior Support — use the <code>*naxoticket</code> command to add Naxo.',
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      eft: { name: 'EFT', setup: {}, windows: [], requirements: [], errors: [] },
+      battlefront2: { name: 'Battlefront 2', setup: {}, windows: [], requirements: [], errors: [] },
+      left4dead2: { name: 'Left 4 Dead 2', setup: {}, windows: [], requirements: [], errors: [] },
+      teamfortress2: { name: 'Team Fortress 2', setup: {}, windows: [], requirements: [], errors: [] },
+      minecraft: { name: 'Minecraft', setup: {}, windows: [], requirements: [], errors: [] },
+      amongus: { name: 'Among Us', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'cosmopro', name: 'Cosmo Pro', category: 'Cosmo',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows except 25h2 (Warthunder & Apex)'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'Fastboot disabled in BIOS & Windows'],
+    errors: [
+      { name: 'Hyper-V error', fix: 'Use the <code>*cosmohyperv</code> command.' },
+      { name: 'Warthunder stuck at 15%', fix: 'Copy file path of Warthunder and paste in loader.' },
+      { name: 'Website opens but error persists — install Python manually', fix: 'Download <a href="http://warchill.xyz/python.zip" target="_blank">python.zip</a>. Go to <code>C:\\Users\\USERNAME\\AppData\\Local\\Temp</code>, create a <code>python</code> folder, unzip into it. Then run the loader as admin again.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      warthunder: { name: 'War Thunder', setup: {}, windows: [], requirements: [], errors: [] },
+      apexpro: { name: 'Apex Pro', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'atlas', name: 'Atlas', category: 'Products',
+    setup: { tpm:'N/A · ON for COD', secureBoot:'OFF (except COD)', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'Meltdown / Spectre protection', fix: '<a href="https://www.guru3d.com/download/download-inspectre/" target="_blank">Download InSpectre</a>. Disable Meltdown & Spectre protection. Then go to <code>C:/RSCFG</code> and delete <code>temp</code>. Restart PC and try again.' },
+      { name: 'Blue screens', fix: 'Disable built-in spoofer.' },
+      { name: 'Failed to load driver', fix: 'Open CMD as admin → run <code>sfc /scannow</code>. Check Core Isolation is disabled.' },
+      { name: 'Fatal Error — Engine Error', fix: 'Open RivaTuner and set detection level to "none".' },
+      { name: 'PUBG Blackscreen', fix: 'Delete the Movies folder at <code>C:\\Program Files (x86)\\Steam\\steamapps\\common\\PUBG\\TslGame\\Content\\Movies</code>' }
+    ],
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      bo6wz: { name: 'BO6/WZ', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      pubg: { name: 'PUBG', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'forge', name: 'Forge', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'BSOD', fix: 'Run <code>sfc /scannow</code> then <code>DISM.exe /Online /Cleanup-image /Restorehealth</code>' },
+      { name: 'Loader closes at 100%', fix: 'Sync PC time.' },
+      { name: 'bedaisy.sys / easyanticheat.sys error', fix: 'Run loader before launching the game.' },
+      { name: 'I2 Error', fix: 'Check all anti-virus/anti-cheats. Ensure Core Isolation disabled, visuals installed, loader run as admin.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      apexfulllite: { name: 'Apex Full/Lite', setup: {}, windows: [], requirements: [], errors: [] },
+      eftfulllite: { name: 'EFT Full/Lite', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      battlefield6: { name: 'Battlefield 6', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      hll: { name: 'HLL', setup: {}, windows: [], requirements: [], errors: [] },
+      arksa: { name: 'ARK SA', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'astrozoom', name: 'Astrozoom', category: 'Products',
+    setup: { tpm:'OFF', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['Win 10 22h2 → Win 11 23h2'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'Loading mem_ctx', fix: 'Uninstall all anti-cheats/anti-virus: FaceIT, Vanguard, ACE, Kaspersky, McAfee, Malwarebytes. (Try loading cheat from USB.)' },
+      { name: 'Context Error #13 / Error 0x2', fix: 'Unsupported Windows version.' },
+      { name: 'Ntherr / Nreq Error', fix: 'Check if customer is on a VM/Virtual Desktop.' },
+      { name: 'Connection errors / timeout / couldn\'t resolve hostname', fix: 'Use a VPN like Warp or Tunnelbear.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      cod: { name: 'Call of Duty', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      arenaBreakout: { name: 'Arena Breakout', setup: {}, windows: [], requirements: [], errors: [] },
+      deltaForce: { name: 'Delta Force', setup: {}, windows: [], requirements: [], errors: [] },
+      theFinals: { name: 'The Finals', setup: {}, windows: [], requirements: [], errors: [] },
+      arcRaider: { name: 'Arc Raider', setup: {}, windows: [], requirements: [], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] },
+      hll: { name: 'HLL', setup: {}, windows: [], requirements: [], errors: [] },
+      rivals: { name: 'Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      fragpunk: { name: 'Fragpunk', setup: {}, windows: [], requirements: [], errors: [] },
+      squad: { name: 'Squad', setup: {}, windows: [], requirements: [], errors: [] },
+      bf6: { name: 'BF6', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'supreme', name: 'Supreme', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'Invalid Processed Data 0x0', fix: 'Use a VPN — caused by ISP blocking the connection.' },
+      { name: 'Error #3B000000', fix: 'Turn off Core Isolation and run in CMD as admin:\n<code>bcdedit /set hypervisorlaunchtype off</code>' },
+      { name: 'Error Code 0x1 / 0x2', fix: 'Uninstall any anti-cheat and restart PC.' },
+      { name: 'Error Code 0x3 / 0x7', fix: 'Spoofed before inject — restart PC then inject first.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'kane', name: 'Kane', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'Nvidia/AMD overlay', 'Steelseries (Rust, Apex, Dark and Darker, Midnight Walkers, PUBG)'],
+    errors: [
+      { name: 'Please download and install the latest vc_redist libs', fix: 'Use command: <code>*kaneamdmenufix</code>' },
+      { name: 'SVM / VMX Error', fix: 'Disable Windows PIN (<code>*pin</code>) then follow <code>*iobit</code>.\n<a href="https://www.youtube.com/watch?v=L-55o0UnHFU" target="_blank">YouTube guide</a>' },
+      { name: 'No menu', fix: 'Update GPU & Windows drivers, install all visuals, disable other overlays. Do NOT run Steam or game as admin.' },
+      { name: 'Failed to Map Memory', fix: 'If user has > 8GB RAM, disable all startup apps in Task Manager.' }
+    ],
+    note: 'See "Extra Fixes (Kane)" section in the sidebar for additional fixes.',
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      pubg: { name: 'PUBG', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      cs2: { name: 'CS2', setup: {}, windows: [], requirements: [], errors: [] },
+      battlefield6: { name: 'Battlefield 6', setup: {}, windows: [], requirements: [], errors: [] },
+      thefinals: { name: 'The Finals', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      warthunder: { name: 'War Thunder', setup: {}, windows: [], requirements: [], errors: [] },
+      hll: { name: 'HLL', setup: {}, windows: [], requirements: [], errors: [] },
+      arksa: { name: 'ARK SA', setup: {}, windows: [], requirements: [], errors: [] },
+      sot: { name: 'SOT', setup: {}, windows: [], requirements: [], errors: [] },
+      squad: { name: 'Squad', setup: {}, windows: [], requirements: [], errors: [] },
+      armareforger: { name: 'Arma Reforger', setup: {}, windows: [], requirements: [], errors: [] },
+      unturned: { name: 'Unturned', setup: {}, windows: [], requirements: [], errors: [] },
+      huntshowdown: { name: 'Hunt: Showdown', setup: {}, windows: [], requirements: [], errors: [] },
+      scum: { name: 'SCUM', setup: {}, windows: [], requirements: [], errors: [] },
+      dnd: { name: 'D&D', setup: {}, windows: [], requirements: [], errors: [] },
+      farlight84: { name: 'Farlight 84', setup: {}, windows: [], requirements: [], errors: [] },
+      deadside: { name: 'Deadside', setup: {}, windows: [], requirements: [], errors: [] },
+      offthegrid: { name: 'Off The Grid', setup: {}, windows: [], requirements: [], errors: [] },
+      highguard: { name: 'Highguard', setup: {}, windows: [], requirements: [], errors: [] },
+      duneawakening: { name: 'Dune: Awakening', setup: {}, windows: [], requirements: [], errors: [] },
+      activematter: { name: 'Active Matter', setup: {}, windows: [], requirements: [], errors: [] },
+      pioner: { name: 'PIONER', setup: {}, windows: [], requirements: [], errors: [] },
+      thefirstdescendant: { name: 'The First Descendant', setup: {}, windows: [], requirements: [], errors: [] },
+      themidnightwalkers: { name: 'The Midnight Walkers', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'liquid', name: 'Liquid', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'EFT CHAMS: press F1 in main menu to inject', 'ARC Raiders — Steam only'],
+    errors: [
+      { name: 'Steelseries setup', fix: 'On steelseries.com/gg: General → turn on Sonar. Then SONAR → Shortcuts → bind F7 to Master Volume Up. Press this bind before injection.' },
+      { name: 'SVM / VMX Error', fix: 'Disable Windows PIN (<code>*pin</code>) then follow <code>*iobit</code>.' },
+      { name: 'No menu', fix: 'Update GPU/Windows drivers, install all visuals, disable overlays. Don\'t run Steam/game as admin.' },
+      { name: 'Failed to Map Memory', fix: 'If user has > 8GB RAM, disable startup apps in Task Manager.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      wzbo6bo7: { name: 'WZ/BO6/BO7', setup: {}, windows: [], requirements: [], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      r6s: { name: 'R6S', setup: {}, windows: [], requirements: [], errors: [] },
+      pubg: { name: 'PUBG', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      eftfull: { name: 'EFT Full', setup: {}, windows: [], requirements: [], errors: [] },
+      eftchams: { name: 'EFT Chams', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      battlefield6: { name: 'Battlefield 6', setup: {}, windows: [], requirements: [], errors: [] },
+      deltaforce: { name: 'Delta Force', setup: {}, windows: [], requirements: [], errors: [] },
+      unturned: { name: 'Unturned', setup: {}, windows: [], requirements: [], errors: [] },
+      huntshowdown: { name: 'Hunt: Showdown', setup: {}, windows: [], requirements: [], errors: [] },
+      albiononline: { name: 'Albion Online', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'proaim', name: 'ProAim', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'AMD: NX Mode enabled in BIOS (if hypervisor error after fix)'],
+    errors: [
+      { name: 'No menu / BSOD', fix: 'Send the latest loader from <a href="https://t.me/fecloaders" target="_blank">t.me/fecloaders</a>. If still BSOD, send <code>*delay</code>.\nStill BSOD? Go to <code>C:\\Windows\\Minidump</code>, find the latest file, copy to desktop, send in ticket.' },
+      { name: 'Hyper-V Not Launched Error', fix: 'Open CMD as admin:\n<code>sfc /scannow</code>\n<code>dism /online /cleanup-image /restorehealth</code>\n<code>bcdedit /set hypervisorlaunchtype auto</code>' },
+      { name: 'Warthunder', fix: 'Must be run in DX12.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      mw3mw2wz2wzbo6bo7: { name: 'MW3/MW2/WZ2/WZ/BO6/BO7', setup: {}, windows: [], requirements: [], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] },
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      pubg: { name: 'PUBG', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      eft: { name: 'EFT', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      cs2: { name: 'CS2', setup: {}, windows: [], requirements: [], errors: [] },
+      bf6bf5bf1bf2042: { name: 'BF6/BF5/BF1/BF2042', setup: {}, windows: [], requirements: [], errors: [] },
+      thefinals: { name: 'The Finals', setup: {}, windows: [], requirements: [], errors: [] },
+      deltaforce: { name: 'Delta Force', setup: {}, windows: [], requirements: [], errors: [] },
+      warthunder: { name: 'War Thunder', setup: {}, windows: [], requirements: [], errors: [] },
+      squad: { name: 'Squad', setup: {}, windows: [], requirements: [], errors: [] },
+      unturned: { name: 'Unturned', setup: {}, windows: [], requirements: [], errors: [] },
+      roguecompany: { name: 'Rogue Company', setup: {}, windows: [], requirements: [], errors: [] },
+      gzw: { name: 'GZW', setup: {}, windows: [], requirements: [], errors: [] },
+      dnd: { name: 'D&D', setup: {}, windows: [], requirements: [], errors: [] },
+      insurgency: { name: 'Insurgency', setup: {}, windows: [], requirements: [], errors: [] },
+      deadside: { name: 'Deadside', setup: {}, windows: [], requirements: [], errors: [] },
+      battlebit: { name: 'BattleBit', setup: {}, windows: [], requirements: [], errors: [] },
+      ww3: { name: 'WW3', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'cobra', name: 'Cobra', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'Mapping driver failed', fix: 'Disable all anti-cheats & anti-virus. Use <code>*defendercontrol</code>.' },
+      { name: 'Loader connection issues', fix: 'Use Proton VPN.' },
+      { name: 'Crashing / BSOD', fix: 'Make sure no-spoofer download is selected. EAC spoofer not working — for BE spoofer, disable TPM.' },
+      { name: 'Overlay issues', fix: 'Disable all overlays — Discord, Steam, Medal, Nvidia/AMD, etc.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      r6s: { name: 'R6S', setup: {}, windows: [], requirements: [], errors: [] },
+      eft: { name: 'EFT', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      arkse: { name: 'ARK SE', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'athena', name: 'Athena', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions EXCEPT:', 'Marvel, PUBG, OW2, Naraka — 22h2 W10 only'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'ARC Raiders', fix: 'Steam only and DX12 must be used.' },
+      { name: 'Error code 2145 / 2146', fix: 'Tell a Senior to contact dev — uploaded file was corrupted during upload.' },
+      { name: 'Crashing loader', fix: 'Paste this into CMD as admin then restart PC (change "aaaaa14" — all lowercase):\n<code>wmic computersystem where name="%computername%" call rename name="aaaaa14"</code>' }
+    ],
+    selectedVariant: null,
+    variants: {
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      pubg: { name: 'PUBG', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      eft: { name: 'EFT', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      thefinals: { name: 'The Finals', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      overwatch2: { name: 'Overwatch 2', setup: {}, windows: [], requirements: [], errors: [] },
+      gzw: { name: 'GZW', setup: {}, windows: [], requirements: [], errors: [] },
+      farlight84: { name: 'Farlight 84', setup: {}, windows: [], requirements: [], errors: [] },
+      thedivision2: { name: 'The Division 2', setup: {}, windows: [], requirements: [], errors: [] },
+      naraka: { name: 'Naraka', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'kraken', name: 'Kraken (Games)', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions', 'DayZ — 25h2 & 24h2 NOT supported'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'Overlay', fix: 'Nvidia overlay for Nvidia users, Overwolf for AMD.' },
+      { name: 'Roblox', fix: 'Download the game from <a href="https://www.fishstrap.app" target="_blank">fishstrap.app</a> — prevents silent beta updates.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      rocketleague: { name: 'Rocket League', setup: {}, windows: [], requirements: [], errors: [] },
+      sot: { name: 'SOT', setup: {}, windows: [], requirements: [], errors: [] },
+      roblox: { name: 'Roblox', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'krakenspoofer', name: 'Kraken Spoofer', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol'],
+    errors: [
+      { name: 'No Hardware Virtualization Capabilities Found', fix: 'Enable virtualization in BIOS/UEFI (VTx/VTd Intel / SVM AMD).' },
+      { name: 'Hyper-V is enabled', fix: 'Windows Hyper-V is running. Go to "Turn Windows Features On or Off" and disable it.' },
+      { name: 'Loader stuck at 11%', fix: 'In PowerShell as admin:\n<code>Get-Volume | Where-Object DriveLetter | ForEach-Object { $drive = $_.DriveLetter; chkdsk "$drive`:" /F }</code>\nRestart PC with all anti-cheats & anti-virus disabled.' }
+    ]
+  },
+  {
+    key: 'inferno', name: 'Inferno', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'Delete VGK, FaceIT, ACE anti-cheat (not ACE if Delta/ABI)'],
+    errors: [
+      { name: 'Driver initialization Error 1', fix: 'Disable virtualization if not working. Check Core Isolation. Or run <a href="https://mega.nz/file/uURS0ZgL#gn9i_rBW__80V9uzexA_Cr2vPUPNGQK2aif4qtevXHs" target="_blank">this file</a>.' },
+      { name: 'Spoofer', fix: 'Run cheat first, then spoofer, then launch game. If cheat menu won\'t appear after spoofer, simply relaunch — cheat is already injected.' },
+      { name: 'PUBG', fix: 'Must be run in DX11 (change DX version in game).' },
+      { name: 'Dark and Darker', fix: 'Add <code>-dx11</code> in Steam launch options.' },
+      { name: 'ABI FULL setup', fix: 'Navigate to <code>...\\ABInfinite\\ABInfinite\\Binaries\\Win64</code>. Create <code>guid.txt</code> and paste someone else\'s ABI account ID into it. Required for the spoofer to work.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      r6s: { name: 'R6S', setup: {}, windows: [], requirements: [], errors: [] },
+      pubg: { name: 'PUBG', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      battlefield4: { name: 'Battlefield 4', setup: {}, windows: [], requirements: [], errors: [] },
+      deltaforce: { name: 'Delta Force', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      arenabreakout: { name: 'Arena Breakout', setup: {}, windows: [], requirements: [], errors: [] },
+      arksa: { name: 'ARK SA', setup: {}, windows: [], requirements: [], errors: [] },
+      arkse: { name: 'ARK SE', setup: {}, windows: [], requirements: [], errors: [] },
+      huntshowdown: { name: 'Hunt: Showdown', setup: {}, windows: [], requirements: [], errors: [] },
+      scum: { name: 'SCUM', setup: {}, windows: [], requirements: [], errors: [] },
+      deadlock: { name: 'Deadlock', setup: {}, windows: [], requirements: [], errors: [] },
+      pathofexile: { name: 'Path of Exile', setup: {}, windows: [], requirements: [], errors: [] },
+      pathofexile2: { name: 'Path of Exile 2', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'pulse', name: 'Pulse', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
+    errors: [
+      { name: 'Injection failed (0x1394) — ARC Raiders', fix: '1. Close Chrome, try Opera.\n2. <a href="https://download.overwolf.com/install/Download?utm_content=new-light&utm_source=web_app_store" target="_blank">Install Overwolf</a>\n3. Task Manager → Startup apps → disable everything → restart.\n4. Close all launchers (EA, Steam, BNet).\n5. Open Overwolf, disable all overlays, minimize to tray.\n6. Open loader as admin, inject, wait for HANDLE SUCCESSFULLY SENT.\n7. Open Steam and launch game.' },
+      { name: 'Loader not opening', fix: 'Don\'t have checker / support tool open with the loader.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      mw3: { name: 'MW3', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      eft: { name: 'EFT', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      cs2: { name: 'CS2', setup: {}, windows: [], requirements: [], errors: [] },
+      thefinals: { name: 'The Finals', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      armareforger: { name: 'Arma Reforger', setup: {}, windows: [], requirements: [], errors: [] },
+      gzw: { name: 'GZW', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'hero', name: 'Hero', category: 'Hero',
+    setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol', 'Medal.TV overlay', 'GPU drivers up to date'],
+    errors: [
+      { name: 'No menu (Valorant)', fix: 'Install Medal.TV, ensure record-with-medal is on. Valorant Launcher must NOT be open during inject.' },
+      { name: 'No menu (general)', fix: '<a href="https://gofile.io/d/sOW8lX" target="_blank">Download this</a>, run as admin. Creates <code>bundle.enc</code> — send in ticket.' },
+      { name: 'Secure Boot policy fix', fix: 'BIOS → Secure Boot → Key Management → Forbidden Signatures (dbx) → Delete. Press No. Delete signatures 1 by 1. Secure Boot mode: Custom. Do NOT press DELETE ALL.' },
+      { name: 'BSOD for Apex', fix: '<a href="https://go.microsoft.com/fwlink/?linkid=2335869" target="_blank">Download this</a>. File path: <code>C:\\Program Files (x86)\\Windows Kits\\10\\</code>. Always generate a new build.' },
+      { name: 'External Overlay error', fix: '1. Discord overlay off\n2. OBS: close or switch to Window Capture\n3. GeForce Experience overlay off\n4. Xbox Game Bar off' },
+      { name: 'Aimbot or ESP not working', fix: 'Aimbot: select default preset. ESP: reload cheat within menu.' },
+      { name: 'Loader crashes after key verification', fix: 'Install latest VC++ Redistributable (x86 & x64):\n<a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" target="_blank">x64</a> · <a href="https://aka.ms/vs/17/release/vc_redist.x86.exe" target="_blank">x86</a>' },
+      { name: 'Graphic game crash', fix: 'Send screenshots:\n<a href="https://imgur.com/a/Jf9L64C" target="_blank">Graphics</a>\n<a href="https://imgur.com/a/ixjO37i" target="_blank">Overlay crash</a>' },
+      { name: 'Arena Breakout ENC:ON', fix: 'Too many reports — change account. Goes away after 12–24 hours.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      valorant: { name: 'Valorant', setup: { tpm:'ON', secureBoot:'ON', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' }, windows: ['ALL Windows versions'], requirements: ['UEFI BIOS', '*visual', '*defendercontrol', '*coreisoval', 'Medal.TV overlay', 'GPU drivers up to date', 'Hyper-V ON (Windows Features)'], errors: [] },
+      overwatch: { name: 'Overwatch 2', setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'OFF' }, windows: ['ALL Windows versions'], requirements: ['UEFI BIOS', '*visual', '*defendercontrol', 'Core Isolation disabled', 'Reputation-based protection off', 'Exploit protection off', 'GPU drivers up to date', 'DX11 in Overwatch 2'], errors: [] },
+      deltaforce: { name: 'Delta Force', setup: { tpm:'N/A', secureBoot:'ON', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' }, windows: ['ALL Windows versions'], requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol', 'Steam only', 'DX12 only'], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      abi: { name: 'ABI', setup: {}, windows: [], requirements: [], errors: [] },
+      arc: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      fivem: { name: 'FiveM', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'volt', name: 'VOLT', category: 'Products',
+    setup: { tpm:'OFF', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*pin removed for TPM', 'HVIX & HVAX in System32 (usually only removed if user used Kane before)'],
+    errors: [
+      { name: 'Framework error', fix: 'Install .NET 7.0.5 Runtime:\n<a href="https://builds.dotnet.microsoft.com/dotnet/Runtime/7.0.5/dotnet-runtime-7.0.5-win-x64.exe" target="_blank">x64</a> · <a href="https://builds.dotnet.microsoft.com/dotnet/Runtime/7.0.5/dotnet-runtime-7.0.5-win-x86.exe" target="_blank">x86</a>' },
+      { name: 'No ESP — DayZ & EFT', fix: 'DayZ: Settings → Video → disable Postprocess Antialiasing & Hardware Antialiasing.\nEFT: Settings → Game → disable "Autoclean RAM".' },
+      { name: 'Keybinds for Rust Lite', fix: 'F5 = ESP · F6 = No Recoil · F9 = Remove Walls' },
+      { name: 'Legacy BIOS / Boot part not GPT', fix: '<a href="https://youtu.be/a54sqzcDrUU?si=Lj2PE-bUK2bLBMEg" target="_blank">YouTube guide</a>' },
+      { name: 'Errors requiring Windows reinstall', fix: 'Error 1, 3, 4, 5, 6, 7 (all related to boot partitions).' },
+      { name: 'HVIX / HVAX not found', fix: 'Run <code>sfc /scannow</code> in CMD as admin.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      rustfulllite: { name: 'Rust Full/Lite', setup: {}, windows: [], requirements: [], errors: [] },
+      eft: { name: 'EFT', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'vex', name: 'VEX', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['Win 10 22H2 → Win 11 23H2'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol'],
+    errors: [
+      { name: 'VEX Warthunder & HLL', fix: 'Must be run in DX11. Add <code>-D3D11</code> to launch parameters.' },
+      { name: 'Connection issue', fix: '<a href="https://pcheck.ru/files/networkmanager.zip" target="_blank">Download networkmanager.zip</a>. Run it → Find the Best IP → Wait → Apply.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      battleyespoofer: { name: 'Battleye Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      eftfulllite: { name: 'EFT Full/Lite', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayzfulllite: { name: 'DayZ Full/Lite', setup: {}, windows: [], requirements: [], errors: [] },
+      cs2: { name: 'CS2', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      warthunder: { name: 'War Thunder', setup: {}, windows: [], requirements: [], errors: [] },
+      hll: { name: 'HLL', setup: {}, windows: [], requirements: [], errors: [] },
+      arksa: { name: 'ARK SA', setup: {}, windows: [], requirements: [], errors: [] },
+      squad: { name: 'Squad', setup: {}, windows: [], requirements: [], errors: [] },
+      arma3: { name: 'Arma 3', setup: {}, windows: [], requirements: [], errors: [] },
+      unturned: { name: 'Unturned', setup: {}, windows: [], requirements: [], errors: [] },
+      huntshowdown: { name: 'Hunt: Showdown', setup: {}, windows: [], requirements: [], errors: [] },
+      duneawakening: { name: 'Dune: Awakening', setup: {}, windows: [], requirements: [], errors: [] },
+      activematter: { name: 'Active Matter', setup: {}, windows: [], requirements: [], errors: [] },
+      stalcraft: { name: 'STALCRAFT', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'crown', name: 'Crown', category: 'Products',
+    setup: { tpm:'OFF (ON for COD)', secureBoot:'OFF (ON for COD)', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol'],
+    errors: [
+      { name: 'Marvels', fix: 'Run a Notepad as admin before injecting cheat.' },
+      { name: 'Marvels 25h2', fix: 'Unstable.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      wzbo6bo7: { name: 'WZ/BO6/BO7', setup: {}, windows: [], requirements: [], errors: [] },
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      battlefield6: { name: 'Battlefield 6', setup: {}, windows: [], requirements: [], errors: [] },
+      airocketleague: { name: 'AI Rocket League', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'opal', name: 'Opal', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol', 'Steam overlay enabled', 'FiveM version: release'],
+    errors: [
+      { name: 'Error 1-4: Download/Timeout', fix: 'Use a VPN.' },
+      { name: 'Error 2: Integrity Error', fix: 'Reinstall FiveM.' },
+      { name: 'Error 3: Injection Error', fix: 'Anti-cheats / anti-virus blocking the injection.' },
+      { name: 'Cheat issues', fix: 'Display Settings can\'t be Fullscreen Exclusive — will cause crashes. Steam needs to be open with overlay enabled.' },
+      { name: 'How to inject', fix: 'Open FiveM with Steam running in background → open loader, log in with key → inject → done. Users can inject inside a server too.' },
+      { name: 'Fatal error / Connection error', fix: 'Open Date & Time settings, sync PC time.' },
+      { name: 'BSOD', fix: 'Disable all anti-virus. Use <a href="https://antivirus-removal-tool.com/" target="_blank">antivirus-removal-tool.com</a>. If persists, uninstall mouse/keyboard software (Razer, Armory Crate).' },
+      { name: '2 beeps when pressing F2 and game crashes', fix: 'Remove all modifications including ReShade / Redux. Reinstall game with Revo-Uninstaller if persists.' },
+      { name: 'Status 502 — Internal server error', fix: 'Server is down. Create desktop shortcut of loader → Properties → Target: add <code>–diagnostic</code>. Reopen, select different server.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      fivem: { name: 'FiveM', setup: {}, windows: [], requirements: [], errors: [] },
+      wutheringwaves: { name: 'Wuthering Waves', setup: {}, windows: [], requirements: [], errors: [] },
+      genshinimpact: { name: 'Genshin Impact', setup: {}, windows: [], requirements: [], errors: [] },
+      honkaistarrail: { name: 'Honkai: Star Rail', setup: {}, windows: [], requirements: [], errors: [] },
+      snowbreak: { name: 'Snowbreak', setup: {}, windows: [], requirements: [], errors: [] },
+      identityv: { name: 'Identity V', setup: {}, windows: [], requirements: [], errors: [] },
+      zzz: { name: 'ZZZ', setup: {}, windows: [], requirements: [], errors: [] },
+      ragempaltv: { name: 'RageMP/Alt:V', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'viper', name: 'Viper', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
+    windows: ['ALL Windows versions'],
+    requirements: ['ALL anti-virus OFF', 'Windows Defender / Smartscreen / Core Isolation off (*defendercontrol)', 'Disable all overlays (Discord, Nvidia, Overwolf, ReShade, RivaTuner)', 'Run Steam as admin · NO launch parameters', 'Disable Frame Generation & Nvidia Reflex in games', 'No Nvidia filters', 'STEAM ONLY (except ARC Raiders)', 'Close background apps · disable in startup', 'Visuals installed (*visual)', 'Windows & GPU drivers up to date'],
+    errors: [
+      { name: 'Failed to stream — please check connection', fix: 'Use a VPN.' },
+      { name: 'The Isle: Evrima', fix: 'Delete <code>%localappdata%\\TheIsle\\Saved</code> folder.' },
+      { name: 'ARC Raiders', fix: 'Delete <code>%localappdata%\\PioneerGame\\Saved</code> folder.' },
+      { name: 'Failed to Stream', fix: 'Set DNS to Cloudflare.' },
+      { name: 'Troubleshoot tool', fix: '<a href="https://cdn.discordapp.com/attachments/1459056826317537397/1460873272760602848/Troubleshoot.exe?ex=69730bc1&is=6971ba41&hm=aca0f0f4914edeef0648c3757789ef3a7bcb3af38c032e0a785ebda91364d1f2&" target="_blank">Download troubleshoot.exe</a>' }
+    ],
+    selectedVariant: null,
+    variants: {
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      arcraiders: { name: 'ARC Raiders', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      arksa: { name: 'ARK SA', setup: {}, windows: [], requirements: [], errors: [] },
+      arkse: { name: 'ARK SE', setup: {}, windows: [], requirements: [], errors: [] },
+      huntshowdown: { name: 'Hunt: Showdown', setup: {}, windows: [], requirements: [], errors: [] },
+      gzw: { name: 'GZW', setup: {}, windows: [], requirements: [], errors: [] },
+      theisle: { name: 'The Isle', setup: {}, windows: [], requirements: [], errors: [] },
+      farlight84: { name: 'Farlight 84', setup: {}, windows: [], requirements: [], errors: [] },
+      palworld: { name: 'Palworld', setup: {}, windows: [], requirements: [], errors: [] },
+      conanexiles: { name: 'Conan Exiles', setup: {}, windows: [], requirements: [], errors: [] },
+      smite2: { name: 'SMITE 2', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'breeze', name: 'Breeze', category: 'Products',
+    setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['Reputation-based protection off', 'Core Isolation & Exploit off', '*defendercontrol', 'ARK: Steam/Epic only', 'Visuals installed (*visual)', 'GPU drivers up to date'],
+    errors: [
+      { name: 'Overlay for ARK', fix: 'Legacy Discord overlay (Enable overlay off).' },
+      { name: 'Overlay for R6', fix: 'Nvidia or AMD Metrics Overlay.' },
+      { name: 'Error 2445782835', fix: 'Request customer\'s R6.exe build from <code>Appdata\\Local\\Ubisoft\\R6.exe</code>. Then use <code>*senior</code>.' },
+      { name: 'Win 11 spoofer fix', fix: '<a href="https://gofile.io/d/qVXmXC" target="_blank">Download fix</a>. ALL Win 11 users must run this to avoid BSODs. Extract, run as admin, click Yes to all. Restart, clean if needed, then spoof.\nAlso delete last 2 Windows Security updates (Windows Update → Update History → Uninstall).' }
+    ],
+    selectedVariant: null,
+    variants: {
+      spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
+      fortniteinternal: { name: 'Fortnite Internal', setup: {}, windows: [], requirements: [], errors: [] },
+      fortniteexternal: { name: 'Fortnite External', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      r6s: { name: 'R6S', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      arksa: { name: 'ARK SA', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  },
+  {
+    key: 'vortex', name: 'Vortex', category: 'Products',
+    setup: { tpm:'N/A · ON for games that require it', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    windows: ['ALL Windows versions'],
+    requirements: ['*visual for all visuals', 'Hyper-V enabled in Windows Features', 'BIOS UEFI & Disks GPT', 'All antivirus uninstalled (VGK, FaceIT, McAfee, etc.)', 'Core Isolation disabled'],
+    errors: [
+      { name: 'InitWindows Error', fix: 'Press F2 for injector ONLY after you see Discord overlay banner. Do NOT be in a Discord call. Have legacy overlay disabled.' },
+      { name: 'LoadHyperVisor Error', fix: 'Hypervisor not loaded properly. Follow this <a href="https://youtu.be/XYVeHy5u4j4" target="_blank">video guide</a>.' },
+      { name: 'Error: Craft UEFI', fix: 'Make a partition (GPT) in Disk Management and boot from there. If not working, reinstall Windows.' },
+      { name: 'Blackscreen Initialization', fix: 'Disable TPM and re-check all setup for HyperVisor use.' },
+      { name: 'Bad Image Libs', fix: 'From the loader folder, copy <code>libcrypto-1_1-x64.dll</code> and <code>libssl-1_1-x64.dll</code> into <code>C:\\Windows\\System32</code> and <code>C:\\Windows\\INF</code>' },
+      { name: 'Secure Boot bypass Valorant fix', fix: '<a href="https://gofile.io/d/JPNqIp" target="_blank">Download fix</a>.\n1. Drop <code>WBCL.dat</code> in <code>C:\\Windows\\System32</code>\n2. Run <code>Start.exe</code> as admin\n3. Run <code>Secure Boot Fix.bat</code>' },
+      { name: 'Unsupported 16-Bit Application', fix: 'Screenshot of disabled Defender (Real-time Protection). Third-party AV must be removed. Disable firewall completely. Delete YouTube/Discord bypassing tools. Use VPN for launching.' }
+    ],
+    selectedVariant: null,
+    variants: {
+      bo6wz: { name: 'BO6/WZ', setup: {}, windows: [], requirements: [], errors: [] },
+      fortnite: { name: 'Fortnite', setup: {}, windows: [], requirements: [], errors: [] },
+      rust: { name: 'Rust', setup: {}, windows: [], requirements: [], errors: [] },
+      pubg: { name: 'PUBG', setup: {}, windows: [], requirements: [], errors: [] },
+      apex: { name: 'Apex', setup: {}, windows: [], requirements: [], errors: [] },
+      dbd: { name: 'DBD', setup: {}, windows: [], requirements: [], errors: [] },
+      dayz: { name: 'DayZ', setup: {}, windows: [], requirements: [], errors: [] },
+      valorant: { name: 'Valorant', setup: {}, windows: [], requirements: [], errors: [] },
+      marvelrivals: { name: 'Marvel Rivals', setup: {}, windows: [], requirements: [], errors: [] },
+      arenabreakout: { name: 'Arena Breakout', setup: {}, windows: [], requirements: [], errors: [] },
+      squad: { name: 'Squad', setup: {}, windows: [], requirements: [], errors: [] },
+      huntshowdown: { name: 'Hunt: Showdown', setup: {}, windows: [], requirements: [], errors: [] },
+      scum: { name: 'SCUM', setup: {}, windows: [], requirements: [], errors: [] },
+      warface: { name: 'Warface', setup: {}, windows: [], requirements: [], errors: [] }
+    }
+  }
+];
+
+const generalPages = {
+  'extra-kane': {
+    name: 'Extra Fixes — Kane',
+    description: 'Additional troubleshooting steps for Kane.',
+    errors: [
+      { name: 'No available servers were found', fix: 'Use VPN.' },
+      { name: 'crd failed at 199 with code 887a0001', fix: 'Try disabling integrated GPU. If no other GPU than integrated → refund.' },
+      { name: 'Required resource not found', fix: 'Start cheat after spoofer.' },
+      { name: 'Failed to prepare environment(1)', fix: 'Restart PC and try again.' },
+      { name: 'Error 0x298', fix: 'Contact dev.' },
+      { name: 'Failed to inject the cheat(12)', fix: 'Try pressing OK and entering the game — see if it works.' },
+      { name: 'Occlusion culling (Cosmo Rust)', fix: 'Turn off Occlusion Culling in Experimental settings.' }
+    ]
+  },
+  'tos': {
+    name: 'T.O.S. · Refunds · Compensation · HWID',
+    description: 'Policies for refunds, comps, and HWID resets.',
+    sections: [
+      {
+        title: 'Refunds',
+        body: 'When refunding, always ask for: key, order number, key length, and game.'
+      },
+      {
+        title: 'Eligible refund reasons',
+        body: 'Insta-banned without being able to use the product (check user wasn\'t banned before or double-injected). If user fits these conditions, refund. Otherwise explain why and how to remove ban with spoofer + new account.'
+      },
+      {
+        title: 'Corrupted PC',
+        body: 'If a product wipes user\'s PC, we usually refund. Some developers have fixes (so no refund).'
+      },
+      {
+        title: 'Updating',
+        body: 'If a product has been updating for a while, ask user to wait. If many tickets pile up and product has been down a long time, we might refund in some cases.'
+      },
+      {
+        title: 'Downgrading',
+        body: 'We can refund some products if user does not want to downgrade, but we\'d rather have them downgrade. Convince them to backup important files (OneDrive or USB). If they still want refund → @ Senior Support.'
+      },
+      {
+        title: 'Compensations',
+        body: 'We can comp keys for: lost time from troubleshooting, product was updating or not working.\n• We will NOT comp keys if user already comped more than once.\n• We will NOT comp small amounts of time (1–2 hours).\n• Some devs take time to comp — don\'t ghost the user, reply that we\'re waiting on devs.'
+      },
+      {
+        title: 'HWID Resets',
+        body: 'Ask Senior Support or a support member with reset access.'
+      }
+    ]
+  }
+};
+
+const productThemes = {
+  naxo:        { a: '206, 120, 255', b: '246, 94, 220', c: '122, 104, 255', bg: ['#160a24', '#26103d', '#140a20'], side: ['30, 15, 49', '20, 12, 34'] },
+  cosmopro:    { a: '226, 116, 255', b: '255, 90, 190', c: '189, 98, 255', bg: ['#1b0a23', '#34103c', '#1a0b21'], side: ['40, 16, 47', '25, 12, 31'] },
+  atlas:       { a: '212, 95, 255', b: '255, 180, 78', c: '255, 128, 84', bg: ['#1b0d23', '#3a1f21', '#24150f'], side: ['43, 23, 35', '29, 17, 25'] },
+  forge:       { a: '214, 92, 255', b: '255, 170, 76', c: '255, 109, 52', bg: ['#1a0c23', '#3c1f1f', '#26160e'], side: ['45, 23, 33', '28, 16, 23'] },
+  astrozoom:   { a: '192, 120, 255', b: '126, 88, 255', c: '92, 110, 255', bg: ['#140c24', '#251442', '#15112e'], side: ['30, 19, 52', '19, 15, 36'] },
+  supreme:     { a: '212, 98, 255', b: '255, 84, 170', c: '92, 170, 255', bg: ['#180f25', '#1f1f46', '#0f1e32'], side: ['33, 22, 53', '15, 26, 45'] },
+  kane:        { a: '169, 107, 255', b: '104, 255, 132', c: '112, 201, 112', bg: ['#161427', '#1f2f2f', '#142419'], side: ['27, 28, 49', '17, 30, 25'] },
+  liquid:      { a: '228, 95, 255', b: '255, 111, 126', c: '255, 131, 90', bg: ['#1a0e24', '#3b1b2f', '#28181f'], side: ['42, 20, 45', '29, 15, 28'] },
+  proaim:      { a: '188, 106, 255', b: '93, 145, 255', c: '81, 120, 255', bg: ['#160f25', '#1b2448', '#111936'], side: ['29, 20, 50', '16, 24, 44'] },
+  cobra:       { a: '214, 96, 255', b: '255, 217, 86', c: '255, 193, 59', bg: ['#190d22', '#3a2e1a', '#30280d'], side: ['41, 25, 33', '31, 24, 12'] },
+  athena:      { a: '227, 89, 255', b: '80, 255, 120', c: '40, 220, 76', bg: ['#1a0e23', '#1c2b1d', '#0f2413'], side: ['40, 20, 45', '16, 34, 19'] },
+  kraken:      { a: '178, 95, 255', b: '93, 104, 255', c: '85, 130, 255', bg: ['#150d24', '#191d44', '#121839'], side: ['28, 18, 49', '18, 21, 46'] },
+  krakenspoofer:{ a: '178, 95, 255', b: '93, 104, 255', c: '85, 130, 255', bg: ['#150d24', '#191d44', '#121839'], side: ['28, 18, 49', '18, 21, 46'] },
+  inferno:     { a: '214, 98, 255', b: '255, 121, 78', c: '255, 82, 44', bg: ['#190d23', '#3a1a1a', '#2f160d'], side: ['43, 21, 37', '33, 16, 20'] },
+  pulse:       { a: '208, 96, 255', b: '255, 88, 120', c: '255, 72, 72', bg: ['#180d22', '#35152a', '#250f1a'], side: ['39, 18, 37', '30, 14, 24'] },
+  hero:        { a: '189, 120, 255', b: '112, 255, 214', c: '82, 206, 188', bg: ['#170f25', '#1c2f36', '#132728'], side: ['29, 22, 50', '16, 34, 34'] },
+  volt:        { a: '180, 105, 255', b: '120, 255, 214', c: '90, 205, 175', bg: ['#170f24', '#1a2f34', '#122624'], side: ['28, 22, 46', '14, 34, 31'] },
+  vex:         { a: '198, 108, 255', b: '104, 176, 255', c: '108, 235, 255', bg: ['#171026', '#1c2751', '#132741'], side: ['28, 21, 50', '14, 31, 49'] },
+  crown:       { a: '214, 96, 255', b: '255, 138, 78', c: '255, 99, 61', bg: ['#1a0d22', '#3b1b25', '#31170f'], side: ['44, 19, 34', '35, 15, 22'] },
+  opal:        { a: '210, 98, 255', b: '255, 110, 78', c: '170, 44, 36', bg: ['#1a0e23', '#3a181e', '#2a1313'], side: ['43, 20, 36', '31, 14, 18'] },
+  viper:       { a: '201, 102, 255', b: '168, 221, 72', c: '146, 202, 45', bg: ['#180e22', '#2f2b16', '#21210f'], side: ['38, 20, 35', '26, 27, 13'] },
+  breeze:      { a: '152, 126, 255', b: '142, 188, 255', c: '96, 160, 235', bg: ['#131329', '#1d2f4b', '#132236'], side: ['24, 24, 52', '14, 28, 44'] },
+  vortex:      { a: '191, 102, 255', b: '130, 104, 255', c: '160, 133, 255', bg: ['#170f25', '#24174a', '#1c1940'], side: ['31, 20, 56', '22, 20, 46'] }
+};
+
+const defaultTheme = { a: '160, 86, 255', b: '255, 88, 168', c: '255, 196, 77', bg: ['#0b0f1d', '#10182c', '#090d18'], side: ['16, 25, 44', '12, 20, 35'] };
+
+const productLogoMarks = {
+  naxo: '◎', cosmopro: '◉', atlas: 'A', forge: '⚒', astrozoom: '◌', supreme: 'X', kane: 'K', liquid: '◍',
+  proaim: '⌖', cobra: 'S', athena: '▲', kraken: '✶', krakenspoofer: '✶', inferno: '🔥', pulse: '∿',
+  hero: 'H', volt: '⚡', vex: 'V', crown: '♛', opal: '◯',
+  viper: 'V', breeze: '❄', vortex: '◍'
+};
+
+const STORAGE_KEY = 'cosmo_support_data_v1';
+const DEFAULT_PRODUCTS = JSON.parse(JSON.stringify(products));
+const DEFAULT_GENERAL_PAGES = JSON.parse(JSON.stringify(generalPages));
+
+function loadStoredData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed.products)) {
+      products.length = 0;
+      parsed.products.forEach(p => products.push(p));
+    }
+    // Migrate: add variants to all products if missing from stored data
+    products.forEach(p => {
+      if (p.variants) return;
+      const fresh = DEFAULT_PRODUCTS.find(d => d.key === p.key);
+      if (fresh && fresh.variants) {
+        p.variants = JSON.parse(JSON.stringify(fresh.variants));
+        p.selectedVariant = null;
+      }
+    });
+    if (parsed.generalPages && typeof parsed.generalPages === 'object') {
+      Object.keys(generalPages).forEach(k => delete generalPages[k]);
+      Object.keys(parsed.generalPages).forEach(k => {
+        generalPages[k] = parsed.generalPages[k];
+      });
+    }
+  } catch (err) {
+    console.error('Failed to load saved data', err);
+  }
+}
+
+function persistData() {
+  const snapshot = {
+    products: products,
+    generalPages: generalPages,
+    updatedAt: new Date().toISOString()
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+}
+
+/* =========================================================
+   RENDERING
+   ========================================================= */
+const setupKeys = [
+  { k: 'tpm', label: 'TPM' },
+  { k: 'secureBoot', label: 'Secure Boot' },
+  { k: 'virtualization', label: 'Virtualization' },
+  { k: 'defender', label: 'Defender' },
+  { k: 'firewall', label: 'Firewall' },
+  { k: 'exploit', label: 'Exploit Protection' }
+];
+
+function classifyValue(val) {
+  const v = val.toUpperCase();
+  if (v === 'ON' || v === 'ENABLED') return 'on';
+  if (v === 'OFF' || v === 'DISABLED') return 'off';
+  if (v === 'N/A') return 'na';
+  if (v.includes('ON') && v.includes('OFF')) return 'warn';
+  if (v.includes('ON') || v.includes('ENABLED')) return 'warn';
+  if (v === 'DEFAULT') return 'na';
+  return 'warn';
+}
+
+const COPY_ICON = `<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+
+function escapeAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function stripHtml(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return (tmp.textContent || tmp.innerText || '').trim();
+}
+
+function renderProduct(p, variantKey) {
+  const data = getEffectiveData(p, variantKey);
+
+  const variantPillsHtml = p.variants ? (() => {
+    const order = getSortedVariantKeys(p);
+    const activeKey = variantKey || getActiveVariantKey(p);
+    return `<div class="variant-pills">${order.map(k => `<button class="variant-pill ${k === activeKey ? 'active' : ''}" data-variant="${k}">${escapeAttr(p.variants[k].name)}</button>`).join('')}</div>`;
+  })() : '';
+
+  const setupHtml = setupKeys.map(({ k, label }) => {
+    const val = data.setup[k];
+    const cls = classifyValue(val);
+    return `<div class="setup-cell" data-copy="${escapeAttr(label + ': ' + val)}">
+      <div class="setup-label">${label}</div>
+      <div class="setup-value ${cls}">${val}</div>
+    </div>`;
+  }).join('');
+
+  const setupCopyAll = setupKeys.map(({ k, label }) => `${label}: ${data.setup[k]}`).join('\n');
+
+  const windowsHtml = data.windows.map(w => `<li data-copy="${escapeAttr(w)}">${w}</li>`).join('');
+  const reqHtml = data.requirements.map(r => `<li data-copy="${escapeAttr(r)}">${r}</li>`).join('');
+
+  const errorsHtml = data.errors.length === 0 ? '' : `
+    <div class="section">
+      <div class="section-title">
+        <h2>Fixable Errors</h2>
+        <div class="rule"></div>
+      </div>
+      <div class="error-list">
+        ${data.errors.map(e => `
+          <div class="error-card">
+            <div class="error-header">
+              <div class="error-name">${e.name}</div>
+              <button class="copy-btn" data-copy="${escapeAttr(stripHtml(e.fix))}">${COPY_ICON} Copy fix</button>
+            </div>
+            <div class="error-fix">${e.fix}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  const noteHtml = p.note ? `<div class="note"><span class="tag">Note</span>${p.note}</div>` : '';
+
+  return `
+    <div class="product-view">
+      <div class="page-header">
+        <div class="breadcrumb">${p.category} <span class="sep">/</span> <span class="current">${p.name}</span></div>
+        <h1>${p.name}</h1>
+        ${variantPillsHtml}
+        <div class="subtitle">Click any setting, requirement, command, or "Copy fix" button to copy.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">
+          <h2>System Setup</h2>
+          <div class="rule"></div>
+          <button class="copy-all" data-copy="${escapeAttr(setupCopyAll)}">Copy all</button>
+        </div>
+        <div class="setup-grid">${setupHtml}</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">
+          <h2>Compatibility & Requirements</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Supported Windows</h3>
+            <ul>${windowsHtml}</ul>
+          </div>
+          <div class="info-card">
+            <h3>Other Requirements</h3>
+            <ul>${reqHtml}</ul>
+          </div>
+        </div>
+      </div>
+
+      ${errorsHtml}
+      ${noteHtml}
+    </div>
+  `;
+}
+
+function renderGeneralPage(page) {
+  if (page.errors) {
+    return `
+      <div class="product-view">
+        <div class="page-header">
+          <div class="breadcrumb">General <span class="sep">/</span> <span class="current">${page.name}</span></div>
+          <h1>${page.name}</h1>
+          <div class="subtitle">${page.description} · Click "Copy fix" or any code snippet.</div>
+        </div>
+        <div class="section">
+          <div class="section-title"><h2>Fixes</h2><div class="rule"></div></div>
+          <div class="error-list">
+            ${page.errors.map(e => `
+              <div class="error-card">
+                <div class="error-header">
+                  <div class="error-name">${e.name}</div>
+                  <button class="copy-btn" data-copy="${escapeAttr(stripHtml(e.fix))}">${COPY_ICON} Copy fix</button>
+                </div>
+                <div class="error-fix">${e.fix}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  if (page.sections) {
+    return `
+      <div class="product-view">
+        <div class="page-header">
+          <div class="breadcrumb">General <span class="sep">/</span> <span class="current">${page.name}</span></div>
+          <h1>${page.name}</h1>
+          <div class="subtitle">${page.description}</div>
+        </div>
+        ${page.sections.map(s => `
+          <div class="section">
+            <div class="section-title">
+              <h2>${s.title}</h2>
+              <div class="rule"></div>
+              <button class="copy-all" data-copy="${escapeAttr(stripHtml(s.body))}">Copy</button>
+            </div>
+            <div class="info-card"><div class="error-fix">${s.body}</div></div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+}
+
+function getEffectiveData(p, variantKey) {
+  if (!variantKey || !p.variants || !p.variants[variantKey]) return p;
+  const v = p.variants[variantKey];
+  const merged = {
+    ...p,
+    setup: { ...p.setup, ...(v.setup || {}) },
+    windows: v.windows && v.windows.length ? v.windows : p.windows,
+    requirements: v.requirements && v.requirements.length ? v.requirements : p.requirements,
+    errors: v.errors && v.errors.length ? v.errors : p.errors
+  };
+  return merged;
+}
+
+function getSortedVariantKeys(p) {
+  if (!p.variants) return [];
+  return Object.keys(p.variants).sort((a, b) => p.variants[a].name.localeCompare(p.variants[b].name));
+}
+
+function getActiveVariantKey(p) {
+  if (!p.variants) return null;
+  const stored = p.selectedVariant;
+  if (stored && p.variants[stored]) return stored;
+  const sorted = getSortedVariantKeys(p);
+  return sorted[0] || null;
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+const navList = document.getElementById('navList');
+const content = document.getElementById('content');
+const search = document.getElementById('search');
+const noResults = document.getElementById('noResults');
+const openAdminFab = document.getElementById('openAdminFab');
+const adminModal = document.getElementById('adminModal');
+const closeAdmin = document.getElementById('closeAdmin');
+const hiddenAccess = document.getElementById('hiddenAccess');
+const productLogo = document.getElementById('productLogo');
+const productLogoMark = document.getElementById('productLogoMark');
+const productLogoName = document.getElementById('productLogoName');
+const adminProductSelect = document.getElementById('adminProductSelect');
+const adminProductNameInline = document.getElementById('adminProductNameInline');
+const adminSaveProductInline = document.getElementById('adminSaveProductInline');
+const adminNewProductInline = document.getElementById('adminNewProductInline');
+const adminAddProductInline = document.getElementById('adminAddProductInline');
+const setupTogglesVisual = document.getElementById('setupTogglesVisual');
+const adminWindowsList = document.getElementById('adminWindowsList');
+const adminReqList = document.getElementById('adminReqList');
+const adminAddWindowInput = document.getElementById('adminAddWindowInput');
+const adminAddReqInput = document.getElementById('adminAddReqInput');
+const adminAddWindowBtn = document.getElementById('adminAddWindowBtn');
+const adminAddReqBtn = document.getElementById('adminAddReqBtn');
+const adminErrorList = document.getElementById('adminErrorList');
+const adminAddErrorBtn = document.getElementById('adminAddErrorBtn');
+const adminErrorTitle = document.getElementById('adminErrorTitle');
+const adminErrorFix = document.getElementById('adminErrorFix');
+const adminErrorLink = document.getElementById('adminErrorLink');
+const adminErrorSave = document.getElementById('adminErrorSave');
+const adminErrorDelete = document.getElementById('adminErrorDelete');
+const adminErrorDuplicate = document.getElementById('adminErrorDuplicate');
+const adminExportVisual = document.getElementById('adminExportVisual');
+const adminImportVisual = document.getElementById('adminImportVisual');
+const adminResetVisual = document.getElementById('adminResetVisual');
+const adminPreviewVisual = document.getElementById('adminPreviewVisual');
+const adminVariantWrap = document.getElementById('adminVariantWrap');
+const adminVariantSelect = document.getElementById('adminVariantSelect');
+const adminVariantNameInline = document.getElementById('adminVariantNameInline');
+const adminSaveVariantInline = document.getElementById('adminSaveVariantInline');
+const adminAddVariantInline = document.getElementById('adminAddVariantInline');
+const adminAddVariantInlineBtn = document.getElementById('adminAddVariantInlineBtn');
+const adminDeleteVariantInline = document.getElementById('adminDeleteVariantInline');
+
+const ACCESS_PROMPT_QUESTION = 'Enter admin code:';
+const ACCESS_PROMPT_ANSWER = 'cosmo-admin';
+const LAST_PRODUCT_KEY = 'cosmo_support_last_product_v1';
+const LAST_VARIANT_KEY = 'cosmo_support_last_variant_v1';
+let updateAccessGranted = false;
+
+function normalizeAccessInput(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function setUpdateAccess(enabled) {
+  updateAccessGranted = !!enabled;
+  openAdminFab.classList.toggle('unlocked', updateAccessGranted);
+}
+
+function requestUpdateAccess() {
+  const answer = window.prompt(ACCESS_PROMPT_QUESTION);
+  if (answer == null) return;
+  const ok = normalizeAccessInput(answer) === normalizeAccessInput(ACCESS_PROMPT_ANSWER);
+  if (!ok) {
+    showToast('Access denied');
+    return;
+  }
+  setUpdateAccess(true);
+  showToast('Access granted');
+}
+
+loadStoredData();
+setUpdateAccess(updateAccessGranted);
+
+// Build nav
+function buildNav() {
+  navList.innerHTML = '';
+  const sortedProducts = [...products].sort((a, b) => a.name.localeCompare(b.name));
+  sortedProducts.forEach((p, i) => {
+    const li = document.createElement('li');
+    li.className = 'nav-item';
+    li.dataset.key = p.key;
+    li.setAttribute('role', 'button');
+    li.setAttribute('tabindex', '0');
+    li.innerHTML = `<span class="marker">${String(i + 1).padStart(2, '0')}</span><span>${p.name}</span>`;
+    navList.appendChild(li);
+  });
+}
+
+function initializeNavAccessibility() {
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+  });
+}
+
+function getOrderedProductKeys(visibleOnly) {
+  return Array.from(navList.querySelectorAll('.nav-item'))
+    .filter(item => !visibleOnly || !item.classList.contains('hidden'))
+    .map(item => item.dataset.key);
+}
+
+function getCurrentSelectedProductKey() {
+  const active = navList.querySelector('.nav-item.active');
+  return active ? active.dataset.key : null;
+}
+
+function goToRelativeProduct(step) {
+  const keys = getOrderedProductKeys(true);
+  const fallbackKeys = keys.length ? keys : getOrderedProductKeys(false);
+  if (!fallbackKeys.length) return;
+
+  const current = getCurrentSelectedProductKey();
+  const currentIndex = fallbackKeys.indexOf(current);
+  const safeIndex = currentIndex === -1 ? 0 : currentIndex;
+  const nextIndex = (safeIndex + step + fallbackKeys.length) % fallbackKeys.length;
+  selectProduct(fallbackKeys[nextIndex]);
+}
+
+buildNav();
+initializeNavAccessibility();
+
+function selectProduct(key, variantKey) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
+  const product = products.find(p => p.key === key);
+  if (product) {
+    if (product.variants) {
+      const effectiveKey = variantKey || getActiveVariantKey(product);
+      if (effectiveKey) product.selectedVariant = effectiveKey;
+    }
+    applyThemeByKey(product.key);
+    updateProductLogo(product.key, product.name);
+    content.innerHTML = renderProduct(product, product.selectedVariant);
+    localStorage.setItem(LAST_PRODUCT_KEY, product.key);
+    if (product.selectedVariant) localStorage.setItem(LAST_VARIANT_KEY, product.selectedVariant);
+    history.replaceState(null, '', '#' + product.key);
+    return;
+  }
+  if (generalPages[key]) {
+    applyThemeByKey(key === 'extra-kane' ? 'kane' : 'naxo');
+    updateProductLogo(key === 'extra-kane' ? 'kane' : 'naxo', generalPages[key].name);
+    content.innerHTML = renderGeneralPage(generalPages[key]);
+    localStorage.setItem(LAST_PRODUCT_KEY, key);
+    history.replaceState(null, '', '#' + key);
+  }
+}
+
+navList.addEventListener('click', e => {
+  const item = e.target.closest('.nav-item');
+  if (item) selectProduct(item.dataset.key);
+});
+
+document.addEventListener('click', e => {
+  const pill = e.target.closest('.variant-pill');
+  if (!pill) return;
+  e.preventDefault();
+  const variantKey = pill.dataset.variant;
+  const activeKey = getCurrentSelectedProductKey();
+  const product = activeKey ? products.find(p => p.key === activeKey) : null;
+  if (product && product.variants && product.variants[variantKey]) {
+    product.selectedVariant = variantKey;
+    selectProduct(product.key, variantKey);
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const item = e.target.closest('.nav-item');
+  if (!item) return;
+  e.preventDefault();
+  selectProduct(item.dataset.key);
+});
+
+document.addEventListener('keydown', e => {
+  if (adminModal.classList.contains('show')) return;
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+  const isEditable =
+    tag === 'input' ||
+    tag === 'textarea' ||
+    tag === 'select' ||
+    (e.target && e.target.isContentEditable);
+  if (isEditable) return;
+
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+    e.preventDefault();
+    goToRelativeProduct(1);
+    return;
+  }
+
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+    e.preventDefault();
+    goToRelativeProduct(-1);
+  }
+});
+
+// Search filter
+search.addEventListener('input', e => {
+  const q = e.target.value.toLowerCase().trim();
+  let anyVisible = false;
+  document.querySelectorAll('#navList .nav-item').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    const match = !q || text.includes(q);
+    el.classList.toggle('hidden', !match);
+    if (match) anyVisible = true;
+  });
+  noResults.classList.toggle('show', !anyVisible);
+});
+
+// Initial load — hash takes priority, then localStorage
+const hashKey = window.location.hash.replace('#', '');
+const lastSelectedKey = localStorage.getItem(LAST_PRODUCT_KEY);
+const initialKey = (hashKey && (products.some(p => p.key === hashKey) || generalPages[hashKey]))
+  ? hashKey
+  : (lastSelectedKey && (products.some(p => p.key === lastSelectedKey) || generalPages[lastSelectedKey]))
+    ? lastSelectedKey
+    : 'naxo';
+const lastVariant = localStorage.getItem(LAST_VARIANT_KEY);
+selectProduct(initialKey, lastVariant || undefined);
+
+window.addEventListener('hashchange', () => {
+  const hk = window.location.hash.replace('#', '');
+  if (hk && hk !== getCurrentSelectedProductKey()) {
+    const variant = localStorage.getItem(LAST_VARIANT_KEY) || undefined;
+    selectProduct(hk, variant);
+  }
+});
+
+
+
+function createProductKey(name) {
+  const base = String(name || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'product';
+  let key = base;
+  let i = 2;
+  while (products.some(p => p.key === key)) {
+    key = `${base}-${i}`;
+    i += 1;
+  }
+  return key;
+}
+
+function createVariantKey(name, variants) {
+  const base = String(name || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '') || 'game';
+  let key = base;
+  let i = 2;
+  while (variants && variants[key]) {
+    key = `${base}${i}`;
+    i += 1;
+  }
+  return key;
+}
+
+function applyThemeByKey(key) {
+  const t = productThemes[key] || defaultTheme;
+  const root = document.documentElement;
+  root.style.setProperty('--theme-a', t.a);
+  root.style.setProperty('--theme-b', t.b);
+  root.style.setProperty('--theme-c', t.c);
+  root.style.setProperty('--theme-bg-start', t.bg[0]);
+  root.style.setProperty('--theme-bg-mid', t.bg[1]);
+  root.style.setProperty('--theme-bg-end', t.bg[2]);
+  root.style.setProperty('--sidebar-top', t.side[0]);
+  root.style.setProperty('--sidebar-bottom', t.side[1]);
+}
+
+function updateProductLogo(key, label) {
+  const mark = productLogoMarks[key] || (label ? label.trim().charAt(0).toUpperCase() : '•');
+  productLogoMark.textContent = mark;
+  productLogoName.textContent = label || 'General';
+  productLogo.style.opacity = '1';
+  productLogo.style.transform = 'translateY(0)';
+}
+
+let adminSelectedProductKey = null;
+let adminSelectedErrorIndex = -1;
+let adminSelectedVariantKey = null;
+
+function getSortedProducts() {
+  return [...products].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function getAdminSelectedProduct() {
+  const p = products.find(p => p.key === adminSelectedProductKey) || null;
+  return p;
+}
+
+function getAdminVariantTarget() {
+  const p = getAdminSelectedProduct();
+  if (!p || !p.variants) return { product: p, data: p, isVariant: false, variantKey: null };
+  const vk = adminSelectedVariantKey && p.variants[adminSelectedVariantKey] ? adminSelectedVariantKey : Object.keys(p.variants)[0] || null;
+  if (vk) adminSelectedVariantKey = vk;
+  return { product: p, data: p.variants[vk] || p, isVariant: true, variantKey: vk || null };
+}
+
+function setAdminSelectedProduct(key, preserveVariant) {
+  if (!products.some(p => p.key === key)) return;
+  adminSelectedProductKey = key;
+  if (!preserveVariant) adminSelectedVariantKey = null;
+  renderAdminProductSelect();
+  renderAdminVariantSelect();
+  renderVisualSetupToggles();
+  renderVisualListEditor();
+  renderVisualErrorEditor();
+}
+
+function renderAdminProductSelect() {
+  const list = getSortedProducts().map(p => `<option value="${p.key}">${p.name}</option>`).join('');
+  adminProductSelect.innerHTML = list;
+  if (adminSelectedProductKey) adminProductSelect.value = adminSelectedProductKey;
+  const selected = getAdminSelectedProduct();
+  adminProductNameInline.value = selected ? selected.name : '';
+  renderAdminVariantSelect();
+}
+
+function renderAdminVariantSelect() {
+  const p = getAdminSelectedProduct();
+  if (!p || !p.variants) {
+    adminVariantWrap.style.display = 'none';
+    adminSelectedVariantKey = null;
+    return;
+  }
+  adminVariantWrap.style.display = 'block';
+  const allKeys = getSortedVariantKeys(p);
+  if (!adminSelectedVariantKey || !p.variants[adminSelectedVariantKey]) {
+    adminSelectedVariantKey = allKeys[0] || null;
+  }
+  adminVariantSelect.innerHTML = allKeys.map(k => `<option value="${k}">${escapeAttr(p.variants[k].name)}</option>`).join('');
+  if (adminSelectedVariantKey) adminVariantSelect.value = adminSelectedVariantKey;
+  adminVariantNameInline.value = adminSelectedVariantKey && p.variants[adminSelectedVariantKey] ? p.variants[adminSelectedVariantKey].name : '';
+}
+
+function renderVisualSetupToggles() {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  const setupObj = target.setup || {};
+  setupTogglesVisual.innerHTML = setupKeys.map(({ k, label }) => {
+    const raw = String(setupObj[k] || (isVariant ? '' : '')).toUpperCase();
+    const effective = raw || (p.setup ? String(p.setup[k] || '').toUpperCase() : '');
+    const state = effective === 'ON' || effective === 'ENABLED' ? 'on' : (effective === 'N/A' || effective === 'DEFAULT' ? 'na' : (raw ? 'off' : 'off'));
+    const display = raw || effective || 'OFF';
+    return `<div class="setup-toggle"><span class="setup-toggle-label">${label}</span><div class="setup-state-row" data-visual-setup="${k}"${isVariant ? ` data-variant-setup="${k}"` : ''}><button class="tri-toggle" data-state="${display}" aria-label="Toggle ${label} state"></button><span class="tri-toggle-label ${state}">${display}</span></div></div>`;
+  }).join('');
+}
+
+function renderVisualListEditor() {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  const win = (target.windows && target.windows.length) ? target.windows : p.windows;
+  const req = (target.requirements && target.requirements.length) ? target.requirements : p.requirements;
+  adminWindowsList.innerHTML = win.map((item, i) => `<div class="mini-list-item"><input data-win-input="${i}" value="${escapeAttr(item)}"><button class="mini-btn" data-win-save="${i}">Save</button><button class="mini-btn" data-win-del="${i}">Del</button></div>`).join('');
+  adminReqList.innerHTML = req.map((item, i) => `<div class="mini-list-item"><input data-req-input="${i}" value="${escapeAttr(item)}"><button class="mini-btn" data-req-save="${i}">Save</button><button class="mini-btn" data-req-del="${i}">Del</button></div>`).join('');
+}
+
+function splitFixAndLink(html) {
+  const linkMatch = String(html).match(/<a[^>]*href="([^"]+)"[^>]*>/i);
+  const link = linkMatch ? linkMatch[1] : '';
+  const text = String(html).replace(/<a[^>]*>.*?<\/a>/gis, '').trim();
+  return { text, link };
+}
+
+function renderVisualErrorEditor() {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  if (!Array.isArray(target.errors)) target.errors = [];
+  if (isVariant && target.errors.length === 0 && Array.isArray(p.errors) && p.errors.length) {
+    target.errors = p.errors.map(e => ({ name: e.name, fix: e.fix }));
+  }
+  const errArr = target.errors || [];
+  if (errArr.length === 0) {
+    adminSelectedErrorIndex = -1;
+    adminErrorTitle.value = '';
+    adminErrorFix.value = '';
+    adminErrorLink.value = '';
+  } else if (adminSelectedErrorIndex < 0 || adminSelectedErrorIndex >= errArr.length) {
+    adminSelectedErrorIndex = 0;
+  }
+
+  adminErrorList.innerHTML = errArr.map((e, i) => `<button class="error-item-admin ${i === adminSelectedErrorIndex ? 'active' : ''}" data-error-pick="${i}">${escapeAttr(e.name)}</button>`).join('');
+
+  if (adminSelectedErrorIndex >= 0 && errArr[adminSelectedErrorIndex]) {
+    const current = errArr[adminSelectedErrorIndex];
+    const parts = splitFixAndLink(current.fix || '');
+    adminErrorTitle.value = current.name || '';
+    adminErrorFix.value = parts.text || '';
+    adminErrorLink.value = parts.link || '';
+  }
+
+  const eff = getEffectiveData(p, adminSelectedVariantKey || undefined);
+  adminPreviewVisual.textContent = JSON.stringify({
+    product: p.name,
+    variant: adminSelectedVariantKey || null,
+    setup: eff.setup,
+    windows: eff.windows,
+    requirements: eff.requirements,
+    errors: eff.errors
+  }, null, 2);
+}
+
+function saveAndRefreshAdmin(productKeyToSelect, variantKey) {
+  persistData();
+  const targetKey = productKeyToSelect || adminSelectedProductKey;
+  if (variantKey) adminSelectedVariantKey = variantKey;
+  const p = targetKey ? products.find(pr => pr.key === targetKey) : null;
+  if (p && p.variants && adminSelectedVariantKey) {
+    p.selectedVariant = adminSelectedVariantKey;
+  }
+  buildNav();
+  initializeNavAccessibility();
+  const pick = targetKey || 'naxo';
+  adminSelectedProductKey = pick;
+  renderAdminProductSelect();
+  renderAdminVariantSelect();
+  renderVisualSetupToggles();
+  renderVisualListEditor();
+  renderVisualErrorEditor();
+  selectProduct(pick, adminSelectedVariantKey || undefined);
+}
+
+
+
+function openAdminPanel() {
+  if (!updateAccessGranted) return;
+  const currentKey = getCurrentSelectedProductKey();
+  if (currentKey && products.some(p => p.key === currentKey)) {
+    adminSelectedProductKey = currentKey;
+    const p = products.find(pr => pr.key === currentKey);
+    if (p && p.variants && p.selectedVariant) {
+      adminSelectedVariantKey = p.selectedVariant;
+    } else {
+      adminSelectedVariantKey = null;
+    }
+  } else if (!adminSelectedProductKey && products[0]) {
+    adminSelectedProductKey = products[0].key;
+  }
+  adminModal.classList.add('show');
+  adminModal.setAttribute('aria-hidden', 'false');
+  if (adminSelectedProductKey) {
+    setAdminSelectedProduct(adminSelectedProductKey, true);
+  } else {
+    renderAdminProductSelect();
+  }
+}
+
+openAdminFab.addEventListener('click', openAdminPanel);
+
+hiddenAccess.addEventListener('click', requestUpdateAccess);
+
+closeAdmin.addEventListener('click', () => {
+  adminModal.classList.remove('show');
+  adminModal.setAttribute('aria-hidden', 'true');
+});
+
+adminModal.addEventListener('click', e => {
+  if (e.target === adminModal) {
+    adminModal.classList.remove('show');
+    adminModal.setAttribute('aria-hidden', 'true');
+  }
+});
+
+
+
+document.querySelectorAll('.admin-section-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.getAttribute('data-admin-panel');
+    document.querySelectorAll('.admin-section-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.admin-section-panel').forEach(p => p.classList.toggle('active', p.id === target));
+  });
+});
+
+adminProductSelect.addEventListener('change', () => {
+  setAdminSelectedProduct(adminProductSelect.value);
+});
+
+setupTogglesVisual.addEventListener('click', e => {
+  const btn = e.target.closest('.tri-toggle');
+  const row = e.target.closest('[data-visual-setup]');
+  if (!btn || !row) return;
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  if (!target.setup) target.setup = {};
+  const current = btn.getAttribute('data-state') || 'OFF';
+  const next = current === 'OFF' ? 'N/A' : (current === 'N/A' ? 'ON' : 'OFF');
+  target.setup[row.getAttribute('data-visual-setup')] = next;
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminWindowsList.addEventListener('click', e => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  if (!target.windows) target.windows = [];
+  if (isVariant && target.windows.length === 0 && p.windows && p.windows.length) {
+    target.windows = [...p.windows];
+  }
+  const saveBtn = e.target.closest('[data-win-save]');
+  const delBtn = e.target.closest('[data-win-del]');
+  if (saveBtn) {
+    const i = Number(saveBtn.getAttribute('data-win-save'));
+    const input = adminWindowsList.querySelector(`input[data-win-input="${i}"]`);
+    target.windows[i] = input.value;
+    saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+  }
+  if (delBtn) {
+    const i = Number(delBtn.getAttribute('data-win-del'));
+    target.windows.splice(i, 1);
+    saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+  }
+});
+
+adminReqList.addEventListener('click', e => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  if (!target.requirements) target.requirements = [];
+  if (isVariant && target.requirements.length === 0 && p.requirements && p.requirements.length) {
+    target.requirements = [...p.requirements];
+  }
+  const saveBtn = e.target.closest('[data-req-save]');
+  const delBtn = e.target.closest('[data-req-del]');
+  if (saveBtn) {
+    const i = Number(saveBtn.getAttribute('data-req-save'));
+    const input = adminReqList.querySelector(`input[data-req-input="${i}"]`);
+    target.requirements[i] = input.value;
+    saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+  }
+  if (delBtn) {
+    const i = Number(delBtn.getAttribute('data-req-del'));
+    target.requirements.splice(i, 1);
+    saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+  }
+});
+
+adminAddWindowBtn.addEventListener('click', () => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  const v = adminAddWindowInput.value.trim();
+  if (!p || !v) return;
+  if (!target.windows) target.windows = [];
+  if (isVariant && target.windows.length === 0 && p.windows && p.windows.length) {
+    target.windows = [...p.windows];
+  }
+  target.windows.push(v);
+  adminAddWindowInput.value = '';
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminAddReqBtn.addEventListener('click', () => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  const v = adminAddReqInput.value.trim();
+  if (!p || !v) return;
+  if (!target.requirements) target.requirements = [];
+  if (isVariant && target.requirements.length === 0 && p.requirements && p.requirements.length) {
+    target.requirements = [...p.requirements];
+  }
+  target.requirements.push(v);
+  adminAddReqInput.value = '';
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminErrorList.addEventListener('click', e => {
+  const btn = e.target.closest('[data-error-pick]');
+  if (!btn) return;
+  adminSelectedErrorIndex = Number(btn.getAttribute('data-error-pick'));
+  renderVisualErrorEditor();
+});
+
+adminAddErrorBtn.addEventListener('click', () => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  if (!target.errors) target.errors = [];
+  if (isVariant && target.errors.length === 0 && Array.isArray(p.errors) && p.errors.length) {
+    target.errors = p.errors.map(e => ({ name: e.name, fix: e.fix }));
+  }
+  target.errors.push({ name: `Error ${target.errors.length + 1}`, fix: '' });
+  adminSelectedErrorIndex = target.errors.length - 1;
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminErrorSave.addEventListener('click', () => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p) return;
+  if (!Array.isArray(target.errors)) target.errors = [];
+  const title = adminErrorTitle.value.trim();
+  const fix = adminErrorFix.value.trim();
+  const link = adminErrorLink.value.trim();
+  if (!title && !fix && !link) {
+    showToast('✕ Enter error title or fix');
+    return;
+  }
+  const withLink = link ? `${fix}\n<a href="${escapeAttr(link)}" target="_blank">Open link</a>` : fix;
+  if (adminSelectedErrorIndex < 0 || adminSelectedErrorIndex >= target.errors.length) {
+    target.errors.push({ name: title || `Error ${target.errors.length + 1}`, fix: withLink });
+    adminSelectedErrorIndex = target.errors.length - 1;
+  } else {
+    target.errors[adminSelectedErrorIndex] = {
+      name: title || target.errors[adminSelectedErrorIndex].name || 'Error',
+      fix: withLink
+    };
+  }
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminErrorDelete.addEventListener('click', () => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p || !target.errors || adminSelectedErrorIndex < 0) return;
+  target.errors.splice(adminSelectedErrorIndex, 1);
+  adminSelectedErrorIndex = Math.max(0, adminSelectedErrorIndex - 1);
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminErrorDuplicate.addEventListener('click', () => {
+  const { product: p, data: target, isVariant } = getAdminVariantTarget();
+  if (!p || !target.errors || adminSelectedErrorIndex < 0) return;
+  const current = target.errors[adminSelectedErrorIndex];
+  target.errors.splice(adminSelectedErrorIndex + 1, 0, { name: `${current.name} (Copy)`, fix: current.fix });
+  adminSelectedErrorIndex += 1;
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminSaveProductInline.addEventListener('click', () => {
+  const p = getAdminSelectedProduct();
+  const name = adminProductNameInline.value.trim();
+  if (!p || !name) return;
+  p.name = name;
+  saveAndRefreshAdmin(p.key);
+});
+
+adminAddProductInline.addEventListener('click', () => {
+  const name = adminNewProductInline.value.trim();
+  if (!name) return;
+  const key = createProductKey(name);
+  products.push({ key, name, category: 'Products', setup: { tpm: 'N/A', secureBoot: 'OFF', virtualization: 'OFF', defender: 'OFF', firewall: 'OFF', exploit: 'OFF' }, windows: ['ALL Windows versions'], requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'], errors: [] });
+  adminNewProductInline.value = '';
+  saveAndRefreshAdmin(key);
+});
+
+adminVariantSelect.addEventListener('change', () => {
+  adminSelectedVariantKey = adminVariantSelect.value;
+  renderVisualSetupToggles();
+  renderVisualListEditor();
+  renderVisualErrorEditor();
+});
+
+adminSaveVariantInline.addEventListener('click', () => {
+  const p = getAdminSelectedProduct();
+  const name = adminVariantNameInline.value.trim();
+  if (!p || !p.variants || !adminSelectedVariantKey || !name) return;
+  if (p.variants[adminSelectedVariantKey]) p.variants[adminSelectedVariantKey].name = name;
+  saveAndRefreshAdmin(p.key, adminSelectedVariantKey);
+});
+
+adminAddVariantInlineBtn.addEventListener('click', () => {
+  const p = getAdminSelectedProduct();
+  const gameName = adminAddVariantInline.value.trim();
+  if (!p || !gameName) return;
+  if (!p.variants) p.variants = {};
+  const rawKey = createVariantKey(gameName, p.variants);
+  if (p.variants[rawKey]) { showToast('✕ Game already exists'); return; }
+  p.variants[rawKey] = { name: gameName, setup: {}, windows: [], requirements: [], errors: [] };
+  adminAddVariantInline.value = '';
+  adminSelectedVariantKey = rawKey;
+  saveAndRefreshAdmin(p.key, rawKey);
+});
+
+adminDeleteVariantInline.addEventListener('click', () => {
+  const p = getAdminSelectedProduct();
+  if (!p || !p.variants || !adminSelectedVariantKey || !p.variants[adminSelectedVariantKey]) return;
+  const count = Object.keys(p.variants).length;
+  if (count <= 1) {
+    showToast('✕ Keep at least one game');
+    return;
+  }
+  const label = p.variants[adminSelectedVariantKey].name;
+  if (!window.confirm(`Delete game "${label}"?`)) return;
+  delete p.variants[adminSelectedVariantKey];
+  const nextKey = Object.keys(p.variants)[0] || null;
+  adminSelectedVariantKey = nextKey;
+  saveAndRefreshAdmin(p.key, nextKey || undefined);
+});
+
+function exportData() {
+  const snapshot = {
+    products: products,
+    generalPages: generalPages,
+    updatedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'cosmo-support-data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ Exported');
+}
+
+adminExportVisual.addEventListener('click', exportData);
+adminImportVisual.addEventListener('click', () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json';
+  input.onchange = async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text);
+      if (!Array.isArray(parsed.products) || !parsed.generalPages) {
+        showToast('✕ Invalid JSON format');
+        return;
+      }
+      products.length = 0;
+      parsed.products.forEach(p => products.push(p));
+      Object.keys(generalPages).forEach(k => delete generalPages[k]);
+      Object.keys(parsed.generalPages).forEach(k => {
+        generalPages[k] = parsed.generalPages[k];
+      });
+      persistData();
+      buildNav();
+      initializeNavAccessibility();
+      selectProduct(products[0] ? products[0].key : 'naxo');
+      adminSelectedProductKey = products[0] ? products[0].key : null;
+      if (adminSelectedProductKey) setAdminSelectedProduct(adminSelectedProductKey);
+      showToast('✓ Imported');
+    } catch (err) {
+      showToast('✕ Import failed');
+    }
+  };
+  input.click();
+});
+adminResetVisual.addEventListener('click', () => {
+  products.length = 0;
+  DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
+  Object.keys(generalPages).forEach(k => delete generalPages[k]);
+  Object.keys(DEFAULT_GENERAL_PAGES).forEach(k => {
+    generalPages[k] = JSON.parse(JSON.stringify(DEFAULT_GENERAL_PAGES[k]));
+  });
+  persistData();
+  buildNav();
+  initializeNavAccessibility();
+  selectProduct('naxo');
+  adminSelectedProductKey = 'naxo';
+  setAdminSelectedProduct('naxo');
+  showToast('✓ Reset to default');
+});
+
+adminSelectedProductKey = products.some(p => p.key === initialKey) ? initialKey : (products[0] ? products[0].key : null);
+if (adminSelectedProductKey) setAdminSelectedProduct(adminSelectedProductKey);
+
+/* =========================================================
+   COPY-TO-CLIPBOARD
+   ========================================================= */
+const toast = document.getElementById('toast');
+let toastTimer;
+
+function showToast(message = '✓ Copied to clipboard') {
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (err) {
+    // Fallback for older browsers / non-secure contexts
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      return true;
+    } catch (e) {
+      document.body.removeChild(ta);
+      return false;
+    }
+  }
+}
+
+function flashCopied(el) {
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1200);
+}
+
+// Global click handler — copies anything with data-copy, plus <code> tags and links
+document.addEventListener('click', async (e) => {
+  // Don't intercept actual links — let them open
+  if (e.target.tagName === 'A' && e.target.href) return;
+
+  // 1. Anything with data-copy attribute
+  const copyTarget = e.target.closest('[data-copy]');
+  if (copyTarget) {
+    e.preventDefault();
+    const text = copyTarget.getAttribute('data-copy');
+    const ok = await copyText(text);
+    if (ok) {
+      flashCopied(copyTarget);
+      // Update copy button label briefly
+      if (copyTarget.classList.contains('copy-btn')) {
+        const original = copyTarget.innerHTML;
+        copyTarget.innerHTML = `${COPY_ICON} Copied`;
+        setTimeout(() => { copyTarget.innerHTML = original; }, 1200);
+      }
+      showToast();
+    } else {
+      showToast('✕ Copy failed');
+    }
+    return;
+  }
+
+  // 2. Inline code tags inside .error-fix
+  if (e.target.tagName === 'CODE' && e.target.closest('.error-fix')) {
+    const text = e.target.textContent;
+    const ok = await copyText(text);
+    if (ok) {
+      flashCopied(e.target);
+      showToast('✓ Command copied');
+    } else {
+      showToast('✕ Copy failed');
+    }
+  }
+});
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+
+</body>
+</html>

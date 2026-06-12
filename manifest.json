@@ -1,0 +1,9 @@
+{
+  "name": "Cosmo Support Reference",
+  "short_name": "Cosmo Support",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#0b0f1d",
+  "icons": []
+}

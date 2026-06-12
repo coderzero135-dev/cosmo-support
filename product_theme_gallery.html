@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmo Product Theme Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a16;
+      --text: #f3f7ff;
+      --muted: #9eb1d7;
+      --panel: #0e1430;
+      --border: #2d3c6d;
+      --ok: #40dd4e;
+      --ok-bg: rgba(34, 87, 39, 0.6);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Inter, -apple-system, Segoe UI, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(111, 66, 214, 0.25), transparent 35%),
+        radial-gradient(circle at 80% 100%, rgba(0, 194, 255, 0.18), transparent 35%),
+        var(--bg);
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .wrap { max-width: 1280px; margin: 0 auto; }
+
+    h1 {
+      font-family: Montserrat, sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 16px;
+      min-height: 180px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      isolation: isolate;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.14), transparent 40%),
+        radial-gradient(circle at 95% 10%, rgba(255, 255, 255, 0.12), transparent 30%),
+        radial-gradient(circle at 50% 115%, rgba(255, 255, 255, 0.12), transparent 35%),
+        radial-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+      background-size: auto, auto, auto, 8px 8px;
+      mix-blend-mode: screen;
+      opacity: 0.4;
+      z-index: -1;
+    }
+
+    .card-content {
+      position: relative;
+      height: 100%;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-family: Montserrat, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--ok);
+      background: var(--ok-bg);
+      border: 1px solid rgba(64, 221, 78, 0.35);
+      border-radius: 999px;
+      padding: 4px 8px;
+    }
+
+    .name {
+      font-family: Montserrat, sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      text-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      max-width: 90%;
+    }
+
+    .tag {
+      font-family: Montserrat, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      opacity: 0.92;
+      letter-spacing: 0.02em;
+    }
+
+    .cosmo { background: linear-gradient(145deg, #6f2cc9 0%, #4f167b 44%, #2f0f45 100%); }
+    .cosmopro { background: linear-gradient(145deg, #8f2edc 0%, #6f1ea2 42%, #41124d 100%); }
+    .atlas { background: linear-gradient(145deg, #8d44d8 0%, #99572f 45%, #d18f1f 100%); }
+    .forge { background: linear-gradient(145deg, #8a39d7 0%, #9b5a35 46%, #de9d2e 100%); }
+    .astrozoom { background: linear-gradient(145deg, #812de0 0%, #5520b7 42%, #35207f 100%); }
+    .supreme { background: linear-gradient(145deg, #8436d6 0%, #3d3fbf 48%, #16479e 100%); }
+    .kane { background: linear-gradient(145deg, #6d5cc0 0%, #4d8c5c 50%, #6fc57c 100%); }
+    .liquid { background: linear-gradient(145deg, #8f2bd4 0%, #872a5d 46%, #d46f55 100%); }
+    .proaim { background: linear-gradient(145deg, #7f2fd3 0%, #3348cb 45%, #2f6fe0 100%); }
+    .cobra { background: linear-gradient(145deg, #8d2dcf 0%, #82642f 45%, #d0b229 100%); }
+    .athena { background: linear-gradient(145deg, #8b2bd0 0%, #2f7b39 50%, #00e632 100%); }
+    .kraken { background: linear-gradient(145deg, #5d2cc0 0%, #292f95 46%, #1c2f7a 100%); }
+    .inferno { background: linear-gradient(145deg, #8f2ccf 0%, #85382f 45%, #dd5d16 100%); }
+    .pulse { background: linear-gradient(145deg, #8f2bd4 0%, #7a1f48 45%, #5a1328 100%); }
+    .hero { background: linear-gradient(145deg, #8f41df 0%, #3a97ae 45%, #79ffd5 100%); }
+    .volt { background: linear-gradient(145deg, #6f50d5 0%, #2f8b8e 48%, #74d2aa 100%); }
+    .vex { background: linear-gradient(145deg, #8d3cd8 0%, #4064b5 47%, #64cbf8 100%); }
+    .crown { background: linear-gradient(145deg, #8f2dd5 0%, #7b2e44 45%, #aa6530 100%); }
+    .opal { background: linear-gradient(145deg, #8f2dd7 0%, #7f2343 45%, #d36f63 100%); }
+    .viper { background: linear-gradient(145deg, #8a31d5 0%, #5f7d2f 45%, #bbdb45 100%); }
+    .breeze { background: linear-gradient(145deg, #5d56c9 0%, #476899 45%, #83b8e9 100%); }
+    .vortex { background: linear-gradient(145deg, #7e44cf 0%, #684da4 45%, #9f8fd3 100%); }
+
+    @media (max-width: 740px) {
+      .name { font-size: 34px; }
+      .tag { font-size: 15px; }
+      body { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Cosmo Product Color Map</h1>
+    <p class="sub">Single HTML preview page with product color themes matched to your reference style.</p>
+
+    <section class="grid">
+      <article class="card cosmo"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">COSMO</h2><p class="tag">AIM + ESP + MISC</p></div></article>
+      <article class="card cosmopro"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">COSMO PRO</h2><p class="tag">PRO VERSION</p></div></article>
+      <article class="card atlas"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">ATLAS</h2><p class="tag">BETTER IN EVERY WAY</p></div></article>
+      <article class="card forge"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">FORGE</h2><p class="tag">BECOME UNSTOPPABLE</p></div></article>
+      <article class="card astrozoom"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">ASTROZOOM</h2><p class="tag">AIM + ESP + MISC</p></div></article>
+      <article class="card supreme"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">SUPREME</h2><p class="tag">LETHAL EXPLOITS</p></div></article>
+      <article class="card kane"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">KANE</h2><p class="tag">BE THE BEST</p></div></article>
+      <article class="card liquid"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">LIQUID</h2><p class="tag">ESP + AIMBOT + MISC</p></div></article>
+      <article class="card proaim"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">PROAIM</h2><p class="tag">INTERNAL + DEADLY</p></div></article>
+      <article class="card cobra"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">COBRA</h2><p class="tag">CHEAT + SPOOFER</p></div></article>
+      <article class="card athena"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">ATHENA</h2><p class="tag">AIMBOT + ESP</p></div></article>
+      <article class="card kraken"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">KRAKEN</h2><p class="tag">DEADLY EXTERNAL</p></div></article>
+      <article class="card inferno"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">INFERNO</h2><p class="tag">AIMBOT + ESP</p></div></article>
+      <article class="card pulse"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">PULSE</h2><p class="tag">THE ULTIMATE CHEAT</p></div></article>
+      <article class="card hero"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">HERO</h2><p class="tag">INTERNAL + UNDETECTED</p></div></article>
+      <article class="card volt"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">VOLT</h2><p class="tag">FULL VERSION</p></div></article>
+      <article class="card vex"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">VEX</h2><p class="tag">INTERNAL & ELITE</p></div></article>
+      <article class="card crown"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">CROWN</h2><p class="tag">BEST INTERNAL</p></div></article>
+      <article class="card opal"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">OPAL</h2><p class="tag">AIM + ESP + MISC</p></div></article>
+      <article class="card viper"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">VIPER</h2><p class="tag">THE STEALTHIEST CHEAT</p></div></article>
+      <article class="card breeze"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">BREEZE</h2><p class="tag">DOMINATE THE GAME</p></div></article>
+      <article class="card vortex"><div class="card-content"><span class="badge">UNDETECTED</span><h2 class="name">VORTEX</h2><p class="tag">NO LIMITS</p></div></article>
+    </section>
+  </div>
+</body>
+</html>
