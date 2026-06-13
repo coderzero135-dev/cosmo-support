@@ -1251,85 +1251,193 @@
   }
 
   /* Mobile */
-  /* ============ MOBILE DRAWER ============ */
   .mobile-toggle {
     display: none;
-    position: fixed;
-    top: 12px;
-    left: 12px;
-    z-index: 1500;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(10, 15, 24, 0.85);
-    backdrop-filter: blur(8px);
-    color: var(--text);
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.2s, background 0.2s;
   }
-  .mobile-toggle:hover { border-color: rgba(var(--theme-a), 0.5); background: rgba(14, 22, 36, 0.9); }
-  .mobile-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
   .sidebar-overlay {
     display: none;
     position: fixed;
     inset: 0;
     z-index: 1100;
-    background: rgba(5, 8, 12, 0.55);
-    backdrop-filter: blur(4px);
+    background: rgba(5, 8, 12, 0.6);
+    backdrop-filter: blur(6px);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.25s ease;
     pointer-events: none;
   }
   .sidebar-overlay.open { opacity: 1; pointer-events: auto; }
 
-  @media (max-width: 900px) {
+  .mob-topbar {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 0; }
     .app { grid-template-columns: 1fr; }
+    .mob-topbar {
+      display: flex;
+      position: sticky;
+      top: 0;
+      z-index: 1050;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: linear-gradient(180deg, rgba(7,11,20,0.96), rgba(7,11,20,0.9));
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      min-height: 50px;
+    }
+    .mob-topbar .brand-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .mob-topbar .mob-spacer { flex: 1; }
+    .mobile-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .mobile-toggle:active { background: rgba(255,255,255,0.06); }
+    .mobile-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
     .sidebar {
       position: fixed;
       top: 0;
       left: 0;
       z-index: 1200;
-      height: 100vh;
-      max-height: 100vh;
-      width: min(85vw, 340px);
-      transform: translateX(-110%);
-      transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
-      border-right: 1px solid var(--border-strong);
-      border-radius: 0 16px 16px 0;
-      box-shadow: 14px 0 60px rgba(0, 0, 0, 0.5);
+      height: 100dvh;
+      width: 100vw;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, rgba(7,12,24,0.98), rgba(5,9,18,0.99));
     }
     .sidebar.open { transform: translateX(0); }
     .sidebar-overlay { display: block; }
-    .mobile-toggle { display: flex; }
-    .main { padding: 60px 16px 28px; }
-    h1 { font-size: 28px; }
-    .setup-grid { padding: 0; gap: 0; }
-    .info-grid { grid-template-columns: 1fr; }
-    .setup-toggles { grid-template-columns: 1fr 1fr; }
-    .product-logo { top: 10px; right: 10px; padding: 6px 10px; gap: 6px; }
-    .product-logo-mark { width: 24px; height: 24px; font-size: 13px; border-radius: 8px; }
-    .product-logo-name { font-size: 9px; max-width: 100px; }
-    .admin-fab { right: 10px; bottom: 10px; font-size: 9px; padding: 7px 10px; }
-    .hidden-access { left: 60px; top: 12px; }
-    .error-grid { grid-template-columns: 1fr; }
+
+    .sidebar .brand { padding: 18px 20px 14px; margin-bottom: 8px; }
+    .sidebar .brand-name { font-size: 18px; }
+    .sidebar .search-wrap { padding: 0 12px 12px; }
+    .sidebar .nav-section-label { padding: 10px 20px 4px; font-size: 9px; }
+    .sidebar .nav-list { padding: 0 10px; flex: 1; overflow-y: auto; }
+    .sidebar .nav-item { padding: 8px 12px; font-size: 13px; }
+    .sidebar .sidebar-footer { padding: 12px 20px; }
+    .sidebar .sidebar-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+    }
+    .sidebar .sidebar-close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    .main { padding: 14px 12px 24px; max-width: 100%; }
+    h1 { font-size: 22px; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .breadcrumb { font-size: 9px; margin-bottom: 8px; }
+    .subtitle { font-size: 12px; }
+    .page-header { margin-bottom: 20px; }
+
+    .setup-grid {
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px;
+      overflow: visible;
+    }
+    .setup-cell {
+      min-width: calc(50% - 4px);
+      flex: 1 1 calc(50% - 4px);
+      padding: 10px;
+      gap: 6px;
+    }
+    .setup-cell:hover { transform: none; }
+    .setup-label { font-size: 9px; min-height: 2em; }
+    .setup-value { font-size: 12px; }
+
+    .info-grid { grid-template-columns: 1fr; gap: 10px; }
+    .info-card { padding: 12px 14px; }
+    .info-card:hover { transform: none; }
+    .info-card h3 { font-size: 10px; margin-bottom: 10px; }
+    .info-card li { font-size: 13px; padding: 5px 0; }
+    .info-card li:hover { background: transparent; }
+
+    .section { margin-top: 24px; }
+    .section-title { margin-bottom: 10px; }
+    .section-title h2 { font-size: 11px; }
+
+    .error-card { padding: 10px 12px; }
+    .error-card:hover { transform: none; }
+    .error-name { font-size: 14px; }
+    .error-fix { font-size: 13px; }
+    .error-fix code { font-size: 11px; }
+    .error-header { flex-direction: column; gap: 8px; }
+
+    .variant-pills { gap: 5px; margin: 8px 0 2px; }
+    .variant-pill { font-size: 10px; padding: 4px 8px; }
+
+    .copy-btn { font-size: 9px; padding: 4px 8px; }
+    .section-title .copy-all { font-size: 9px; padding: 3px 8px; }
+
+    .note { padding: 10px 12px; font-size: 13px; margin-top: 10px; }
+
+    .product-logo { display: none !important; }
+    .hidden-access { left: auto; right: 10px; top: 8px; font-size: 8px; padding: 3px 6px; }
+
+    .setup-grid::-webkit-scrollbar { display: none; }
+    .setup-cell::after { display: none; }
+    .setup-cell.copied::after { display: none; }
+
+    .admin-fab { right: 8px; bottom: 8px; font-size: 8px; padding: 6px 8px; }
+
+    .admin-panel { padding: 10px; width: 100%; }
     .admin-shell { grid-template-columns: 1fr; }
-    .admin-panel { padding: 12px; }
+    .admin-side { max-height: 40vh; }
+    .admin-field select,
+    .admin-field input,
+    .admin-field textarea { font-size: 11px; padding: 7px 8px; }
+    .admin-field textarea { min-height: 80px; }
+
+    .setup-toggles { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .setup-toggle { padding: 8px 10px; min-height: 72px; gap: 8px; }
+    .setup-toggle-label { font-size: 10px; min-height: 2em; }
+
+    .error-grid { grid-template-columns: 1fr; }
+
+    .toast { font-size: 11px; padding: 8px 14px; bottom: 16px; }
   }
 
-  @media (max-width: 620px) {
+  @media (max-width: 480px) {
+    .setup-cell {
+      min-width: 100%;
+      flex: 1 1 100%;
+    }
     .setup-toggles { grid-template-columns: 1fr; }
-    h1 { font-size: 24px; }
-    .main { padding: 56px 12px 24px; }
-    .setup-cell { min-width: 130px; flex: 0 0 130px; padding: 10px 12px; }
-    .error-card { padding: 12px 14px; }
-    .info-card { padding: 14px 16px; }
-    .subtitle { font-size: 14px; }
-    .variant-pill { font-size: 10px; padding: 4px 8px; }
-    .breadcrumb { font-size: 10px; }
-    .sidebar { width: 100vw; border-radius: 0; }
+    h1 { font-size: 19px; }
+    .main { padding: 10px 8px 20px; }
+    .mob-topbar { padding: 8px 10px; }
+    .mob-topbar .brand-title { font-size: 9px; }
   }
 
   @media print {
@@ -1363,7 +1471,6 @@
 <body>
 
 <button class="hidden-access" id="hiddenAccess" aria-label="Open secure access">admin</button>
-<button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu"><svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <button class="admin-fab" id="openAdminFab">Update panel</button>
 <div class="product-logo" id="productLogo" aria-hidden="true">
@@ -1371,10 +1478,21 @@
   <div class="product-logo-name" id="productLogoName">Cosmo</div>
 </div>
 
+<div class="mob-topbar">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
+    <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+  </button>
+  <span class="brand-title" id="mobBrand">Cosmo</span>
+  <span class="mob-spacer"></span>
+</div>
+
 <div class="app">
 
   <!-- ============ SIDEBAR ============ -->
   <aside class="sidebar">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
     <div class="brand">
       <div class="brand-title">Support Reference</div>
       <div class="brand-name">Cosmo<span class="dot"></span></div>
@@ -2631,18 +2749,24 @@ function restoreInitialSelection() {
 }
 
 const mobileToggle = document.getElementById('mobileToggle');
+const sidebarClose = document.getElementById('sidebarClose');
 const sidebar = document.querySelector('.sidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
 function toggleSidebar(force) {
   const open = force !== undefined ? force : sidebar.classList.toggle('open');
   if (force !== undefined) sidebar.classList.toggle('open', force);
   sidebarOverlay.classList.toggle('open', sidebar.classList.contains('open'));
+  document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
 }
-mobileToggle.addEventListener('click', () => toggleSidebar());
-sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+if (mobileToggle) mobileToggle.addEventListener('click', () => toggleSidebar());
+if (sidebarClose) sidebarClose.addEventListener('click', () => toggleSidebar(false));
+if (sidebarOverlay) sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar(false);
 });
+
+// Update mobile topbar brand on product change
+const mobBrand = document.getElementById('mobBrand');
 
 function selectProduct(key, variantKey) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
@@ -2668,6 +2792,12 @@ function selectProduct(key, variantKey) {
     history.replaceState(null, '', '#' + key);
   }
 }
+
+// Close sidebar on any nav click (mobile)
+sidebar.addEventListener('click', e => {
+  const item = e.target.closest('.nav-item');
+  if (item) toggleSidebar(false);
+});
 
 navList.addEventListener('click', e => {
   const item = e.target.closest('.nav-item');
@@ -2786,6 +2916,7 @@ function updateProductLogo(key, label) {
   productLogoName.textContent = label || 'General';
   productLogo.style.opacity = '1';
   productLogo.style.transform = 'translateY(0)';
+  if (mobBrand) mobBrand.textContent = label || 'Cosmo';
 }
 
 let adminSelectedProductKey = null;
