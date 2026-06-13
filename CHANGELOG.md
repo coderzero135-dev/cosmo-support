@@ -2,7 +2,15 @@
 
 ## 2026-06-13
 
-### Complete CSS Redesign — Professional Clean Theme
+### Visual Redesign V2 — Professional Polish
+- **Richer color palette**: Linear-style dark (#09090b / #131316 / #27272a) with zinc-toned borders, true white text (#fafafa), blue accent (#3b82f6)
+- **Setup grid → clean table**: Replaced scrollable flex cards with a bordered two-column table (`setup-table` / `setup-row`). Left-aligned labels, right-aligned values with contextual color coding. Subtle hover + copy hint on each row.
+- **Refined typography**: 28px h1 (bold 700, tighter letter-spacing), 11px section headers, 13px body
+- **Improved sidebar**: Tighter nav items (7px padding), subtle white-alpha hover instead of colored background
+- **Mobile cleanup**: Removed duplicate CSS rules, adjusted 480px breakpoint (18px h1, 90px label column)
+- **Print styles updated** to match new class names
+
+### CSS Redesign V1 — Professional Clean Theme
 - Replaced entire 1400-line CSS with clean, minimal professional design
 - New palette: GitHub-style dark (#0d1117 / #161b22 / #30363d / #58a6ff)
 - Removed all gradients, glow effects, backdrop-blur, glass morphism
@@ -42,12 +50,4 @@
 ### Initial Setup
 - Renamed `cosmo_support (1).html` → `index.html`
 - Mobile responsive drawer nav + server API sync for shared admin data
-- Vercel deployments to `cosmo-support-weld.vercel.app`
-
----
-
-## Legend
-- 🔴 Critical fix
-- 🟡 Layout/UX change
-- 🟢 Enhancement
-- ⚪ Cosmetic
+- Vercel deployments to `https://cosmo-support-weld.vercel.app`
