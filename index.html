@@ -1251,22 +1251,85 @@
   }
 
   /* Mobile */
+  /* ============ MOBILE DRAWER ============ */
+  .mobile-toggle {
+    display: none;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1500;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(10, 15, 24, 0.85);
+    backdrop-filter: blur(8px);
+    color: var(--text);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .mobile-toggle:hover { border-color: rgba(var(--theme-a), 0.5); background: rgba(14, 22, 36, 0.9); }
+  .mobile-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: rgba(5, 8, 12, 0.55);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+
   @media (max-width: 900px) {
     .app { grid-template-columns: 1fr; }
     .sidebar {
-      position: relative;
-      height: auto;
-      max-height: 50vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1200;
+      height: 100vh;
+      max-height: 100vh;
+      width: min(85vw, 340px);
+      transform: translateX(-110%);
+      transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+      border-right: 1px solid var(--border-strong);
+      border-radius: 0 16px 16px 0;
+      box-shadow: 14px 0 60px rgba(0, 0, 0, 0.5);
     }
-    .main { padding: 28px 20px; }
-    h1 { font-size: 32px; }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay { display: block; }
+    .mobile-toggle { display: flex; }
+    .main { padding: 60px 16px 28px; }
+    h1 { font-size: 28px; }
     .setup-grid { padding: 0; gap: 0; }
     .info-grid { grid-template-columns: 1fr; }
     .setup-toggles { grid-template-columns: 1fr 1fr; }
+    .product-logo { top: 10px; right: 10px; padding: 6px 10px; gap: 6px; }
+    .product-logo-mark { width: 24px; height: 24px; font-size: 13px; border-radius: 8px; }
+    .product-logo-name { font-size: 9px; max-width: 100px; }
+    .admin-fab { right: 10px; bottom: 10px; font-size: 9px; padding: 7px 10px; }
+    .hidden-access { left: 60px; top: 12px; }
+    .error-grid { grid-template-columns: 1fr; }
+    .admin-shell { grid-template-columns: 1fr; }
+    .admin-panel { padding: 12px; }
   }
 
   @media (max-width: 620px) {
     .setup-toggles { grid-template-columns: 1fr; }
+    h1 { font-size: 24px; }
+    .main { padding: 56px 12px 24px; }
+    .setup-cell { min-width: 130px; flex: 0 0 130px; padding: 10px 12px; }
+    .error-card { padding: 12px 14px; }
+    .info-card { padding: 14px 16px; }
+    .subtitle { font-size: 14px; }
+    .variant-pill { font-size: 10px; padding: 4px 8px; }
+    .breadcrumb { font-size: 10px; }
+    .sidebar { width: 100vw; border-radius: 0; }
   }
 
   @media print {
@@ -1300,6 +1363,8 @@
 <body>
 
 <button class="hidden-access" id="hiddenAccess" aria-label="Open secure access">admin</button>
+<button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu"><svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 <button class="admin-fab" id="openAdminFab">Update panel</button>
 <div class="product-logo" id="productLogo" aria-hidden="true">
   <div class="product-logo-mark" id="productLogoMark">C</div>
@@ -1438,6 +1503,7 @@
               <button id="adminExportVisual">Export JSON</button>
               <button id="adminImportVisual">Import JSON</button>
               <button id="adminResetVisual">Reset to default</button>
+              <button id="adminSyncBtn" style="border-color:rgba(var(--theme-a),0.5);color:var(--accent);">Sync to all users</button>
             </div>
             <div class="admin-preview" id="adminPreviewVisual"></div>
           </div>
@@ -2170,6 +2236,62 @@ function persistData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
 }
 
+const API_BASE = '/api/data';
+
+async function syncFromApi() {
+  try {
+    const res = await fetch(API_BASE);
+    const json = await res.json();
+    if (json.ok && json.data && Array.isArray(json.data.products)) {
+      const remote = json.data.products;
+      const merged = remote.map(rp => {
+        const local = products.find(p => p.key === rp.key);
+        return local ? mergeProductData(local, rp) : rp;
+      });
+      const remoteKeys = new Set(remote.map(p => p.key));
+      products.filter(p => !remoteKeys.has(p.key)).forEach(p => merged.push(p));
+      products.length = 0;
+      merged.forEach(p => products.push(p));
+      if (json.data.generalPages) {
+        Object.keys(json.data.generalPages).forEach(k => { generalPages[k] = json.data.generalPages[k]; });
+      }
+      persistData();
+      return true;
+    }
+  } catch {}
+  return false;
+}
+
+function mergeProductData(local, remote) {
+  const merged = { ...remote, variants: remote.variants ? { ...remote.variants } : undefined };
+  if (local.variants && merged.variants) {
+    Object.keys(local.variants).forEach(k => {
+      if (!merged.variants[k]) merged.variants[k] = local.variants[k];
+    });
+  }
+  return merged;
+}
+
+async function syncToApi(adminKey) {
+  try {
+    const snapshot = {
+      products: products.map(p => {
+        const clean = { ...p };
+        delete clean.selectedVariant;
+        return clean;
+      }),
+      generalPages: generalPages
+    };
+    const res = await fetch(API_BASE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey || '' },
+      body: JSON.stringify(snapshot)
+    });
+    const json = await res.json();
+    return json.ok;
+  } catch { return false; }
+}
+
 /* =========================================================
    RENDERING
    ========================================================= */
@@ -2404,6 +2526,7 @@ const adminExportVisual = document.getElementById('adminExportVisual');
 const adminImportVisual = document.getElementById('adminImportVisual');
 const adminResetVisual = document.getElementById('adminResetVisual');
 const adminPreviewVisual = document.getElementById('adminPreviewVisual');
+const adminSyncBtn = document.getElementById('adminSyncBtn');
 const adminVariantWrap = document.getElementById('adminVariantWrap');
 const adminVariantSelect = document.getElementById('adminVariantSelect');
 const adminVariantNameInline = document.getElementById('adminVariantNameInline');
@@ -2441,8 +2564,20 @@ function requestUpdateAccess() {
 
 loadStoredData();
 setUpdateAccess(updateAccessGranted);
+buildNav();
+initializeNavAccessibility();
+restoreInitialSelection();
 
-// Build nav
+// Background sync from server
+syncFromApi().then(updated => {
+  if (updated) {
+    buildNav();
+    initializeNavAccessibility();
+    const currentKey = getCurrentSelectedProductKey();
+    if (currentKey) selectProduct(currentKey);
+    showToast('✓ Synced latest updates');
+  }
+});
 function buildNav() {
   navList.innerHTML = '';
   const sortedProducts = [...products].sort((a, b) => a.name.localeCompare(b.name));
@@ -2487,8 +2622,27 @@ function goToRelativeProduct(step) {
   selectProduct(fallbackKeys[nextIndex]);
 }
 
-buildNav();
-initializeNavAccessibility();
+function restoreInitialSelection() {
+  const hashKey = window.location.hash.replace('#', '');
+  const lastVariant = localStorage.getItem(LAST_VARIANT_KEY);
+  const lastProduct = localStorage.getItem(LAST_PRODUCT_KEY);
+  const initialKey = hashKey || lastProduct || products[0]?.key;
+  if (initialKey) selectProduct(initialKey, hashKey ? (lastVariant || undefined) : undefined);
+}
+
+const mobileToggle = document.getElementById('mobileToggle');
+const sidebar = document.querySelector('.sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+function toggleSidebar(force) {
+  const open = force !== undefined ? force : sidebar.classList.toggle('open');
+  if (force !== undefined) sidebar.classList.toggle('open', force);
+  sidebarOverlay.classList.toggle('open', sidebar.classList.contains('open'));
+}
+mobileToggle.addEventListener('click', () => toggleSidebar());
+sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar(false);
+});
 
 function selectProduct(key, variantKey) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
@@ -2517,7 +2671,7 @@ function selectProduct(key, variantKey) {
 
 navList.addEventListener('click', e => {
   const item = e.target.closest('.nav-item');
-  if (item) selectProduct(item.dataset.key);
+  if (item) { selectProduct(item.dataset.key); toggleSidebar(false); }
 });
 
 document.addEventListener('click', e => {
@@ -2575,17 +2729,6 @@ search.addEventListener('input', e => {
   });
   noResults.classList.toggle('show', !anyVisible);
 });
-
-// Initial load — hash takes priority, then localStorage
-const hashKey = window.location.hash.replace('#', '');
-const lastSelectedKey = localStorage.getItem(LAST_PRODUCT_KEY);
-const initialKey = (hashKey && (products.some(p => p.key === hashKey) || generalPages[hashKey]))
-  ? hashKey
-  : (lastSelectedKey && (products.some(p => p.key === lastSelectedKey) || generalPages[lastSelectedKey]))
-    ? lastSelectedKey
-    : 'naxo';
-const lastVariant = localStorage.getItem(LAST_VARIANT_KEY);
-selectProduct(initialKey, lastVariant || undefined);
 
 window.addEventListener('hashchange', () => {
   const hk = window.location.hash.replace('#', '');
@@ -2788,6 +2931,7 @@ function saveAndRefreshAdmin(productKeyToSelect, variantKey) {
   renderVisualListEditor();
   renderVisualErrorEditor();
   selectProduct(pick, adminSelectedVariantKey || undefined);
+  if (updateAccessGranted) syncToApi(ACCESS_PROMPT_ANSWER).catch(() => {});
 }
 
 
@@ -3099,6 +3243,16 @@ adminImportVisual.addEventListener('click', () => {
   };
   input.click();
 });
+adminSyncBtn.addEventListener('click', async () => {
+  if (!updateAccessGranted) { showToast('✕ Access denied'); return; }
+  adminSyncBtn.disabled = true;
+  adminSyncBtn.textContent = 'Syncing...';
+  const ok = await syncToApi(ACCESS_PROMPT_ANSWER);
+  adminSyncBtn.disabled = false;
+  adminSyncBtn.textContent = 'Sync to all users';
+  showToast(ok ? '✓ Synced to all users' : '✕ Sync failed');
+});
+
 adminResetVisual.addEventListener('click', () => {
   products.length = 0;
   DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
