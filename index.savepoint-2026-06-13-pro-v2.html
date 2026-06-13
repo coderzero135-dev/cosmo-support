@@ -1,516 +1,1074 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cosmo Support</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#9678;</text></svg>">
-<link rel="manifest" href="manifest.json"><style>
-:root {
-  --bg: #09090b;
-  --bg2: #131316;
-  --bg3: #1c1c1f;
-  --border: #27272a;
-  --border-light: #1f1f23;
-  --text: #fafafa;
-  --text2: #a1a1aa;
-  --text3: #71717a;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --green: #22c55e;
-  --red: #ef4444;
-  --amber: #eab308;
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
-  --mono: "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", Menlo, monospace;
-  --radius: 8px;
-  --radius-sm: 5px;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 14px;
-  line-height: 1.6;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-/* Layout */
-.layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
-
-/* Sidebar */
-.sidebar {
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  position: sticky; top: 0; height: 100vh;
-  overflow-y: auto; z-index: 10;
-}
-.sidebar::-webkit-scrollbar { width: 4px; }
-.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.sidebar-header { padding: 18px 18px 12px; border-bottom: 1px solid var(--border); }
-.sb-brand { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
-.sb-version { font-size: 10px; color: var(--text3); font-family: var(--mono); text-transform: uppercase; margin-top: 2px; }
-.sidebar-close { display: none; position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; background: none; border: none; color: var(--text); cursor: pointer; font-size: 18px; }
-
-.search-wrap { padding: 10px 14px 8px; }
-.search-wrap input {
-  width: 100%; padding: 8px 10px;
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); color: var(--text);
-  font-size: 12px; outline: none;
-  transition: border-color 0.15s;
-}
-.search-wrap input::placeholder { color: var(--text3); }
-.search-wrap input:focus { border-color: var(--accent); }
-
-.sb-label {
-  font-family: var(--mono); font-size: 10px; font-weight: 600;
-  color: var(--text3); text-transform: uppercase; letter-spacing: 0.04em;
-  padding: 10px 18px 4px;
-}
-.nav-list { list-style: none; padding: 0 10px; }
-.nav-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 7px 10px; border-radius: var(--radius-sm);
-  color: var(--text2); font-size: 13px;
-  cursor: pointer; transition: background 0.1s, color 0.1s;
-  user-select: none;
-}
-.nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.nav-item.active { background: rgba(59,130,246,0.1); color: var(--accent); }
-.nav-item .marker { font-family: var(--mono); font-size: 10px; color: var(--text3); min-width: 18px; }
-.nav-item.active .marker { color: var(--accent); }
-.nav-item.hidden { display: none; }
-
-.sidebar-footer {
-  margin-top: auto; padding: 12px 18px;
-  border-top: 1px solid var(--border);
-  font-size: 11px; color: var(--text3); line-height: 1.6;
-}
-.sidebar-footer a { color: var(--text2); }
-
-/* Main */
-.main { padding: 36px 44px; max-width: 900px; min-height: 100vh; }
-
-.page-header { margin-bottom: 28px; }
-.breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-bottom: 6px; }
-.breadcrumb .sep { margin: 0 6px; opacity: 0.4; }
-.breadcrumb .current { color: var(--accent); }
-h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 4px; }
-.subtitle { color: var(--text3); font-size: 13px; max-width: 460px; }
-
-/* Sections */
-.section { margin-top: 34px; }
-.section-title {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 10px;
-}
-.section-title h2 {
-  font-family: var(--mono); font-size: 11px; font-weight: 600;
-  color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em;
-}
-.section-title .rule { flex: 1; height: 1px; background: var(--border); }
-
-/* Setup table */
-.setup-table {
-  border: 1px solid var(--border); border-radius: var(--radius);
-  overflow: hidden;
-}
-.setup-row {
-  display: grid; grid-template-columns: 140px 1fr;
-  border-bottom: 1px solid var(--border-light);
-  cursor: pointer; transition: background 0.1s;
-}
-.setup-row:last-child { border-bottom: none; }
-.setup-row:hover { background: rgba(255,255,255,0.02); }
-.setup-row.copied { background: rgba(34,197,94,0.06); }
-.setup-label {
-    font-family: var(--mono); font-size: 11px; color: var(--text3);
-    padding: 8px 12px; display: flex; align-items: center;
+<title>Cosmo Support · Product Reference</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>◎</text></svg>">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --bg: #09090b;
+    --bg2: #131316;
+    --bg3: #1c1c1f;
+    --border: #27272a;
+    --border-strong: #3f3f46;
+    --text: #fafafa;
+    --text-dim: #a1a1aa;
+    --text-muted: #71717a;
+    --accent: #3b82f6;
+    --accent-dim: #2563eb;
+    --warn: #eab308;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    --green: #22c55e;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Liberation Mono', Menlo, monospace;
+    --radius: 8px;
+    --radius-sm: 4px;
   }
-  .setup-value {
-    font-family: var(--mono); font-size: 12px; font-weight: 600;
-    padding: 8px 12px; display: flex; align-items: center; gap: 6px;
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  .setup-value .copy-hint { font-size: 9px; color: var(--text3); opacity: 0; transition: opacity 0.1s; margin-left: auto; }
-.setup-row:hover .copy-hint { opacity: 1; }
-.setup-row.copied .copy-hint { opacity: 1; color: var(--green); }
-.setup-value.on  { color: var(--green); }
-  .setup-value.off { color: var(--red); }
-  .setup-value.na  { color: var(--text3); }
-  .setup-value.warn{ color: var(--amber); }
 
-/* Cards */
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.info-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 16px 18px;
-}
-.info-card h3 {
-  font-family: var(--mono); font-size: 11px; font-weight: 600;
-  color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em;
-  margin-bottom: 10px;
-}
-.info-card ul { list-style: none; }
-.info-card li { padding: 5px 0; font-size: 13px; color: var(--text); display: flex; gap: 8px; }
-.info-card li::before { content: "--"; color: var(--accent); flex-shrink: 0; }
-.info-card li:hover { color: var(--accent); cursor: pointer; }
-.info-card li.copied { color: var(--green); }
-
-/* Errors */
-.error-list { display: flex; flex-direction: column; gap: 8px; }
-.error-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-left: 3px solid var(--amber); border-radius: var(--radius);
-  padding: 14px 16px;
-}
-.error-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
-.error-name { font-weight: 600; font-size: 14px; flex: 1; }
-.error-fix { color: var(--text2); font-size: 13px; line-height: 1.7; white-space: pre-wrap; }
-.error-fix code {
-  font-family: var(--mono); font-size: 11px; background: var(--bg);
-  color: var(--accent); padding: 1px 5px; border-radius: 3px;
-  border: 1px solid var(--border); word-break: break-all; cursor: pointer;
-}
-.error-fix code:hover { background: var(--bg3); }
-.error-fix code.copied { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); }
-
-/* Variants */
-.variant-pills { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 4px; }
-.variant-pill {
-  background: var(--bg2); border: 1px solid var(--border);
-  color: var(--text2); padding: 4px 10px; border-radius: var(--radius-sm);
-  font-size: 11px; font-family: var(--mono); cursor: pointer;
-  transition: border-color 0.12s, color 0.12s; user-select: none;
-}
-.variant-pill:hover { border-color: var(--accent); color: var(--text); }
-.variant-pill.active { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.08); }
-
-/* Buttons */
-.btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 5px 10px; border-radius: var(--radius-sm);
-  border: 1px solid var(--border); background: var(--bg);
-  color: var(--text2); font-family: var(--mono); font-size: 10px;
-  text-transform: uppercase; cursor: pointer;
-  transition: border-color 0.12s, color 0.12s; user-select: none;
-}
-.btn:hover { border-color: var(--accent); color: var(--accent); }
-.btn.copied { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.08); }
-.btn svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-.copy-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 10px; border-radius: var(--radius-sm);
-  border: 1px solid var(--border); background: var(--bg);
-  color: var(--text2); font-family: var(--mono); font-size: 10px;
-  text-transform: uppercase; cursor: pointer;
-  transition: border-color 0.12s, color 0.12s; user-select: none;
-  flex-shrink: 0;
-}
-.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-.copy-btn.copied { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.08); }
-.copy-btn svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-.copy-all {
-  margin-left: auto;
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 3px 8px; border-radius: var(--radius-sm);
-  border: 1px solid var(--border); background: var(--bg);
-  color: var(--text2); font-family: var(--mono); font-size: 10px;
-  text-transform: uppercase; cursor: pointer;
-  transition: border-color 0.12s, color 0.12s; user-select: none;
-}
-.copy-all:hover { border-color: var(--accent); color: var(--accent); }
-.copy-all.copied { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.08); }
-
-/* Note */
-.note {
-  background: rgba(234,179,8,0.06); border: 1px solid rgba(234,179,8,0.2);
-  border-radius: var(--radius); padding: 12px 16px; margin-top: 14px;
-  font-size: 13px; color: var(--text);
-}
-.note .tag { font-family: var(--mono); font-size: 10px; color: var(--amber); text-transform: uppercase; font-weight: 600; margin-right: 6px; }
-
-/* Toast */
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px);
-  background: var(--bg3); border: 1px solid var(--accent); color: var(--accent);
-  font-family: var(--mono); font-size: 12px; padding: 8px 16px; border-radius: var(--radius-sm);
-  opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 1000;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* Overlay */
-.sidebar-overlay {
-  display: none; position: fixed; inset: 0; z-index: 20;
-  background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s;
-  pointer-events: none;
-}
-.sidebar-overlay.open { opacity: 1; pointer-events: auto; }
-
-/* Mobile top bar */
-.mob-topbar { display: none; }
-
-/* Admin FAB */
-.admin-fab {
-  display: none; position: fixed; right: 16px; bottom: 16px; z-index: 50;
-  background: var(--bg2); border: 1px solid var(--border); color: var(--text3);
-  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
-  padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-}
-.admin-fab.unlocked { display: block; }
-.admin-fab:hover { border-color: var(--accent); color: var(--accent); }
-
-/* Admin modal */
-.admin-modal {
-  position: fixed; inset: 0; z-index: 2000;
-  background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
-  padding: 16px; opacity: 0; visibility: hidden; pointer-events: none;
-  transition: opacity 0.2s, visibility 0.2s;
-}
-.admin-modal.show { opacity: 1; visibility: visible; pointer-events: auto; }
-.admin-panel {
-  width: min(780px, 100%); max-height: 90vh; overflow: auto;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px;
-}
-.admin-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; }
-.admin-title h3 { font-size: 16px; font-weight: 600; }
-.admin-shell { display: grid; grid-template-columns: 190px 1fr; gap: 12px; margin-top: 8px; }
-.admin-side { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); padding: 10px; max-height: 60vh; overflow-y: auto; }
-.admin-main { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); padding: 10px; }
-.admin-select {
-  width: 100%; background: var(--bg2); border: 1px solid var(--border);
-  color: var(--text); border-radius: var(--radius-sm); padding: 6px 8px;
-  font-family: var(--mono); font-size: 11px; margin-bottom: 8px;
-}
-.admin-select:focus { outline: none; border-color: var(--accent); }
-.admin-field { display: flex; flex-direction: column; gap: 4px; }
-.admin-field label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; }
-.admin-field select, .admin-field input, .admin-field textarea {
-  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm);
-  color: var(--text); padding: 6px 8px; font-family: var(--mono); font-size: 11px;
-}
-.admin-field textarea { min-height: 90px; resize: vertical; }
-.admin-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-.admin-actions button {
-  background: var(--bg2); border: 1px solid var(--border); color: var(--text2);
-  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
-  padding: 5px 10px; border-radius: var(--radius-sm); cursor: pointer;
-  transition: border-color 0.12s, color 0.12s;
-}
-.admin-actions button:hover { border-color: var(--accent); color: var(--accent); }
-.admin-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
-.admin-switches { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
-.mini-btn {
-  background: var(--bg2); border: 1px solid var(--border); color: var(--text3);
-  font-family: var(--mono); font-size: 10px; padding: 4px 8px; border-radius: var(--radius-sm);
-  cursor: pointer; transition: border-color 0.12s, color 0.12s;
-}
-.mini-btn:hover { border-color: var(--accent); color: var(--accent); }
-.admin-section-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(59,130,246,0.08); }
-.admin-section-panel { display: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px; background: rgba(19,19,22,0.5); }
-.admin-section-panel.active { display: block; }
-.admin-block { border: 1px solid var(--border); border-radius: var(--radius-sm); margin-top: 10px; overflow: hidden; }
-.admin-block summary {
-  list-style: none; cursor: pointer; padding: 7px 10px;
-  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
-  background: var(--bg2); color: var(--text3);
-}
-.admin-block summary::-webkit-details-marker { display: none; }
-.admin-block-body { padding: 10px; }
-.mini-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-bottom: 6px; }
-.mini-row input {
-  width: 100%; background: var(--bg2); border: 1px solid var(--border);
-  color: var(--text); border-radius: var(--radius-sm); padding: 6px 8px;
-  font-family: var(--mono); font-size: 11px;
-}
-.mini-row input:focus { outline: none; border-color: var(--accent); }
-.admin-preview {
-  margin-top: 8px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 8px; background: var(--bg); font-size: 11px; color: var(--text2);
-  white-space: pre-wrap; max-height: 180px; overflow: auto;
-}
-
-.setup-toggles { display: none; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
-.setup-toggles.show { display: grid; }
-.setup-toggle { border: 1px solid var(--border); background: var(--bg2); border-radius: var(--radius-sm); padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; min-height: 60px; }
-.setup-toggle-label { font-family: var(--mono); font-size: 10px; color: var(--text2); text-transform: uppercase; line-height: 1.2; }
-
-.setup-switch { position: relative; width: 34px; height: 18px; flex-shrink: 0; }
-.setup-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
-.setup-slider { position: absolute; inset: 0; background: var(--border); border-radius: 999px; cursor: pointer; }
-.setup-slider::before { content: ""; position: absolute; width: 12px; height: 12px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.15s; }
-.setup-switch input:checked + .setup-slider { background: var(--accent); }
-.setup-switch input:checked + .setup-slider::before { transform: translateX(14px); }
-
-.setup-state-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
-.tri-toggle { width: 48px; height: 20px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg3); position: relative; cursor: pointer; }
-.tri-toggle::before { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--text2); transition: transform 0.2s; }
-.tri-toggle[data-state="N/A"] { border-color: rgba(234,179,8,0.4); background: rgba(234,179,8,0.06); }
-.tri-toggle[data-state="N/A"]::before { transform: translateX(12px); background: var(--amber); }
-.tri-toggle[data-state="ON"] { border-color: rgba(34,197,94,0.5); background: rgba(34,197,94,0.06); }
-.tri-toggle[data-state="ON"]::before { transform: translateX(26px); background: var(--green); }
-.tri-toggle-label { font-family: var(--mono); font-size: 10px; color: var(--text3); min-width: 28px; text-align: right; }
-.tri-toggle-label.on { color: var(--green); }
-.tri-toggle-label.na { color: var(--amber); }
-
-.error-grid { display: grid; grid-template-columns: 150px 1fr; gap: 8px; }
-.error-list-admin { border: 1px solid var(--border); border-radius: var(--radius-sm); max-height: 180px; overflow: auto; padding: 4px; }
-.error-item-admin { width: 100%; text-align: left; margin-bottom: 3px; background: transparent; border: 1px solid transparent; color: var(--text2); border-radius: 3px; padding: 4px 6px; cursor: pointer; font-size: 11px; }
-.error-item-admin.active { color: var(--accent); border-color: var(--border); background: rgba(59,130,246,0.06); }
-.error-item-admin:hover { color: var(--text); }
-
-.product-logo { position: fixed; top: 12px; right: 14px; z-index: 1200; display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg2); pointer-events: none; }
-.product-logo-mark { width: 24px; height: 24px; border-radius: 4px; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 600; background: var(--accent); }
-.product-logo-name { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; }
-.no-results { display: none; text-align: center; padding: 60px 20px; color: var(--text3); font-family: var(--mono); font-size: 13px; }
-.no-results.show { display: block; }
-
-/* Mobile */
-@media (max-width: 768px) {
-  html { font-size: 15px; }
-  .layout { grid-template-columns: 1fr; }
-  .mob-topbar {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 30;
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
   }
-  .mob-topbar .brand-title { font-family: var(--mono); font-size: 11px; color: var(--accent); font-weight: 600; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
-  .mob-search {
-    flex: 1; min-width: 0; padding: 6px 10px;
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); color: var(--text);
-    font-family: var(--font); font-size: 13px; outline: none;
-  }
-  .mob-search::placeholder { color: var(--text3); font-size: 12px; }
-  .mob-search:focus { border-color: var(--accent); }
-  .mobile-toggle {
-    display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px; background: none; border: none;
-    color: var(--text); cursor: pointer; flex-shrink: 0;
-  }
-  .mobile-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
 
+  /* ============ SIDEBAR ============ */
   .sidebar {
-    position: fixed; top: 0; left: 0; z-index: 40;
-    height: 100dvh; width: 100dvw;
-    transform: translateX(-100%); transition: transform 0.25s ease;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-close { display: flex; }
-  .sidebar-overlay { display: block; }
 
-  .sidebar-header { padding: 16px; display: flex; align-items: center; justify-content: space-between; }
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
 
-  .main { padding: 16px 14px; max-width: 100%; }
-  h1 { font-size: 22px; }
-  .breadcrumb { font-size: 10px; }
-  .section { margin-top: 26px; }
-  .info-grid { grid-template-columns: 1fr; gap: 10px; }
-  .setup-row { grid-template-columns: 120px 1fr; }
-  .setup-label { font-size: 10px; padding: 8px 10px; }
-    .setup-value { font-size: 11px; padding: 8px 10px; }
+  .brand {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
 
-  .error-card { padding: 12px 14px; }
-  .error-header { flex-direction: column; gap: 8px; }
-  .error-name { font-size: 13px; }
-  .error-fix { font-size: 12px; }
+  .brand-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
 
-  .admin-shell { grid-template-columns: 1fr; }
-  .error-grid { grid-template-columns: 1fr; }
-  .setup-toggles { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .brand-name {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
 
-  .product-logo { display: none; }
-  .admin-panel { padding: 12px; }
-  .variant-pill { font-size: 10px; padding: 4px 8px; }
-}
+  .brand-name .dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
 
-@media (max-width: 480px) {
-  h1 { font-size: 19px; }
-  .main { padding: 14px 10px; }
-  .setup-row { grid-template-columns: 90px 1fr; }
-  .setup-toggles { grid-template-columns: 1fr; }
-}
+  .search-wrap { padding: 0 14px 14px; }
 
-@media print {
-  .sidebar, .sidebar-overlay, .product-logo, .admin-fab, .toast, .mob-topbar { display: none !important; }
-  .layout { grid-template-columns: 1fr; }
-  .main { padding: 0; max-width: 100%; }
-  body { background: #fff; color: #000; font-size: 12px; }
-  .info-card, .error-card, .setup-table, .section { break-inside: avoid; border-color: #ccc; background: #f5f5f5; }
-  .copy-btn, .copy-all, .variant-pills { display: none !important; }
-}
+  .search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: var(--font);
+    font-size: 13px;
+    transition: border-color 0.15s;
+  }
+
+  .search::placeholder { color: var(--text-muted); }
+  .search:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .nav-section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding: 12px 20px 6px;
+  }
+
+  .nav-list { list-style: none; padding: 0 10px; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 12px;
+    border-radius: 6px;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.1s;
+    border: 1px solid transparent;
+    user-select: none;
+  }
+
+  .nav-item:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+  }
+
+  .nav-item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+
+  .nav-item.active {
+    background: rgba(88, 166, 255, 0.12);
+    color: var(--accent);
+    border-color: rgba(88, 166, 255, 0.3);
+  }
+
+  .nav-item .marker {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    width: 18px;
+  }
+
+  .nav-item.active .marker { color: var(--accent); }
+  .nav-item.hidden { display: none; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .sidebar-footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+
+  .sidebar-footer a:hover { color: var(--accent); }
+
+  /* FAB */
+  .admin-fab {
+    display: none;
+    position: fixed;
+    right: 16px; bottom: 16px;
+    z-index: 120;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .admin-fab.unlocked { display: block; }
+
+  .admin-fab:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .hidden-access {
+    position: fixed;
+    top: 8px; left: 8px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    z-index: 2200;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.15s, border-color 0.15s;
+  }
+
+  .hidden-access:hover,
+  .hidden-access:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+    opacity: 1;
+    outline: none;
+  }
+
+  .product-logo {
+    position: fixed;
+    top: 14px; right: 16px;
+    z-index: 1200;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    pointer-events: none;
+  }
+
+  .product-logo-mark {
+    width: 26px; height: 26px;
+    border-radius: 5px;
+    display: grid; place-items: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--accent);
+  }
+
+  .product-logo-name {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); border: 0;
+  }
+
+  /* ============ MAIN ============ */
+  .main {
+    padding: 40px 48px;
+    max-width: 960px;
+  }
+
+  .page-header { margin-bottom: 32px; }
+
+  .breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .breadcrumb .sep { margin: 0 6px; opacity: 0.4; }
+  .breadcrumb .current { color: var(--accent); }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+    max-width: 500px;
+  }
+
+  /* ============ SECTIONS & CARDS ============ */
+  .section { margin-top: 36px; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .section-title h2 {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .section-title .rule {
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  /* Setup table */
+  .setup-table {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .setup-row {
+    display: grid;
+    grid-template-columns: 148px 1fr;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .setup-row:last-child { border-bottom: none; }
+  .setup-row:hover { background: rgba(255,255,255,0.02); }
+  .setup-row.copied { background: rgba(34, 197, 94, 0.06); }
+
+  .setup-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    display: flex; align-items: center;
+  }
+
+  .setup-value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 12px;
+    display: flex; align-items: center;
+  }
+
+  .setup-value.on  { color: var(--green); }
+  .setup-value.off { color: var(--danger); }
+  .setup-value.na  { color: var(--text-muted); }
+  .setup-value.warn{ color: var(--warn); }
+
+  .setup-row .copy-hint {
+    margin-left: auto;
+    font-size: 9px;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+  .setup-row:hover .copy-hint { opacity: 1; }
+  .setup-row.copied .copy-hint { opacity: 1; color: var(--green); }
+
+  /* Requirements + Windows */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .info-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+
+  .info-card h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .info-card ul { list-style: none; }
+
+  .info-card li {
+    padding: 5px 0;
+    color: var(--text);
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .info-card li::before {
+    content: '—';
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .info-card li:hover { color: var(--accent); }
+
+  /* Errors */
+  .error-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .error-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--warn);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+
+  .error-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .error-name { font-weight: 600; color: var(--text); font-size: 14px; flex: 1; }
+
+  .error-fix {
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+  }
+
+  .error-fix code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg);
+    color: var(--accent);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+    cursor: pointer;
+  }
+  .error-fix code:hover { background: var(--bg3); }
+  .error-fix code.copied { background: rgba(63, 185, 80, 0.15); color: var(--green); border-color: rgba(63, 185, 80, 0.3); }
+
+  .error-fix a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .error-fix a:hover { text-decoration: underline; }
+
+  /* Copy buttons */
+  .copy-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+  }
+
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .copy-btn.copied { color: var(--green); border-color: var(--green); background: rgba(63, 185, 80, 0.1); }
+
+  .copy-btn svg {
+    width: 11px; height: 11px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .section-title .copy-all {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .section-title .copy-all:hover { color: var(--accent); border-color: var(--accent); }
+  .section-title .copy-all.copied { color: var(--green); border-color: var(--green); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--bg3);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 1000;
+  }
+
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Note */
+  .note {
+    background: rgba(210, 153, 34, 0.08);
+    border: 1px solid rgba(210, 153, 34, 0.25);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .note .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--warn);
+    text-transform: uppercase;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+
+  .no-results {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .no-results.show { display: block; }
+
+  /* ============ VARIANT PILLS ============ */
+  .variant-pills { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 4px; }
+
+  .variant-pill {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    transition: border-color 0.12s, color 0.12s;
+    user-select: none;
+  }
+
+  .variant-pill:hover { border-color: var(--accent); color: var(--text); }
+  .variant-pill.active { border-color: var(--accent); color: var(--accent); background: rgba(88, 166, 255, 0.1); }
+
+  /* ============ ADMIN PANEL ============ */
+  .admin-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2000; padding: 16px;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 0.2s, visibility 0.2s;
+  }
+
+  .admin-modal.show { opacity: 1; visibility: visible; pointer-events: auto; }
+
+  .admin-panel {
+    width: min(800px, 100%);
+    max-height: 90vh; overflow: auto;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .admin-title {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; gap: 10px;
+  }
+
+  .admin-title h3 {
+    font-size: 16px; font-weight: 600;
+  }
+
+  .admin-field { display: flex; flex-direction: column; gap: 4px; }
+
+  .admin-field label {
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .admin-field select,
+  .admin-field input,
+  .admin-field textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    padding: 6px 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .admin-field textarea { min-height: 100px; resize: vertical; }
+
+  .admin-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+
+  .admin-actions button {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.12s, color 0.12s;
+  }
+
+  .admin-actions button:hover { color: var(--accent); border-color: var(--accent); }
+  .admin-actions button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+  .admin-preview {
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+    background: var(--bg);
+    font-size: 11px;
+    color: var(--text-dim);
+    white-space: pre-wrap;
+    max-height: 200px;
+    overflow: auto;
+  }
+
+  .admin-shell {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .admin-side {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .admin-main {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    padding: 10px;
+  }
+
+  .admin-select {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .admin-select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .mini-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-bottom: 6px; }
+  .mini-row input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .mini-row input:focus { outline: none; border-color: var(--accent); }
+
+  .mini-btn {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 10px;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: border-color 0.12s, color 0.12s;
+  }
+  .mini-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .admin-switches { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+  .admin-section-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(88,166,255,0.1); }
+
+  .admin-section-panel {
+    display: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+    background: rgba(22,27,34,0.5);
+  }
+
+  .admin-section-panel.active { display: block; }
+
+  .admin-block { border: 1px solid var(--border); border-radius: 4px; margin-top: 10px; overflow: hidden; }
+  .admin-block summary {
+    list-style: none; cursor: pointer;
+    padding: 8px 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    background: var(--bg2);
+    color: var(--text-dim);
+  }
+  .admin-block summary::-webkit-details-marker { display: none; }
+  .admin-block-body { padding: 10px; }
+
+  .setup-toggles { display: none; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
+  .setup-toggles.show { display: grid; }
+
+  .setup-toggle {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    border-radius: 4px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 70px;
+  }
+
+  .setup-toggle-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .setup-switch {
+    position: relative;
+    width: 36px; height: 20px;
+    flex-shrink: 0;
+  }
+  .setup-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .setup-slider {
+    position: absolute; inset: 0;
+    background: var(--border-strong);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .setup-slider::before {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    left: 3px; top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.15s;
+  }
+  .setup-switch input:checked + .setup-slider { background: var(--accent); }
+  .setup-switch input:checked + .setup-slider::before { transform: translateX(16px); }
+
+  .setup-state-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
+
+  .tri-toggle {
+    width: 52px; height: 22px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    position: relative;
+    cursor: pointer;
+  }
+  .tri-toggle::before {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: transform 0.2s;
+  }
+  .tri-toggle[data-state='OFF'] { border-color: var(--border-strong); }
+  .tri-toggle[data-state='N/A'] { border-color: rgba(210,153,34,0.5); background: rgba(210,153,34,0.08); }
+  .tri-toggle[data-state='N/A']::before { transform: translateX(14px); background: var(--warn); }
+  .tri-toggle[data-state='ON'] { border-color: rgba(63,185,80,0.5); background: rgba(63,185,80,0.08); }
+  .tri-toggle[data-state='ON']::before { transform: translateX(30px); background: var(--green); }
+
+  .tri-toggle-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    min-width: 30px;
+    text-align: right;
+  }
+  .tri-toggle-label.off { color: var(--text-dim); }
+  .tri-toggle-label.na { color: var(--warn); }
+  .tri-toggle-label.on { color: var(--green); }
+
+  .error-grid { display: grid; grid-template-columns: 160px 1fr; gap: 8px; }
+  .error-list-admin { border: 1px solid var(--border); border-radius: 4px; max-height: 200px; overflow: auto; padding: 4px; }
+  .error-item-admin { width: 100%; text-align: left; margin-bottom: 4px; background: transparent; border: 1px solid transparent; color: var(--text-dim); border-radius: 3px; padding: 5px 6px; cursor: pointer; font-size: 11px; transition: color 0.1s, border-color 0.1s; }
+  .error-item-admin.active { color: var(--accent); border-color: var(--border); background: rgba(88,166,255,0.08); }
+  .error-item-admin:hover { color: var(--text); }
+
+  @media (max-width: 980px) {
+    .admin-shell { grid-template-columns: 1fr; }
+    .error-grid { grid-template-columns: 1fr; }
+  }
+
+  .admin-help {
+    margin-top: 8px; padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-dim);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  /* ============ MOBILE / SIDEBAR OVERLAY ============ */
+  .mob-topbar { display: none; }
+  .mobile-toggle { display: none; }
+  .sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1100;
+    background: rgba(0,0,0,0.5);
+    opacity: 0; transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+
+  @media (max-width: 768px) {
+    html { font-size: 15px; -webkit-text-size-adjust: 100%; }
+    body { font-size: 14px; }
+
+    .app { grid-template-columns: 1fr; }
+
+    .mob-topbar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .mob-topbar .brand-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .mob-search {
+      flex: 1; min-width: 0;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      outline: none;
+    }
+    .mob-search::placeholder { color: var(--text-muted); font-size: 12px; }
+    .mob-search:focus { border-color: var(--accent); }
+    .mobile-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px;
+      border: none; background: transparent;
+      color: var(--text); cursor: pointer;
+      flex-shrink: 0;
+    }
+    .mobile-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+    .sidebar-overlay { display: block; }
+
+    .sidebar {
+      position: fixed; top: 0; left: 0; z-index: 1200;
+      height: 100dvh; width: 100dvw;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      border: none; border-radius: 0; padding: 0;
+      display: flex; flex-direction: column;
+      background: var(--bg);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar .brand { padding: 18px 18px 12px; margin-bottom: 4px; }
+    .sidebar .brand-name { font-size: 18px; }
+    .sidebar .search-wrap { display: none; }
+    .sidebar .nav-section-label { padding: 8px 18px 4px; font-size: 10px; }
+    .sidebar .nav-list { padding: 0 8px; flex: 1; overflow-y: auto; }
+    .sidebar .nav-item { padding: 10px 12px; font-size: 14px; border-radius: 6px; }
+    .sidebar .sidebar-footer { padding: 12px 18px; font-size: 12px; }
+    .sidebar .sidebar-close {
+      position: absolute; top: 10px; right: 10px; z-index: 10;
+      width: 36px; height: 36px;
+      border: none; background: transparent;
+      color: var(--text); cursor: pointer;
+    }
+
+    .main { padding: 16px 14px; max-width: 100%; }
+    h1 { font-size: 22px; }
+    .breadcrumb { font-size: 10px; }
+    .subtitle { font-size: 13px; }
+    .page-header { margin-bottom: 20px; }
+
+    .setup-table { font-size: 13px; }
+    .setup-row { grid-template-columns: 130px 1fr; }
+    .setup-label { font-size: 10px; padding: 8px 10px; }
+    .setup-value { font-size: 12px; padding: 8px 10px; }
+
+    .info-grid { grid-template-columns: 1fr; gap: 10px; }
+    .info-card { padding: 14px 16px; }
+    .info-card h3 { font-size: 11px; margin-bottom: 8px; }
+    .info-card li { font-size: 13px; padding: 6px 0; }
+
+    .section { margin-top: 24px; }
+    .section-title h2 { font-size: 11px; }
+
+    .error-card { padding: 12px 14px; }
+    .error-name { font-size: 14px; }
+    .error-fix { font-size: 13px; line-height: 1.7; }
+    .error-fix code { font-size: 11px; }
+    .error-header { flex-direction: column; gap: 8px; }
+
+    .variant-pills { gap: 5px; margin: 8px 0 2px; }
+    .variant-pill { font-size: 11px; padding: 4px 8px; }
+
+    .copy-btn { font-size: 10px; padding: 5px 10px; }
+    .section-title .copy-all { font-size: 10px; padding: 4px 8px; }
+
+    .product-logo { display: none; }
+    .hidden-access { right: 8px; top: 8px; left: auto; }
+
+    .admin-fab { right: 10px; bottom: 10px; font-size: 9px; padding: 6px 10px; }
+    .admin-panel { padding: 12px; border-radius: 6px; }
+    .admin-shell { grid-template-columns: 1fr; }
+    .error-grid { grid-template-columns: 1fr; }
+    .setup-toggles { grid-template-columns: 1fr 1fr; gap: 6px; }
+    .setup-toggle { padding: 8px; min-height: 60px; gap: 6px; }
+    .setup-toggle-label { font-size: 10px; }
+
+    .toast { font-size: 11px; padding: 8px 14px; bottom: 14px; }
+    .note { padding: 12px 14px; font-size: 13px; }
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 18px; }
+    .main { padding: 12px 10px; }
+    .setup-row { grid-template-columns: 90px 1fr; }
+    .setup-toggles { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    .sidebar, .product-logo, .hidden-access, .admin-fab, .copy-btn, .copy-all, .variant-pills, .toast { display: none !important; }
+    .app { grid-template-columns: 1fr; }
+    .main { padding: 0; max-width: 100%; }
+    .info-card, .error-card { break-inside: avoid; }
+    body { background: #fff; color: #000; }
+    .info-card, .error-card { border-color: #ccc; background: #f5f5f5; }
+  }
 </style>
-
 </head>
 <body>
 
-<div id="loading" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#09090b;color:#71717a;font-family:sans-serif;font-size:14px;transition:opacity 0.3s;">Loading...</div>
+<noscript><div style="background:#070b14;color:#eef5ff;padding:40px;font-family:sans-serif;text-align:center;"><h1>Cosmo Support</h1><p>JavaScript is required to view this page.</p><p>Please enable JavaScript in your browser settings.</p></div></noscript>
+<div id="loading" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#070b14;color:#6f84a8;font-family:sans-serif;font-size:14px;transition:opacity 0.3s;">Loading...</div>
+<button class="hidden-access" id="hiddenAccess" aria-label="Open secure access">admin</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<button class="admin-fab" id="openAdminFab">Update panel</button>
 
 <div class="mob-topbar">
-  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
     <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
   </button>
   <span class="brand-title" id="mobBrand">Cosmo Support</span>
-  <input type="text" class="mob-search" id="mobSearch" placeholder="Search..." autocomplete="off">
+  <input type="text" class="mob-search" id="mobSearch" placeholder="Search products..." autocomplete="off">
 </div>
-
 <div class="product-logo" id="productLogo" aria-hidden="true">
   <div class="product-logo-mark" id="productLogoMark">C</div>
   <div class="product-logo-name" id="productLogoName">Cosmo</div>
 </div>
 
-<button class="admin-fab" id="openAdminFab">Update panel</button>
+<div class="app">
 
-<div class="layout" id="layout">
-
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div>
-        <div class="sb-brand">Cosmo Support</div>
-        <div class="sb-version" id="mobBrand2">Product Reference</div>
-      </div>
-      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="brand">
+      <div class="brand-title">Support Reference</div>
+      <div class="brand-name">Cosmo<span class="dot"></span></div>
     </div>
 
     <div class="search-wrap">
-      <input type="text" id="search" placeholder="Search products..." autocomplete="off">
+      <label for="search" class="sr-only">Search products</label>
+      <input type="text" class="search" id="search" placeholder="search products..." autocomplete="off">
     </div>
 
-    <div class="sb-label">Products</div>
+    <div class="nav-section-label">Products</div>
     <ul class="nav-list" id="navList"></ul>
 
-    <div class="sb-label">General</div>
+    <div class="nav-section-label">General</div>
     <ul class="nav-list">
       <li class="nav-item" data-key="tos">
-        <span class="marker">&sect;</span>
+        <span class="marker">§</span>
         <span>T.O.S. / Refunds / HWID</span>
       </li>
       <li class="nav-item" data-key="extra-kane">
-        <span class="marker">&sect;</span>
+        <span class="marker">§</span>
         <span>Extra Fixes (Kane)</span>
       </li>
     </ul>
 
     <div class="sidebar-footer">
-      <a href="https://support.cosmotickets.com/" target="_blank" rel="noopener">support.cosmotickets.com</a><br>
-      /status &middot; pw: support
+      <a href="https://support.cosmotickets.com/" target="_blank">support.cosmotickets.com</a><br>
+      <a href="https://support.cosmotickets.com/status/" target="_blank">/status</a> · pw: support
     </div>
   </aside>
 
+  <!-- ============ MAIN ============ -->
   <main class="main">
     <div id="content"></div>
     <div class="no-results" id="noResults">No products match your search.</div>
@@ -518,36 +1076,36 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
 
 </div>
 
-<div class="toast" id="toast">Copied to clipboard</div>
+<div class="toast" id="toast">✓ Copied to clipboard</div>
 
 <div class="admin-modal" id="adminModal" aria-hidden="true">
   <div class="admin-panel" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
     <div class="admin-title">
-      <h3 id="adminTitle">Update Panel</h3>
-      <button class="btn" id="closeAdmin">Close</button>
+      <h3 id="adminTitle">Manual Update Panel</h3>
+      <button class="copy-btn" id="closeAdmin">Close</button>
     </div>
 
     <div class="admin-shell" id="adminShell">
       <aside class="admin-side">
         <select id="adminProductSelect" class="admin-select"></select>
-        <div id="adminVariantWrap" style="display:none">
-          <div class="mini-row" style="margin-top:6px">
+        <div id="adminVariantWrap" style="display:none;">
+          <div class="mini-row" style="margin-top:6px;">
             <select id="adminVariantSelect" class="admin-select"></select>
           </div>
           <div class="mini-row">
             <input id="adminVariantNameInline" type="text" placeholder="Rename variant">
             <button class="mini-btn" id="adminSaveVariantInline" type="button">Rename</button>
           </div>
-          <div class="mini-row" style="margin-bottom:0">
-            <input id="adminAddVariantInline" type="text" placeholder="Add game (e.g. PUBG)">
-            <button class="mini-btn" id="adminAddVariantInlineBtn" type="button">Add</button>
+          <div class="mini-row" style="margin-bottom:0;">
+            <input id="adminAddVariantInline" type="text" placeholder="Add game name (e.g. PUBG)">
+            <button class="mini-btn" id="adminAddVariantInlineBtn" type="button">Add Game</button>
           </div>
-          <div class="mini-row" style="margin-top:8px">
-            <button class="mini-btn" id="adminDeleteVariantInline" type="button">Delete Game</button>
+          <div class="mini-row" style="margin-top:8px;">
+            <button class="mini-btn" id="adminDeleteVariantInline" type="button">Delete Selected Game</button>
             <span></span>
           </div>
         </div>
-        <div class="mini-row" style="margin-top:6px">
+        <div class="mini-row" style="margin-top:6px;">
           <input id="adminProductNameInline" type="text" placeholder="Edit product name">
           <button class="mini-btn" id="adminSaveProductInline" type="button">Save</button>
         </div>
@@ -572,7 +1130,7 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
           <div class="admin-field">
             <label>Supported Windows</label>
             <div id="adminWindowsList"></div>
-            <div class="mini-row"><input id="adminAddWindowInput" type="text" placeholder="Add windows item"><button class="mini-btn" id="adminAddWindowBtn" type="button">Add</button></div>
+            <div class="mini-row"><input id="adminAddWindowInput" type="text" placeholder="Add supported windows item"><button class="mini-btn" id="adminAddWindowBtn" type="button">Add</button></div>
           </div>
           <div class="admin-field">
             <label>Requirements</label>
@@ -584,7 +1142,7 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
         <div class="admin-section-panel" id="errorPanel">
           <div class="error-grid">
             <div>
-              <button class="mini-btn" id="adminAddErrorBtn" type="button" style="width:100%;margin-bottom:8px">Add New Error</button>
+              <button class="mini-btn" id="adminAddErrorBtn" type="button" style="width:100%;margin-bottom:8px;">Add New Error</button>
               <div class="error-list-admin" id="adminErrorList"></div>
             </div>
             <div>
@@ -603,11 +1161,11 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
         <details class="admin-block">
           <summary>Advanced JSON</summary>
           <div class="admin-block-body">
-            <div class="admin-actions" style="margin-top:0">
+            <div class="admin-actions" style="margin-top:0;">
               <button id="adminExportVisual">Export JSON</button>
               <button id="adminImportVisual">Import JSON</button>
               <button id="adminResetVisual">Reset to default</button>
-              <button id="adminSyncBtn" style="border-color:rgba(59,130,246,0.4);color:var(--accent)">Sync to all users</button>
+              <button id="adminSyncBtn" style="border-color:rgba(var(--theme-a),0.5);color:var(--accent);">Sync to all users</button>
             </div>
             <div class="admin-preview" id="adminPreviewVisual"></div>
           </div>
@@ -618,24 +1176,23 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
   </div>
 </div>
 
-
-<script><script>
+<script>
 /* =========================================================
-   DATA â€” extracted from the support guide
+   DATA — extracted from the support guide
    ========================================================= */
 const products = [
   {
     key: 'naxo', name: 'Cosmo (Naxo)', category: 'Cosmo',
     setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
-    windows: ['Apex, EFT, Rust â€” ALL versions', 'DayZ â€” 25h2 & 24h2 NOT supported'],
+    windows: ['Apex, EFT, Rust — ALL versions', 'DayZ — 25h2 & 24h2 NOT supported'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'Fastboot disabled in BIOS & Windows'],
     errors: [
       { name: 'Hyper-V error', fix: 'Use the <code>*cosmohyperv</code> command.' },
-      { name: 'Fastboot / Hiberboot', fix: 'Open cmd as admin and run:\n<code>reg add "HKLM\\System\\CurrentControlSet\\Control\\Session Manager\\Power" /v "HiberbootEnabled" /t REG_DWORD /d "1" /f</code>\nThen run <code>powercfg -h on</code>\nThen: Control Panel â†’ Hardware and Sound â†’ Change What Power Buttons Do â†’ Turn Off Fast Start Up.' },
+      { name: 'Fastboot / Hiberboot', fix: 'Open cmd as admin and run:\n<code>reg add "HKLM\\System\\CurrentControlSet\\Control\\Session Manager\\Power" /v "HiberbootEnabled" /t REG_DWORD /d "1" /f</code>\nThen run <code>powercfg -h on</code>\nThen: Control Panel → Hardware and Sound → Change What Power Buttons Do → Turn Off Fast Start Up.' },
       { name: 'Mapping driver failed', fix: 'Add the file to <code>C:\\Windows\\System32\\drivers</code> then restart PC.\n<a href="https://mega.nz/file/TB1A0bbZ#oLP83kATOQzucyzfaHrtAE4-JD5-U3OblZ1VnzXVwDY" target="_blank">Download file</a>' },
-      { name: 'Driver does not seem to be running â€” contact support', fix: 'Open <code>Computer\\HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management</code> and remove <code>LargePageDrivers</code>. Then check <code>C:\\Windows\\System32\\drivers</code> and delete PMAD again.' }
+      { name: 'Driver does not seem to be running — contact support', fix: 'Open <code>Computer\\HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management</code> and remove <code>LargePageDrivers</code>. Then check <code>C:\\Windows\\System32\\drivers</code> and delete PMAD again.' }
     ],
-    note: 'Can\'t fix the issue? @Senior Support â€” use the <code>*naxoticket</code> command to add Naxo.',
+    note: 'Can\'t fix the issue? @Senior Support — use the <code>*naxoticket</code> command to add Naxo.',
     selectedVariant: null,
     variants: {
       spoofer: { name: 'Spoofer', setup: {}, windows: [], requirements: [], errors: [] },
@@ -657,7 +1214,7 @@ const products = [
     errors: [
       { name: 'Hyper-V error', fix: 'Use the <code>*cosmohyperv</code> command.' },
       { name: 'Warthunder stuck at 15%', fix: 'Copy file path of Warthunder and paste in loader.' },
-      { name: 'Website opens but error persists â€” install Python manually', fix: 'Download <a href="http://warchill.xyz/python.zip" target="_blank">python.zip</a>. Go to <code>C:\\Users\\USERNAME\\AppData\\Local\\Temp</code>, create a <code>python</code> folder, unzip into it. Then run the loader as admin again.' }
+      { name: 'Website opens but error persists — install Python manually', fix: 'Download <a href="http://warchill.xyz/python.zip" target="_blank">python.zip</a>. Go to <code>C:\\Users\\USERNAME\\AppData\\Local\\Temp</code>, create a <code>python</code> folder, unzip into it. Then run the loader as admin again.' }
     ],
     selectedVariant: null,
     variants: {
@@ -667,14 +1224,14 @@ const products = [
   },
   {
     key: 'atlas', name: 'Atlas', category: 'Products',
-    setup: { tpm:'N/A Â· ON for COD', secureBoot:'OFF (except COD)', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
+    setup: { tpm:'N/A · ON for COD', secureBoot:'OFF (except COD)', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
     windows: ['ALL Windows versions'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
     errors: [
       { name: 'Meltdown / Spectre protection', fix: '<a href="https://www.guru3d.com/download/download-inspectre/" target="_blank">Download InSpectre</a>. Disable Meltdown & Spectre protection. Then go to <code>C:/RSCFG</code> and delete <code>temp</code>. Restart PC and try again.' },
       { name: 'Blue screens', fix: 'Disable built-in spoofer.' },
-      { name: 'Failed to load driver', fix: 'Open CMD as admin â†’ run <code>sfc /scannow</code>. Check Core Isolation is disabled.' },
-      { name: 'Fatal Error â€” Engine Error', fix: 'Open RivaTuner and set detection level to "none".' },
+      { name: 'Failed to load driver', fix: 'Open CMD as admin → run <code>sfc /scannow</code>. Check Core Isolation is disabled.' },
+      { name: 'Fatal Error — Engine Error', fix: 'Open RivaTuner and set detection level to "none".' },
       { name: 'PUBG Blackscreen', fix: 'Delete the Movies folder at <code>C:\\Program Files (x86)\\Steam\\steamapps\\common\\PUBG\\TslGame\\Content\\Movies</code>' }
     ],
     selectedVariant: null,
@@ -716,7 +1273,7 @@ const products = [
   {
     key: 'astrozoom', name: 'Astrozoom', category: 'Products',
     setup: { tpm:'OFF', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
-    windows: ['Win 10 22h2 â†’ Win 11 23h2'],
+    windows: ['Win 10 22h2 → Win 11 23h2'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
     errors: [
       { name: 'Loading mem_ctx', fix: 'Uninstall all anti-cheats/anti-virus: FaceIT, Vanguard, ACE, Kaspersky, McAfee, Malwarebytes. (Try loading cheat from USB.)' },
@@ -747,10 +1304,10 @@ const products = [
     windows: ['ALL Windows versions'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
     errors: [
-      { name: 'Invalid Processed Data 0x0', fix: 'Use a VPN â€” caused by ISP blocking the connection.' },
+      { name: 'Invalid Processed Data 0x0', fix: 'Use a VPN — caused by ISP blocking the connection.' },
       { name: 'Error #3B000000', fix: 'Turn off Core Isolation and run in CMD as admin:\n<code>bcdedit /set hypervisorlaunchtype off</code>' },
       { name: 'Error Code 0x1 / 0x2', fix: 'Uninstall any anti-cheat and restart PC.' },
-      { name: 'Error Code 0x3 / 0x7', fix: 'Spoofed before inject â€” restart PC then inject first.' }
+      { name: 'Error Code 0x3 / 0x7', fix: 'Spoofed before inject — restart PC then inject first.' }
     ],
     selectedVariant: null,
     variants: {
@@ -809,9 +1366,9 @@ const products = [
     key: 'liquid', name: 'Liquid', category: 'Products',
     setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
     windows: ['ALL Windows versions'],
-    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'EFT CHAMS: press F1 in main menu to inject', 'ARC Raiders â€” Steam only'],
+    requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'EFT CHAMS: press F1 in main menu to inject', 'ARC Raiders — Steam only'],
     errors: [
-      { name: 'Steelseries setup', fix: 'On steelseries.com/gg: General â†’ turn on Sonar. Then SONAR â†’ Shortcuts â†’ bind F7 to Master Volume Up. Press this bind before injection.' },
+      { name: 'Steelseries setup', fix: 'On steelseries.com/gg: General → turn on Sonar. Then SONAR → Shortcuts → bind F7 to Master Volume Up. Press this bind before injection.' },
       { name: 'SVM / VMX Error', fix: 'Disable Windows PIN (<code>*pin</code>) then follow <code>*iobit</code>.' },
       { name: 'No menu', fix: 'Update GPU/Windows drivers, install all visuals, disable overlays. Don\'t run Steam/game as admin.' },
       { name: 'Failed to Map Memory', fix: 'If user has > 8GB RAM, disable startup apps in Task Manager.' }
@@ -880,8 +1437,8 @@ const products = [
     errors: [
       { name: 'Mapping driver failed', fix: 'Disable all anti-cheats & anti-virus. Use <code>*defendercontrol</code>.' },
       { name: 'Loader connection issues', fix: 'Use Proton VPN.' },
-      { name: 'Crashing / BSOD', fix: 'Make sure no-spoofer download is selected. EAC spoofer not working â€” for BE spoofer, disable TPM.' },
-      { name: 'Overlay issues', fix: 'Disable all overlays â€” Discord, Steam, Medal, Nvidia/AMD, etc.' }
+      { name: 'Crashing / BSOD', fix: 'Make sure no-spoofer download is selected. EAC spoofer not working — for BE spoofer, disable TPM.' },
+      { name: 'Overlay issues', fix: 'Disable all overlays — Discord, Steam, Medal, Nvidia/AMD, etc.' }
     ],
     selectedVariant: null,
     variants: {
@@ -895,12 +1452,12 @@ const products = [
   {
     key: 'athena', name: 'Athena', category: 'Products',
     setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
-    windows: ['ALL Windows versions EXCEPT:', 'Marvel, PUBG, OW2, Naraka â€” 22h2 W10 only'],
+    windows: ['ALL Windows versions EXCEPT:', 'Marvel, PUBG, OW2, Naraka — 22h2 W10 only'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
     errors: [
       { name: 'ARC Raiders', fix: 'Steam only and DX12 must be used.' },
-      { name: 'Error code 2145 / 2146', fix: 'Tell a Senior to contact dev â€” uploaded file was corrupted during upload.' },
-      { name: 'Crashing loader', fix: 'Paste this into CMD as admin then restart PC (change "aaaaa14" â€” all lowercase):\n<code>wmic computersystem where name="%computername%" call rename name="aaaaa14"</code>' }
+      { name: 'Error code 2145 / 2146', fix: 'Tell a Senior to contact dev — uploaded file was corrupted during upload.' },
+      { name: 'Crashing loader', fix: 'Paste this into CMD as admin then restart PC (change "aaaaa14" — all lowercase):\n<code>wmic computersystem where name="%computername%" call rename name="aaaaa14"</code>' }
     ],
     selectedVariant: null,
     variants: {
@@ -921,11 +1478,11 @@ const products = [
   {
     key: 'kraken', name: 'Kraken (Games)', category: 'Products',
     setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'OFF' },
-    windows: ['ALL Windows versions', 'DayZ â€” 25h2 & 24h2 NOT supported'],
+    windows: ['ALL Windows versions', 'DayZ — 25h2 & 24h2 NOT supported'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
     errors: [
       { name: 'Overlay', fix: 'Nvidia overlay for Nvidia users, Overwolf for AMD.' },
-      { name: 'Roblox', fix: 'Download the game from <a href="https://www.fishstrap.app" target="_blank">fishstrap.app</a> â€” prevents silent beta updates.' }
+      { name: 'Roblox', fix: 'Download the game from <a href="https://www.fishstrap.app" target="_blank">fishstrap.app</a> — prevents silent beta updates.' }
     ],
     selectedVariant: null,
     variants: {
@@ -954,7 +1511,7 @@ const products = [
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', 'Delete VGK, FaceIT, ACE anti-cheat (not ACE if Delta/ABI)'],
     errors: [
       { name: 'Driver initialization Error 1', fix: 'Disable virtualization if not working. Check Core Isolation. Or run <a href="https://mega.nz/file/uURS0ZgL#gn9i_rBW__80V9uzexA_Cr2vPUPNGQK2aif4qtevXHs" target="_blank">this file</a>.' },
-      { name: 'Spoofer', fix: 'Run cheat first, then spoofer, then launch game. If cheat menu won\'t appear after spoofer, simply relaunch â€” cheat is already injected.' },
+      { name: 'Spoofer', fix: 'Run cheat first, then spoofer, then launch game. If cheat menu won\'t appear after spoofer, simply relaunch — cheat is already injected.' },
       { name: 'PUBG', fix: 'Must be run in DX11 (change DX version in game).' },
       { name: 'Dark and Darker', fix: 'Add <code>-dx11</code> in Steam launch options.' },
       { name: 'ABI FULL setup', fix: 'Navigate to <code>...\\ABInfinite\\ABInfinite\\Binaries\\Win64</code>. Create <code>guid.txt</code> and paste someone else\'s ABI account ID into it. Required for the spoofer to work.' }
@@ -985,7 +1542,7 @@ const products = [
     windows: ['ALL Windows versions'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off'],
     errors: [
-      { name: 'Injection failed (0x1394) â€” ARC Raiders', fix: '1. Close Chrome, try Opera.\n2. <a href="https://download.overwolf.com/install/Download?utm_content=new-light&utm_source=web_app_store" target="_blank">Install Overwolf</a>\n3. Task Manager â†’ Startup apps â†’ disable everything â†’ restart.\n4. Close all launchers (EA, Steam, BNet).\n5. Open Overwolf, disable all overlays, minimize to tray.\n6. Open loader as admin, inject, wait for HANDLE SUCCESSFULLY SENT.\n7. Open Steam and launch game.' },
+      { name: 'Injection failed (0x1394) — ARC Raiders', fix: '1. Close Chrome, try Opera.\n2. <a href="https://download.overwolf.com/install/Download?utm_content=new-light&utm_source=web_app_store" target="_blank">Install Overwolf</a>\n3. Task Manager → Startup apps → disable everything → restart.\n4. Close all launchers (EA, Steam, BNet).\n5. Open Overwolf, disable all overlays, minimize to tray.\n6. Open loader as admin, inject, wait for HANDLE SUCCESSFULLY SENT.\n7. Open Steam and launch game.' },
       { name: 'Loader not opening', fix: 'Don\'t have checker / support tool open with the loader.' }
     ],
     selectedVariant: null,
@@ -1009,14 +1566,14 @@ const products = [
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol', 'Medal.TV overlay', 'GPU drivers up to date'],
     errors: [
       { name: 'No menu (Valorant)', fix: 'Install Medal.TV, ensure record-with-medal is on. Valorant Launcher must NOT be open during inject.' },
-      { name: 'No menu (general)', fix: '<a href="https://gofile.io/d/sOW8lX" target="_blank">Download this</a>, run as admin. Creates <code>bundle.enc</code> â€” send in ticket.' },
-      { name: 'Secure Boot policy fix', fix: 'BIOS â†’ Secure Boot â†’ Key Management â†’ Forbidden Signatures (dbx) â†’ Delete. Press No. Delete signatures 1 by 1. Secure Boot mode: Custom. Do NOT press DELETE ALL.' },
+      { name: 'No menu (general)', fix: '<a href="https://gofile.io/d/sOW8lX" target="_blank">Download this</a>, run as admin. Creates <code>bundle.enc</code> — send in ticket.' },
+      { name: 'Secure Boot policy fix', fix: 'BIOS → Secure Boot → Key Management → Forbidden Signatures (dbx) → Delete. Press No. Delete signatures 1 by 1. Secure Boot mode: Custom. Do NOT press DELETE ALL.' },
       { name: 'BSOD for Apex', fix: '<a href="https://go.microsoft.com/fwlink/?linkid=2335869" target="_blank">Download this</a>. File path: <code>C:\\Program Files (x86)\\Windows Kits\\10\\</code>. Always generate a new build.' },
       { name: 'External Overlay error', fix: '1. Discord overlay off\n2. OBS: close or switch to Window Capture\n3. GeForce Experience overlay off\n4. Xbox Game Bar off' },
       { name: 'Aimbot or ESP not working', fix: 'Aimbot: select default preset. ESP: reload cheat within menu.' },
-      { name: 'Loader crashes after key verification', fix: 'Install latest VC++ Redistributable (x86 & x64):\n<a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" target="_blank">x64</a> Â· <a href="https://aka.ms/vs/17/release/vc_redist.x86.exe" target="_blank">x86</a>' },
+      { name: 'Loader crashes after key verification', fix: 'Install latest VC++ Redistributable (x86 & x64):\n<a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" target="_blank">x64</a> · <a href="https://aka.ms/vs/17/release/vc_redist.x86.exe" target="_blank">x86</a>' },
       { name: 'Graphic game crash', fix: 'Send screenshots:\n<a href="https://imgur.com/a/Jf9L64C" target="_blank">Graphics</a>\n<a href="https://imgur.com/a/ixjO37i" target="_blank">Overlay crash</a>' },
-      { name: 'Arena Breakout ENC:ON', fix: 'Too many reports â€” change account. Goes away after 12â€“24 hours.' }
+      { name: 'Arena Breakout ENC:ON', fix: 'Too many reports — change account. Goes away after 12–24 hours.' }
     ],
     selectedVariant: null,
     variants: {
@@ -1038,9 +1595,9 @@ const products = [
     windows: ['ALL Windows versions'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*pin removed for TPM', 'HVIX & HVAX in System32 (usually only removed if user used Kane before)'],
     errors: [
-      { name: 'Framework error', fix: 'Install .NET 7.0.5 Runtime:\n<a href="https://builds.dotnet.microsoft.com/dotnet/Runtime/7.0.5/dotnet-runtime-7.0.5-win-x64.exe" target="_blank">x64</a> Â· <a href="https://builds.dotnet.microsoft.com/dotnet/Runtime/7.0.5/dotnet-runtime-7.0.5-win-x86.exe" target="_blank">x86</a>' },
-      { name: 'No ESP â€” DayZ & EFT', fix: 'DayZ: Settings â†’ Video â†’ disable Postprocess Antialiasing & Hardware Antialiasing.\nEFT: Settings â†’ Game â†’ disable "Autoclean RAM".' },
-      { name: 'Keybinds for Rust Lite', fix: 'F5 = ESP Â· F6 = No Recoil Â· F9 = Remove Walls' },
+      { name: 'Framework error', fix: 'Install .NET 7.0.5 Runtime:\n<a href="https://builds.dotnet.microsoft.com/dotnet/Runtime/7.0.5/dotnet-runtime-7.0.5-win-x64.exe" target="_blank">x64</a> · <a href="https://builds.dotnet.microsoft.com/dotnet/Runtime/7.0.5/dotnet-runtime-7.0.5-win-x86.exe" target="_blank">x86</a>' },
+      { name: 'No ESP — DayZ & EFT', fix: 'DayZ: Settings → Video → disable Postprocess Antialiasing & Hardware Antialiasing.\nEFT: Settings → Game → disable "Autoclean RAM".' },
+      { name: 'Keybinds for Rust Lite', fix: 'F5 = ESP · F6 = No Recoil · F9 = Remove Walls' },
       { name: 'Legacy BIOS / Boot part not GPT', fix: '<a href="https://youtu.be/a54sqzcDrUU?si=Lj2PE-bUK2bLBMEg" target="_blank">YouTube guide</a>' },
       { name: 'Errors requiring Windows reinstall', fix: 'Error 1, 3, 4, 5, 6, 7 (all related to boot partitions).' },
       { name: 'HVIX / HVAX not found', fix: 'Run <code>sfc /scannow</code> in CMD as admin.' }
@@ -1056,11 +1613,11 @@ const products = [
   {
     key: 'vex', name: 'VEX', category: 'Products',
     setup: { tpm:'N/A', secureBoot:'OFF', virtualization:'OFF', defender:'OFF', firewall:'OFF', exploit:'OFF' },
-    windows: ['Win 10 22H2 â†’ Win 11 23H2'],
+    windows: ['Win 10 22H2 → Win 11 23H2'],
     requirements: ['UEFI BIOS', 'Visuals installed (*visual)', 'Core Isolation off', '*defendercontrol'],
     errors: [
       { name: 'VEX Warthunder & HLL', fix: 'Must be run in DX11. Add <code>-D3D11</code> to launch parameters.' },
-      { name: 'Connection issue', fix: '<a href="https://pcheck.ru/files/networkmanager.zip" target="_blank">Download networkmanager.zip</a>. Run it â†’ Find the Best IP â†’ Wait â†’ Apply.' }
+      { name: 'Connection issue', fix: '<a href="https://pcheck.ru/files/networkmanager.zip" target="_blank">Download networkmanager.zip</a>. Run it → Find the Best IP → Wait → Apply.' }
     ],
     selectedVariant: null,
     variants: {
@@ -1110,12 +1667,12 @@ const products = [
       { name: 'Error 1-4: Download/Timeout', fix: 'Use a VPN.' },
       { name: 'Error 2: Integrity Error', fix: 'Reinstall FiveM.' },
       { name: 'Error 3: Injection Error', fix: 'Anti-cheats / anti-virus blocking the injection.' },
-      { name: 'Cheat issues', fix: 'Display Settings can\'t be Fullscreen Exclusive â€” will cause crashes. Steam needs to be open with overlay enabled.' },
-      { name: 'How to inject', fix: 'Open FiveM with Steam running in background â†’ open loader, log in with key â†’ inject â†’ done. Users can inject inside a server too.' },
+      { name: 'Cheat issues', fix: 'Display Settings can\'t be Fullscreen Exclusive — will cause crashes. Steam needs to be open with overlay enabled.' },
+      { name: 'How to inject', fix: 'Open FiveM with Steam running in background → open loader, log in with key → inject → done. Users can inject inside a server too.' },
       { name: 'Fatal error / Connection error', fix: 'Open Date & Time settings, sync PC time.' },
       { name: 'BSOD', fix: 'Disable all anti-virus. Use <a href="https://antivirus-removal-tool.com/" target="_blank">antivirus-removal-tool.com</a>. If persists, uninstall mouse/keyboard software (Razer, Armory Crate).' },
       { name: '2 beeps when pressing F2 and game crashes', fix: 'Remove all modifications including ReShade / Redux. Reinstall game with Revo-Uninstaller if persists.' },
-      { name: 'Status 502 â€” Internal server error', fix: 'Server is down. Create desktop shortcut of loader â†’ Properties â†’ Target: add <code>â€“diagnostic</code>. Reopen, select different server.' }
+      { name: 'Status 502 — Internal server error', fix: 'Server is down. Create desktop shortcut of loader → Properties → Target: add <code>–diagnostic</code>. Reopen, select different server.' }
     ],
     selectedVariant: null,
     variants: {
@@ -1133,9 +1690,9 @@ const products = [
     key: 'viper', name: 'Viper', category: 'Products',
     setup: { tpm:'N/A', secureBoot:'N/A', virtualization:'N/A', defender:'OFF', firewall:'OFF', exploit:'DEFAULT' },
     windows: ['ALL Windows versions'],
-    requirements: ['ALL anti-virus OFF', 'Windows Defender / Smartscreen / Core Isolation off (*defendercontrol)', 'Disable all overlays (Discord, Nvidia, Overwolf, ReShade, RivaTuner)', 'Run Steam as admin Â· NO launch parameters', 'Disable Frame Generation & Nvidia Reflex in games', 'No Nvidia filters', 'STEAM ONLY (except ARC Raiders)', 'Close background apps Â· disable in startup', 'Visuals installed (*visual)', 'Windows & GPU drivers up to date'],
+    requirements: ['ALL anti-virus OFF', 'Windows Defender / Smartscreen / Core Isolation off (*defendercontrol)', 'Disable all overlays (Discord, Nvidia, Overwolf, ReShade, RivaTuner)', 'Run Steam as admin · NO launch parameters', 'Disable Frame Generation & Nvidia Reflex in games', 'No Nvidia filters', 'STEAM ONLY (except ARC Raiders)', 'Close background apps · disable in startup', 'Visuals installed (*visual)', 'Windows & GPU drivers up to date'],
     errors: [
-      { name: 'Failed to stream â€” please check connection', fix: 'Use a VPN.' },
+      { name: 'Failed to stream — please check connection', fix: 'Use a VPN.' },
       { name: 'The Isle: Evrima', fix: 'Delete <code>%localappdata%\\TheIsle\\Saved</code> folder.' },
       { name: 'ARC Raiders', fix: 'Delete <code>%localappdata%\\PioneerGame\\Saved</code> folder.' },
       { name: 'Failed to Stream', fix: 'Set DNS to Cloudflare.' },
@@ -1167,7 +1724,7 @@ const products = [
       { name: 'Overlay for ARK', fix: 'Legacy Discord overlay (Enable overlay off).' },
       { name: 'Overlay for R6', fix: 'Nvidia or AMD Metrics Overlay.' },
       { name: 'Error 2445782835', fix: 'Request customer\'s R6.exe build from <code>Appdata\\Local\\Ubisoft\\R6.exe</code>. Then use <code>*senior</code>.' },
-      { name: 'Win 11 spoofer fix', fix: '<a href="https://gofile.io/d/qVXmXC" target="_blank">Download fix</a>. ALL Win 11 users must run this to avoid BSODs. Extract, run as admin, click Yes to all. Restart, clean if needed, then spoof.\nAlso delete last 2 Windows Security updates (Windows Update â†’ Update History â†’ Uninstall).' }
+      { name: 'Win 11 spoofer fix', fix: '<a href="https://gofile.io/d/qVXmXC" target="_blank">Download fix</a>. ALL Win 11 users must run this to avoid BSODs. Extract, run as admin, click Yes to all. Restart, clean if needed, then spoof.\nAlso delete last 2 Windows Security updates (Windows Update → Update History → Uninstall).' }
     ],
     selectedVariant: null,
     variants: {
@@ -1182,7 +1739,7 @@ const products = [
   },
   {
     key: 'vortex', name: 'Vortex', category: 'Products',
-    setup: { tpm:'N/A Â· ON for games that require it', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' },
+    setup: { tpm:'N/A · ON for games that require it', secureBoot:'OFF', virtualization:'ON', defender:'OFF', firewall:'OFF', exploit:'OFF' },
     windows: ['ALL Windows versions'],
     requirements: ['*visual for all visuals', 'Hyper-V enabled in Windows Features', 'BIOS UEFI & Disks GPT', 'All antivirus uninstalled (VGK, FaceIT, McAfee, etc.)', 'Core Isolation disabled'],
     errors: [
@@ -1216,20 +1773,20 @@ const products = [
 
 const generalPages = {
   'extra-kane': {
-    name: 'Extra Fixes â€” Kane',
+    name: 'Extra Fixes — Kane',
     description: 'Additional troubleshooting steps for Kane.',
     errors: [
       { name: 'No available servers were found', fix: 'Use VPN.' },
-      { name: 'crd failed at 199 with code 887a0001', fix: 'Try disabling integrated GPU. If no other GPU than integrated â†’ refund.' },
+      { name: 'crd failed at 199 with code 887a0001', fix: 'Try disabling integrated GPU. If no other GPU than integrated → refund.' },
       { name: 'Required resource not found', fix: 'Start cheat after spoofer.' },
       { name: 'Failed to prepare environment(1)', fix: 'Restart PC and try again.' },
       { name: 'Error 0x298', fix: 'Contact dev.' },
-      { name: 'Failed to inject the cheat(12)', fix: 'Try pressing OK and entering the game â€” see if it works.' },
+      { name: 'Failed to inject the cheat(12)', fix: 'Try pressing OK and entering the game — see if it works.' },
       { name: 'Occlusion culling (Cosmo Rust)', fix: 'Turn off Occlusion Culling in Experimental settings.' }
     ]
   },
   'tos': {
-    name: 'T.O.S. Â· Refunds Â· Compensation Â· HWID',
+    name: 'T.O.S. · Refunds · Compensation · HWID',
     description: 'Policies for refunds, comps, and HWID resets.',
     sections: [
       {
@@ -1250,11 +1807,11 @@ const generalPages = {
       },
       {
         title: 'Downgrading',
-        body: 'We can refund some products if user does not want to downgrade, but we\'d rather have them downgrade. Convince them to backup important files (OneDrive or USB). If they still want refund â†’ @ Senior Support.'
+        body: 'We can refund some products if user does not want to downgrade, but we\'d rather have them downgrade. Convince them to backup important files (OneDrive or USB). If they still want refund → @ Senior Support.'
       },
       {
         title: 'Compensations',
-        body: 'We can comp keys for: lost time from troubleshooting, product was updating or not working.\nâ€¢ We will NOT comp keys if user already comped more than once.\nâ€¢ We will NOT comp small amounts of time (1â€“2 hours).\nâ€¢ Some devs take time to comp â€” don\'t ghost the user, reply that we\'re waiting on devs.'
+        body: 'We can comp keys for: lost time from troubleshooting, product was updating or not working.\n• We will NOT comp keys if user already comped more than once.\n• We will NOT comp small amounts of time (1–2 hours).\n• Some devs take time to comp — don\'t ghost the user, reply that we\'re waiting on devs.'
       },
       {
         title: 'HWID Resets',
@@ -1293,10 +1850,10 @@ const productThemes = {
 const defaultTheme = { a: '160, 86, 255', b: '255, 88, 168', c: '255, 196, 77', bg: ['#0b0f1d', '#10182c', '#090d18'], side: ['16, 25, 44', '12, 20, 35'] };
 
 const productLogoMarks = {
-  naxo: 'â—Ž', cosmopro: 'â—‰', atlas: 'A', forge: 'âš’', astrozoom: 'â—Œ', supreme: 'X', kane: 'K', liquid: 'â—',
-  proaim: 'âŒ–', cobra: 'S', athena: 'â–²', kraken: 'âœ¶', krakenspoofer: 'âœ¶', inferno: 'ðŸ”¥', pulse: 'âˆ¿',
-  hero: 'H', volt: 'âš¡', vex: 'V', crown: 'â™›', opal: 'â—¯',
-  viper: 'V', breeze: 'â„', vortex: 'â—'
+  naxo: '◎', cosmopro: '◉', atlas: 'A', forge: '⚒', astrozoom: '◌', supreme: 'X', kane: 'K', liquid: '◍',
+  proaim: '⌖', cobra: 'S', athena: '▲', kraken: '✶', krakenspoofer: '✶', inferno: '🔥', pulse: '∿',
+  hero: 'H', volt: '⚡', vex: 'V', crown: '♛', opal: '◯',
+  viper: 'V', breeze: '❄', vortex: '◍'
 };
 
 const STORAGE_KEY = 'cosmo_support_data_v1';
@@ -1525,7 +2082,7 @@ function renderGeneralPage(page) {
         <div class="page-header">
           <div class="breadcrumb">General <span class="sep">/</span> <span class="current">${page.name}</span></div>
           <h1>${page.name}</h1>
-          <div class="subtitle">${page.description} Â· Click "Copy fix" or any code snippet.</div>
+          <div class="subtitle">${page.description} · Click "Copy fix" or any code snippet.</div>
         </div>
         <div class="section">
           <div class="section-title"><h2>Fixes</h2><div class="rule"></div></div>
@@ -1683,7 +2240,7 @@ syncFromApi().then(updated => {
     initializeNavAccessibility();
     const currentKey = getCurrentSelectedProductKey();
     if (currentKey) selectProduct(currentKey);
-    showToast('âœ“ Synced latest updates');
+    showToast('✓ Synced latest updates');
   }
 });
 function buildNav() {
@@ -1920,7 +2477,7 @@ function applyThemeByKey(key) {
 }
 
 function updateProductLogo(key, label) {
-  const mark = productLogoMarks[key] || (label ? label.trim().charAt(0).toUpperCase() : 'â€¢');
+  const mark = productLogoMarks[key] || (label ? label.trim().charAt(0).toUpperCase() : '•');
   productLogoMark.textContent = mark;
   productLogoName.textContent = label || 'General';
   productLogo.style.opacity = '1';
@@ -2101,7 +2658,7 @@ function openAdminPanel() {
 
 openAdminFab.addEventListener('click', openAdminPanel);
 
-if (hiddenAccess) hiddenAccess.addEventListener('click', requestUpdateAccess);
+hiddenAccess.addEventListener('click', requestUpdateAccess);
 
 closeAdmin.addEventListener('click', () => {
   adminModal.classList.remove('show');
@@ -2239,7 +2796,7 @@ adminErrorSave.addEventListener('click', () => {
   const fix = adminErrorFix.value.trim();
   const link = adminErrorLink.value.trim();
   if (!title && !fix && !link) {
-    showToast('âœ• Enter error title or fix');
+    showToast('✕ Enter error title or fix');
     return;
   }
   const withLink = link ? `${fix}\n<a href="${escapeAttr(link)}" target="_blank">Open link</a>` : fix;
@@ -2310,7 +2867,7 @@ adminAddVariantInlineBtn.addEventListener('click', () => {
   if (!p || !gameName) return;
   if (!p.variants) p.variants = {};
   const rawKey = createVariantKey(gameName, p.variants);
-  if (p.variants[rawKey]) { showToast('âœ• Game already exists'); return; }
+  if (p.variants[rawKey]) { showToast('✕ Game already exists'); return; }
   p.variants[rawKey] = { name: gameName, setup: {}, windows: [], requirements: [], errors: [] };
   adminAddVariantInline.value = '';
   adminSelectedVariantKey = rawKey;
@@ -2322,7 +2879,7 @@ adminDeleteVariantInline.addEventListener('click', () => {
   if (!p || !p.variants || !adminSelectedVariantKey || !p.variants[adminSelectedVariantKey]) return;
   const count = Object.keys(p.variants).length;
   if (count <= 1) {
-    showToast('âœ• Keep at least one game');
+    showToast('✕ Keep at least one game');
     return;
   }
   const label = p.variants[adminSelectedVariantKey].name;
@@ -2346,7 +2903,7 @@ function exportData() {
   a.download = 'cosmo-support-data.json';
   a.click();
   URL.revokeObjectURL(url);
-  showToast('âœ“ Exported');
+  showToast('✓ Exported');
 }
 
 adminExportVisual.addEventListener('click', exportData);
@@ -2361,7 +2918,7 @@ adminImportVisual.addEventListener('click', () => {
       const text = await file.text();
       const parsed = JSON.parse(text);
       if (!Array.isArray(parsed.products) || !parsed.generalPages) {
-        showToast('âœ• Invalid JSON format');
+        showToast('✕ Invalid JSON format');
         return;
       }
       products.length = 0;
@@ -2376,21 +2933,21 @@ adminImportVisual.addEventListener('click', () => {
       selectProduct(products[0] ? products[0].key : 'naxo');
       adminSelectedProductKey = products[0] ? products[0].key : null;
       if (adminSelectedProductKey) setAdminSelectedProduct(adminSelectedProductKey);
-      showToast('âœ“ Imported');
+      showToast('✓ Imported');
     } catch (err) {
-      showToast('âœ• Import failed');
+      showToast('✕ Import failed');
     }
   };
   input.click();
 });
 adminSyncBtn.addEventListener('click', async () => {
-  if (!updateAccessGranted) { showToast('âœ• Access denied'); return; }
+  if (!updateAccessGranted) { showToast('✕ Access denied'); return; }
   adminSyncBtn.disabled = true;
   adminSyncBtn.textContent = 'Syncing...';
   const ok = await syncToApi(ACCESS_PROMPT_ANSWER);
   adminSyncBtn.disabled = false;
   adminSyncBtn.textContent = 'Sync to all users';
-  showToast(ok ? 'âœ“ Synced to all users' : 'âœ• Sync failed');
+  showToast(ok ? '✓ Synced to all users' : '✕ Sync failed');
 });
 
 adminResetVisual.addEventListener('click', () => {
@@ -2406,7 +2963,7 @@ adminResetVisual.addEventListener('click', () => {
   selectProduct('naxo');
   adminSelectedProductKey = 'naxo';
   setAdminSelectedProduct('naxo');
-  showToast('âœ“ Reset to default');
+  showToast('✓ Reset to default');
 });
 
 adminSelectedProductKey = products[0] ? products[0].key : null;
@@ -2418,7 +2975,7 @@ if (adminSelectedProductKey) setAdminSelectedProduct(adminSelectedProductKey);
 const toast = document.getElementById('toast');
 let toastTimer;
 
-function showToast(message = 'âœ“ Copied to clipboard') {
+function showToast(message = '✓ Copied to clipboard') {
   toast.textContent = message;
   toast.classList.add('show');
   clearTimeout(toastTimer);
@@ -2453,9 +3010,9 @@ function flashCopied(el) {
   setTimeout(() => el.classList.remove('copied'), 1200);
 }
 
-// Global click handler â€” copies anything with data-copy, plus <code> tags and links
+// Global click handler — copies anything with data-copy, plus <code> tags and links
 document.addEventListener('click', async (e) => {
-  // Don't intercept actual links â€” let them open
+  // Don't intercept actual links — let them open
   if (e.target.tagName === 'A' && e.target.href) return;
 
   // 1. Anything with data-copy attribute
@@ -2474,7 +3031,7 @@ document.addEventListener('click', async (e) => {
       }
       showToast();
     } else {
-      showToast('âœ• Copy failed');
+      showToast('✕ Copy failed');
     }
     return;
   }
@@ -2485,9 +3042,9 @@ document.addEventListener('click', async (e) => {
     const ok = await copyText(text);
     if (ok) {
       flashCopied(e.target);
-      showToast('âœ“ Command copied');
+      showToast('✓ Command copied');
     } else {
-      showToast('âœ• Copy failed');
+      showToast('✕ Copy failed');
     }
   }
 });
@@ -2498,11 +3055,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 </script>
-</script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(function(){});
-}
-</script>
+
 </body>
 </html>
