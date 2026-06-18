@@ -1409,7 +1409,7 @@ function loadStoredData() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed.products)) {
+    if (Array.isArray(parsed.products) && parsed.products.length > 0) {
       products.length = 0;
       parsed.products.forEach(p => products.push(p));
     }
@@ -1422,11 +1422,15 @@ function loadStoredData() {
         p.selectedVariant = null;
       }
     });
-    if (parsed.generalPages && typeof parsed.generalPages === 'object') {
+    if (parsed.generalPages && typeof parsed.generalPages === 'object' && Object.keys(parsed.generalPages).length > 0) {
       Object.keys(generalPages).forEach(k => delete generalPages[k]);
       Object.keys(parsed.generalPages).forEach(k => {
         generalPages[k] = parsed.generalPages[k];
       });
+    }
+    // Safety net: if products somehow empty, restore defaults
+    if (products.length === 0) {
+      DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
     }
   } catch (err) {
     console.error('Failed to load saved data', err);
