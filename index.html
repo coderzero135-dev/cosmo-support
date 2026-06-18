@@ -259,20 +259,13 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
 
 /* Admin FAB */
 .admin-fab {
-  display: flex; align-items: center; gap: 6px;
-  position: fixed; right: 16px; bottom: 16px; z-index: 50;
-  background: var(--bg2); border: 1px solid var(--border); color: var(--text2);
-  font-family: var(--font); font-size: 12px; font-weight: 500;
-  padding: 8px 14px; border-radius: var(--radius); cursor: pointer;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-}
-.admin-fab::before {
-  content: ''; display: inline-block; width: 8px; height: 8px;
-  border-radius: 50%; background: var(--border); transition: background 0.15s;
+  display: block; position: fixed; right: 16px; bottom: 16px; z-index: 50;
+  background: var(--bg2); border: 1px solid var(--border); color: var(--text3);
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+  padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
 }
 .admin-fab:hover { border-color: var(--accent); color: var(--accent); }
-.admin-fab.unlocked { border-color: var(--accent); color: var(--accent); }
-.admin-fab.unlocked::before { background: var(--green); }
 
 /* Admin modal */
 .admin-modal {
@@ -289,13 +282,6 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
 }
 .admin-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; }
 .admin-title h3 { font-size: 16px; font-weight: 600; }
-.admin-title-right { display: flex; align-items: center; gap: 8px; }
-.role-badge {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.04em; padding: 3px 8px; border-radius: 3px;
-  color: var(--accent); border: 1px solid rgba(59,130,246,0.3);
-  background: var(--bg3);
-}
 .admin-shell { display: grid; grid-template-columns: 190px 1fr; gap: 12px; margin-top: 8px; }
 .admin-side { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); padding: 10px; max-height: 60vh; overflow-y: auto; }
 .admin-main { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); padding: 10px; }
@@ -462,96 +448,12 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
   .info-card, .error-card, .setup-table, .section { break-inside: avoid; border-color: #ccc; background: #f5f5f5; }
   .copy-btn, .copy-all, .variant-pills { display: none !important; }
 }
-
-/* ===== Auth Screen (Landing Page) ===== */
-.auth-screen {
-  position: fixed; inset: 0; z-index: 10000;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.3s, visibility 0.3s;
-}
-.auth-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.auth-card {
-  width: 400px; max-width: 92vw;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 16px; box-shadow: 0 24px 80px rgba(0,0,0,0.5);
-  overflow: hidden;
-}
-.auth-brand {
-  padding: 36px 28px 24px; text-align: center;
-  border-bottom: 1px solid var(--border);
-}
-.auth-logo { font-size: 36px; color: var(--accent); line-height: 1; }
-.auth-name { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-top: 8px; }
-.auth-tagline { font-size: 13px; color: var(--text3); margin-top: 4px; }
-.auth-form { padding: 24px 28px; }
-.auth-field { margin-bottom: 14px; }
-.auth-field label {
-  display: block; font-size: 11px; font-weight: 600;
-  color: var(--text3); text-transform: uppercase; letter-spacing: 0.04em;
-  margin-bottom: 5px;
-}
-.auth-field input {
-  width: 100%; padding: 10px 12px;
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); color: var(--text);
-  font-size: 14px; outline: none; transition: border-color 0.15s;
-}
-.auth-field input:focus { border-color: var(--accent); }
-.auth-btn {
-  width: 100%; padding: 11px;
-  background: var(--accent); color: #fff; border: none;
-  border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
-  cursor: pointer; transition: background 0.15s; margin-top: 6px;
-}
-.auth-btn:hover { background: var(--accent-hover); }
-.auth-error {
-  font-size: 12px; color: var(--red); text-align: center;
-  margin-top: 10px; min-height: 18px;
-}
-.auth-footer {
-  padding: 14px 28px; border-top: 1px solid var(--border);
-  display: flex; gap: 20px; justify-content: center; font-size: 11px;
-}
-.auth-role-hint { color: var(--text3); }
-.auth-role-hint::before {
-  content: ''; display: inline-block; width: 6px; height: 6px;
-  border-radius: 50%; margin-right: 5px; vertical-align: middle;
-}
-.admin-hint::before { background: var(--accent); }
-.support-hint::before { background: var(--amber); }
 </style>
 
 </head>
 <body>
 
 <div id="loading" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#09090b;color:#71717a;font-family:sans-serif;font-size:14px;transition:opacity 0.3s;">Loading...</div>
-
-<div class="auth-screen" id="authScreen">
-  <div class="auth-card">
-    <div class="auth-brand">
-      <div class="auth-logo">&#9678;</div>
-      <div class="auth-name">Cosmo Support</div>
-      <div class="auth-tagline">Product Reference Dashboard</div>
-    </div>
-    <div class="auth-form">
-      <div class="auth-field">
-        <label>Email</label>
-        <input type="text" id="loginEmail" placeholder="Enter your email" autocomplete="off">
-      </div>
-      <div class="auth-field">
-        <label>Password</label>
-        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="off">
-      </div>
-      <button class="auth-btn" id="loginBtn" type="button" onclick="handleLogin(event)">Sign In</button>
-      <div class="auth-error" id="loginError"></div>
-    </div>
-    <div class="auth-footer">
-      <span class="auth-role-hint admin-hint">Admin — Full access</span>
-      <span class="auth-role-hint support-hint">Support — Staff only</span>
-    </div>
-  </div>
-</div>
 
 <div class="mob-topbar">
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
@@ -566,7 +468,7 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
   <div class="product-logo-name" id="productLogoName">Cosmo</div>
 </div>
 
-<button class="admin-fab" id="openAdminFab">Staff Access</button>
+<button class="admin-fab" id="openAdminFab">Update panel</button>
 
 <div class="layout" id="layout">
 
@@ -621,11 +523,7 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
   <div class="admin-panel" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
     <div class="admin-title">
       <h3 id="adminTitle">Update Panel</h3>
-      <div class="admin-title-right">
-        <span class="role-badge" id="roleBadge"></span>
-        <button class="btn" id="logoutBtn" style="display:none">Logout</button>
-        <button class="btn" id="closeAdmin">Close</button>
-      </div>
+      <button class="btn" id="closeAdmin">Close</button>
     </div>
 
     <div class="admin-shell" id="adminShell">
@@ -1409,9 +1307,7 @@ function loadStoredData() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const parsed = JSON.parse(raw);
-    let useStoredProducts = false;
     if (Array.isArray(parsed.products) && parsed.products.length > 0) {
-      // Validate stored products have required data fields
       const requiredKeys = ['key', 'name', 'category', 'setup'];
       const allValid = parsed.products.every(p =>
         requiredKeys.every(k => p && p[k] !== undefined) &&
@@ -1421,7 +1317,6 @@ function loadStoredData() {
       if (allValid) {
         products.length = 0;
         parsed.products.forEach(p => products.push(p));
-        useStoredProducts = true;
       }
     }
     // Migrate: add variants to all products if missing from stored data
@@ -1439,16 +1334,8 @@ function loadStoredData() {
         generalPages[k] = parsed.generalPages[k];
       });
     }
-    // Safety net: if products somehow empty or stored data was invalid, restore defaults
-    if (products.length === 0 || !useStoredProducts) {
-      products.length = 0;
-      DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
-    }
   } catch (err) {
     console.error('Failed to load saved data', err);
-    // On any error, restore defaults
-    products.length = 0;
-    DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
   }
 }
 
@@ -1726,6 +1613,7 @@ const noResults = document.getElementById('noResults');
 const openAdminFab = document.getElementById('openAdminFab');
 const adminModal = document.getElementById('adminModal');
 const closeAdmin = document.getElementById('closeAdmin');
+const hiddenAccess = document.getElementById('hiddenAccess');
 const productLogo = document.getElementById('productLogo');
 const productLogoMark = document.getElementById('productLogoMark');
 const productLogoName = document.getElementById('productLogoName');
@@ -1762,77 +1650,35 @@ const adminAddVariantInline = document.getElementById('adminAddVariantInline');
 const adminAddVariantInlineBtn = document.getElementById('adminAddVariantInlineBtn');
 const adminDeleteVariantInline = document.getElementById('adminDeleteVariantInline');
 
-const USER_ACCOUNTS = {
-  admin: { password: 'admin123', label: 'Admin', role: 'admin' },
-  support: { password: 'support123', label: 'Support', role: 'support' },
-};
-let currentUser = null;
+const ACCESS_PROMPT_QUESTION = 'Enter admin code:';
+const ACCESS_PROMPT_ANSWER = 'cosmo-admin';
 const LAST_PRODUCT_KEY = 'cosmo_support_last_product_v1';
 const LAST_VARIANT_KEY = 'cosmo_support_last_variant_v1';
+let updateAccessGranted = true;
 
-function isAdmin() { return currentUser?.role === 'admin'; }
-function isLoggedIn() { return currentUser !== null; }
-
-function showAuthScreen() {
-  document.getElementById('loginEmail').value = '';
-  document.getElementById('loginPassword').value = '';
-  document.getElementById('loginError').textContent = '';
-  document.getElementById('authScreen').classList.remove('hidden');
+function normalizeAccessInput(value) {
+  return String(value || '').trim().toLowerCase();
 }
 
-function hideAuthScreen() {
-  document.getElementById('authScreen').classList.add('hidden');
+function setUpdateAccess(enabled) {
+  updateAccessGranted = !!enabled;
+  openAdminFab.classList.toggle('unlocked', updateAccessGranted);
 }
 
-function handleLogin(e) {
-  if (e) e.preventDefault();
-  try {
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const password = document.getElementById('loginPassword').value;
-    const errorEl = document.getElementById('loginError');
-    const account = USER_ACCOUNTS[email];
-    if (!account || account.password !== password) {
-      errorEl.textContent = 'Invalid email or password';
-      return;
-    }
-    currentUser = { email, ...account };
-    hideAuthScreen();
-    if (currentUser.role === 'admin') {
-      openAdminFab.classList.add('unlocked');
-      openAdminFab.textContent = 'Update Panel';
-      showToast('Signed in as Admin — full access');
-    } else {
-      showToast('Signed in as Support — staff access');
-    }
-  } catch (err) {
-    document.getElementById('loginError').textContent = 'Sign‑in error — check console';
-    console.error('Login error:', err);
+function requestUpdateAccess() {
+  const answer = window.prompt(ACCESS_PROMPT_QUESTION);
+  if (answer == null) return;
+  const ok = normalizeAccessInput(answer) === normalizeAccessInput(ACCESS_PROMPT_ANSWER);
+  if (!ok) {
+    showToast('Access denied');
+    return;
   }
+  setUpdateAccess(true);
+  showToast('Access granted');
 }
-
-function logout() {
-  currentUser = null;
-  openAdminFab.classList.remove('unlocked');
-  openAdminFab.textContent = 'Staff Access';
-  adminModal.classList.remove('show');
-  adminModal.setAttribute('aria-hidden', 'true');
-  document.getElementById('roleBadge').textContent = '';
-  document.getElementById('logoutBtn').style.display = 'none';
-  showAuthScreen();
-  showToast('Signed out');
-}
-
-/* Auth event listeners — registered early before any other JS */
-document.getElementById('loginBtn').addEventListener('click', handleLogin);
-document.getElementById('loginEmail').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('loginPassword').focus(); }
-});
-document.getElementById('loginPassword').addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleLogin();
-});
-document.getElementById('logoutBtn').addEventListener('click', logout);
 
 loadStoredData();
+setUpdateAccess(updateAccessGranted);
 buildNav();
 initializeNavAccessibility();
 restoreInitialSelection();
@@ -2215,7 +2061,6 @@ function renderVisualErrorEditor() {
 }
 
 function saveAndRefreshAdmin(productKeyToSelect, variantKey) {
-  if (!isAdmin()) return;
   persistData();
   const targetKey = productKeyToSelect || adminSelectedProductKey;
   if (variantKey) adminSelectedVariantKey = variantKey;
@@ -2233,14 +2078,13 @@ function saveAndRefreshAdmin(productKeyToSelect, variantKey) {
   renderVisualListEditor();
   renderVisualErrorEditor();
   selectProduct(pick, adminSelectedVariantKey || undefined);
-  if (isAdmin()) syncToApi('cosmo-admin').catch(() => {});
+  if (updateAccessGranted) syncToApi(ACCESS_PROMPT_ANSWER).catch(() => {});
 }
 
 
 
 function openAdminPanel() {
-  if (!isAdmin()) { showToast('✕ Admin access required'); return; }
-  openAdminFab.textContent = 'Update Panel';
+  if (!updateAccessGranted) return;
   const currentKey = getCurrentSelectedProductKey();
   if (currentKey && products.some(p => p.key === currentKey)) {
     adminSelectedProductKey = currentKey;
@@ -2253,8 +2097,6 @@ function openAdminPanel() {
   } else if (!adminSelectedProductKey && products[0]) {
     adminSelectedProductKey = products[0].key;
   }
-  document.getElementById('roleBadge').textContent = 'Admin';
-  document.getElementById('logoutBtn').style.display = '';
   adminModal.classList.add('show');
   adminModal.setAttribute('aria-hidden', 'false');
   if (adminSelectedProductKey) {
@@ -2265,6 +2107,8 @@ function openAdminPanel() {
 }
 
 openAdminFab.addEventListener('click', openAdminPanel);
+
+if (hiddenAccess) hiddenAccess.addEventListener('click', requestUpdateAccess);
 
 closeAdmin.addEventListener('click', () => {
   adminModal.classList.remove('show');
@@ -2277,6 +2121,7 @@ adminModal.addEventListener('click', e => {
     adminModal.setAttribute('aria-hidden', 'true');
   }
 });
+
 
 
 document.querySelectorAll('.admin-section-btn').forEach(btn => {
@@ -2292,7 +2137,6 @@ adminProductSelect.addEventListener('change', () => {
 });
 
 setupTogglesVisual.addEventListener('click', e => {
-  if (!isAdmin()) return;
   const btn = e.target.closest('.tri-toggle');
   const row = e.target.closest('[data-visual-setup]');
   if (!btn || !row) return;
@@ -2514,7 +2358,6 @@ function exportData() {
 
 adminExportVisual.addEventListener('click', exportData);
 adminImportVisual.addEventListener('click', () => {
-  if (!isAdmin()) { showToast('✕ Admin only'); return; }
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = 'application/json';
@@ -2548,17 +2391,16 @@ adminImportVisual.addEventListener('click', () => {
   input.click();
 });
 adminSyncBtn.addEventListener('click', async () => {
-  if (!isAdmin()) { showToast('✕ Admin only'); return; }
+  if (!updateAccessGranted) { showToast('âœ• Access denied'); return; }
   adminSyncBtn.disabled = true;
   adminSyncBtn.textContent = 'Syncing...';
-  const ok = await syncToApi('cosmo-admin');
+  const ok = await syncToApi(ACCESS_PROMPT_ANSWER);
   adminSyncBtn.disabled = false;
   adminSyncBtn.textContent = 'Sync to all users';
   showToast(ok ? 'âœ“ Synced to all users' : 'âœ• Sync failed');
 });
 
 adminResetVisual.addEventListener('click', () => {
-  if (!isAdmin()) { showToast('✕ Admin only'); return; }
   products.length = 0;
   DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
   Object.keys(generalPages).forEach(k => delete generalPages[k]);
