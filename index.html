@@ -1409,9 +1409,20 @@ function loadStoredData() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const parsed = JSON.parse(raw);
+    let useStoredProducts = false;
     if (Array.isArray(parsed.products) && parsed.products.length > 0) {
-      products.length = 0;
-      parsed.products.forEach(p => products.push(p));
+      // Validate stored products have required data fields
+      const requiredKeys = ['key', 'name', 'category', 'setup'];
+      const allValid = parsed.products.every(p =>
+        requiredKeys.every(k => p && p[k] !== undefined) &&
+        Array.isArray(p.windows) &&
+        Array.isArray(p.requirements)
+      );
+      if (allValid) {
+        products.length = 0;
+        parsed.products.forEach(p => products.push(p));
+        useStoredProducts = true;
+      }
     }
     // Migrate: add variants to all products if missing from stored data
     products.forEach(p => {
@@ -1428,12 +1439,16 @@ function loadStoredData() {
         generalPages[k] = parsed.generalPages[k];
       });
     }
-    // Safety net: if products somehow empty, restore defaults
-    if (products.length === 0) {
+    // Safety net: if products somehow empty or stored data was invalid, restore defaults
+    if (products.length === 0 || !useStoredProducts) {
+      products.length = 0;
       DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
     }
   } catch (err) {
     console.error('Failed to load saved data', err);
+    // On any error, restore defaults
+    products.length = 0;
+    DEFAULT_PRODUCTS.forEach(p => products.push(JSON.parse(JSON.stringify(p))));
   }
 }
 
