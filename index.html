@@ -543,7 +543,7 @@ h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.
         <label>Password</label>
         <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="off">
       </div>
-      <button class="auth-btn" id="loginBtn">Sign In</button>
+      <button class="auth-btn" id="loginBtn" type="button">Sign In</button>
       <div class="auth-error" id="loginError"></div>
     </div>
     <div class="auth-footer">
@@ -1765,23 +1765,29 @@ function hideAuthScreen() {
   document.getElementById('authScreen').classList.add('hidden');
 }
 
-function handleLogin() {
-  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const password = document.getElementById('loginPassword').value;
-  const errorEl = document.getElementById('loginError');
-  const account = USER_ACCOUNTS[email];
-  if (!account || account.password !== password) {
-    errorEl.textContent = 'Invalid email or password';
-    return;
-  }
-  currentUser = { email, ...account };
-  hideAuthScreen();
-  if (currentUser.role === 'admin') {
-    openAdminFab.classList.add('unlocked');
-    openAdminFab.textContent = 'Update Panel';
-    showToast('Signed in as Admin — full access');
-  } else {
-    showToast('Signed in as Support — staff access');
+function handleLogin(e) {
+  if (e) e.preventDefault();
+  try {
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+    const errorEl = document.getElementById('loginError');
+    const account = USER_ACCOUNTS[email];
+    if (!account || account.password !== password) {
+      errorEl.textContent = 'Invalid email or password';
+      return;
+    }
+    currentUser = { email, ...account };
+    hideAuthScreen();
+    if (currentUser.role === 'admin') {
+      openAdminFab.classList.add('unlocked');
+      openAdminFab.textContent = 'Update Panel';
+      showToast('Signed in as Admin — full access');
+    } else {
+      showToast('Signed in as Support — staff access');
+    }
+  } catch (err) {
+    document.getElementById('loginError').textContent = 'Sign‑in error — check console';
+    console.error('Login error:', err);
   }
 }
 
@@ -1796,6 +1802,16 @@ function logout() {
   showAuthScreen();
   showToast('Signed out');
 }
+
+/* Auth event listeners — registered early before any other JS */
+document.getElementById('loginBtn').addEventListener('click', handleLogin);
+document.getElementById('loginEmail').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('loginPassword').focus(); }
+});
+document.getElementById('loginPassword').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleLogin();
+});
+document.getElementById('logoutBtn').addEventListener('click', logout);
 
 loadStoredData();
 buildNav();
@@ -2243,15 +2259,6 @@ adminModal.addEventListener('click', e => {
   }
 });
 
-/* Auth screen */
-document.getElementById('loginBtn').addEventListener('click', handleLogin);
-document.getElementById('loginEmail').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('loginPassword').focus(); }
-});
-document.getElementById('loginPassword').addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleLogin();
-});
-document.getElementById('logoutBtn').addEventListener('click', logout);
 
 document.querySelectorAll('.admin-section-btn').forEach(btn => {
   btn.addEventListener('click', () => {
