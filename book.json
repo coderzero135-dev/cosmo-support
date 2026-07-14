@@ -1,0 +1,20 @@
+{
+  "title": "Cheat Guide",
+  "description": "Your ultimate guide to game cheats, tips, and tricks",
+  "author": "Cheat Guide Team",
+  "language": "en",
+  "plugins": ["search", "sharing", "fontsettings", "theme-default"],
+  "pluginsConfig": {
+    "theme-default": {
+      "showLevel": true
+    }
+  },
+  "structure": {
+    "readme": "README.md",
+    "summary": "SUMMARY.md"
+  },
+  "pdf": {
+    "pageNumbers": true,
+    "fontSize": 12
+  }
+}
